@@ -40,10 +40,15 @@
 
     export let profileId: string;
 
-    onMount(async () => {
+    // Calls whenever profileId changes
+    $: {
+        fetchProfile(profileId);
+    }
+
+    async function fetchProfile(profileId: string) {
         const profileModel = await getProfile(profileId);
         profile.set(profileModel);
-    })
+    }
 
     const followingUser = useQuery(
         'followUser',

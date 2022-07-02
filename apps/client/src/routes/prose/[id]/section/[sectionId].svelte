@@ -14,7 +14,6 @@
 </script>
 
 <script lang="ts">
-    import { useQuery } from '@sveltestack/svelte-query';
     import { fly } from 'svelte/transition';
     import { createForm } from 'felte';
     import { goto } from '$app/navigation';
@@ -36,11 +35,11 @@
         Loader5Line,
     } from 'svelte-remixicon';
     import type { Section, SectionForm } from '$lib/models/content/works';
-    import { AuthorsNotePos } from '$lib/models/content';
+    import { AuthorsNotePos, Content } from '$lib/models/content';
     import { editSection, fetchSections } from '$lib/services/content.service';
     import { TextField, Editor } from '$lib/components/forms';
-    import { onMount } from 'svelte';
     import { fetchOneSection } from '$lib/services/content.service';
+    import type { Profile } from '$lib/models/accounts';
 
     export let proseId: string;
     export let sectionId: string;
@@ -50,10 +49,20 @@
     let editMode = false;
     let baseUrl: string = ($content && $content.content) ? `/prose/${$content.content._id}` : `/prose/${proseId}`;
     let selectedPos: AuthorsNotePos = AuthorsNotePos.Bottom;
+    let sectionsList: Section[];
 
-    onMount(async () => {
-        await fetchSection(sectionId);
-    })
+    // Calls whenever sectionId changes
+    $: {
+        fetchSection(sectionId);
+    }
+    // Calls whenever $content, $session, or proseId change
+    $: {
+        if ($content && $session) {
+            fetchSectionsList($content.content, $session.currProfile, proseId);
+        } else {
+            fetchSectionsList(null, null, proseId);
+        }
+    }
 
     async function fetchSection(id: string) {
         section = await fetchOneSection(id);
@@ -63,14 +72,14 @@
         $data.authorsNote = section.authorsNote;
     }
 
-    let sectionsList = useQuery('contentSections', () =>
-        fetchSections(
-            ($content && $content.content) ? $content.content._id : proseId,
-            $session && $session.currProfile && $content && $content.content && $content.content.author._id === $session.currProfile._id
-                ? $session.currProfile._id
-                : null,
-        ),
-    );
+    async function fetchSectionsList(parentContent: Content, currProfile: Profile, parentId: string) {
+        baseUrl = parentContent ? `/prose/${parentContent._id}` : `/prose/${parentId}`;
+        sectionsList = await fetchSections(
+            parentContent ? parentContent._id : parentId,
+            currProfile && parentContent && currProfile._id === parentContent.author._id
+                ? currProfile._id
+                : null,);
+    }
 
     const { form, data, errors, createSubmitHandler } = createForm({
         onSubmit: (values) => {
@@ -287,32 +296,23 @@
                         class="chapter-list bg-zinc-300 dark:bg-zinc-700"
                         transition:fly={{ delay: 0, duration: 150, x: 100 }}
                     >
-                        {#if $sectionsList.isLoading}
+                        {#if sectionsList}
+                            <ul class="mt-4">
+                                {#each sectionsList as section}
+                                    <li class="section-item odd:bg-zinc-300 odd:dark:bg-zinc-700">
+                                        <a href="{baseUrl}/section/{section._id}">
+                                            <span class="title">{section.title}</span>
+                                        </a>
+                                    </li>
+                                {/each}
+                            </ul>
+                        {:else}
                             <div class="flex flex-col h-full w-full items-center justify-center">
                                 <div class="flex items-center">
                                     <Loader5Line class="animate-spin mr-2" size="24px" />
                                     <span class="uppercase font-bold tracking-widest">Loading...</span>
                                 </div>
                             </div>
-                        {:else if $sectionsList.isError}
-                            <div class="flex flex-col h-full w-full items-center justify-center">
-                                <div class="flex items-center">
-                                    <CloseLine class="mr-2" size="24px" />
-                                    <span class="uppercase font-bold tracking-widest"
-                                        >Error fetching sections!</span
-                                    >
-                                </div>
-                            </div>
-                        {:else}
-                            <ul class="mt-4">
-                                {#each $sectionsList.data as section}
-                                    <li class="section-item odd:bg-zinc-300 odd:dark:bg-zinc-700">
-                                        <a href="{baseUrl}/section/{section._id}" on:click={() => fetchSection(section._id)}>
-                                            <span class="title">{section.title}</span>
-                                        </a>
-                                    </li>
-                                {/each}
-                            </ul>
                         {/if}
                     </div>
                 {/if}

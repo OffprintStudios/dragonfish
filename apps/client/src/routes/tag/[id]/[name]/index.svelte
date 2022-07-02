@@ -9,7 +9,7 @@
     import type { PaginateResult } from "$lib/models/util";
     import { app } from "$lib/repo/app.repo";
     import { search, setCurrentTag, setFilter } from "$lib/repo/search.repo";
-    import { findRelatedContent } from "$lib/services/search.service";
+    import { findRelatedContent, SearchOptions } from "$lib/services/search.service";
     import { fetchDescendants } from "$lib/services/tags.service";
     import { updateUrlParams } from "$lib/util";
     import type { Load } from "@sveltejs/kit";
@@ -32,8 +32,6 @@
     }
 </script>
 <script lang="ts">
-    import { onMount } from 'svelte';
-
     export let tagId: string;
 
     let contentResults: PaginateResult<Content>;
@@ -43,14 +41,26 @@
 
     let showDesc = true;
 
+    // Calls whenever $app.filter changes
     $: setFilter($app.filter);
+    // Calls whenever $search changes
+    $: {
+        updateContentResults($search);
+    }
+    // Calls whenever tagId changes
+    $: {
+        updateTagsTree(tagId);
+    }
 
-    onMount(async () => {
-        contentResults = await findRelatedContent($search);
-        tagsTree = await fetchDescendants(tagId);
+    async function updateContentResults(options: SearchOptions) {
+        contentResults = await findRelatedContent(options);
+    }
+
+    async function updateTagsTree(id: string) {
+        tagsTree = await fetchDescendants(id);
         parent = tagsTree.parent as TagsModel;
         pageTitle = parent? parent.name + " — " + tagsTree.name : tagsTree.name;
-    })
+    }
 
     async function setNewPage(currPage: number) {
         $search.page = currPage;
