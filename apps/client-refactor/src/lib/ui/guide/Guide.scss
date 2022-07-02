@@ -4,7 +4,7 @@ div.panel-container {
     @apply text-4xl mt-12 mb-6;
   }
   div.topbar {
-    @apply min-h-[4rem] max-h-[4rem] px-2.5 flex items-center drop-shadow-xl relative z-40 text-white sticky;
+    @apply min-h-[4rem] max-h-[4rem] px-2.5 flex items-center drop-shadow-xl top-0 z-40 text-white sticky;
     background: var(--accent);
     div.header {
       @apply w-2/4 text-center all-small-caps font-bold tracking-widest relative -top-0.5;
@@ -29,8 +29,9 @@ div.panel-section {
   }
 }
 
-button.nav-button {
-  @apply flex items-center p-4 border-b border-zinc-300 w-full last:border-0 first:rounded-t-lg last:rounded-b-lg bg-zinc-200;
+button.nav-button, a.nav-button, div.nav-button {
+  @apply flex items-center block no-underline p-4 border-b border-zinc-300 w-full last:border-0 first:rounded-t-lg last:rounded-b-lg bg-zinc-200;
+  color: var(--text-color);
   &:hover {
     @apply bg-zinc-300;
   }

@@ -4,12 +4,28 @@
   import { Button } from "../../util";
   import { AppleFill, GoogleFill, LoginCircleLine } from "svelte-remixicon";
   import { nextPage } from "../guide.state";
+  import type { LoginForm } from "../../../models/accounts/forms";
   import SignUpPanel from "./SignUpPanel.svelte";
   import toast from "svelte-french-toast";
 
   const { form, data, errors, isSubmitting } = createForm({
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const formInfo: LoginForm = {
+        email: values.email,
+        password: values.password,
+        rememberMe: values.rememberMe,
+      };
+
+      await fetch('/api/auth/log-in', { method: 'POST', body: JSON.stringify(formInfo) })
+        .then(async (data) => {
+          const account = await data.json();
+          console.log(account);
+          toast.success('Welcome back!');
+        })
+        .catch(err => {
+          console.log(err);
+          toast.error('Something went wrong!');
+        });
     }
   });
 </script>

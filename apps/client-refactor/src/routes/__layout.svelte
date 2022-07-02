@@ -16,7 +16,7 @@
   <Guide>
     <slot />
   </Guide>
-  <Toaster position="top-right" />
+  <Toaster />
 </main>
 
 <style lang="scss">
@@ -24,6 +24,6 @@
     color: var(--text-color);
     font-family: var(--body-text);
     background: var(--background);
-    position: relative;
+    @apply transition transform relative;
   }
 </style>

@@ -21,7 +21,8 @@
     "start": "turbo run start",
     "start:api": "yarn workspace @dragonfish/api run start",
     "start:api:prod": "yarn workspace @dragonfish/api run start:prod",
-    "build:api": "CI=true turbo run build --scope=@dragonfish/api"
+    "build:api": "CI=true turbo run build --scope=@dragonfish/api",
+    "watch:api": "yarn workspace @dragonfish/api run start:dev"
   },
   "devDependencies": {
     "prettier": "^2.5.1",

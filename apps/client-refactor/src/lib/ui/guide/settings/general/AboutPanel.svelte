@@ -2,16 +2,22 @@
   import {
     ArrowLeftSLine,
     ArticleLine,
+    CodeLine,
+    CupFill,
+    DiscordFill,
     ExternalLinkLine,
     FilePaper2Line,
-    GithubLine,
+    GithubFill,
     HeartLine,
     Lock2Line,
     NewspaperLine,
-    QuestionLine
+    PatreonFill,
+    QuestionLine,
+    TwitterFill
   } from "svelte-remixicon";
   import { Button } from "../../../util";
   import { prevPage } from "../../guide.state";
+  import { copyToClipboard, VERSION } from "../../../../util";
 
   const iconSize = "24px";
 </script>
@@ -31,6 +37,13 @@
     </div>
   </div>
   <div class="content-container text-center py-6 flex flex-col">
+    <div class="mb-6">
+      <button class="nav-button" on:click={() => copyToClipboard(VERSION)}>
+        <CodeLine size={iconSize} />
+        <span>Version</span>
+        <span class="text-zinc-400" style="text-align: right;">{VERSION}</span>
+      </button>
+    </div>
     <div class="mb-6">
       <a href="https://offprint.notion.site/Terms-of-Service-131ffadce0eb4e8a947144ddc70ef89b" class="nav-button" target="_blank">
         <NewspaperLine size={iconSize} />
@@ -57,33 +70,41 @@
         <span>What is Offprint?</span>
         <ExternalLinkLine class="text-zinc-400" />
       </a>
-      <a href="https://github.com/OffprintStudios/dragonfish" class="nav-button" target="_blank">
-        <GithubLine size={iconSize} />
-        <span>Repository</span>
+    </div>
+    <div class="mb-6">
+      <a href="https://www.patreon.com/offprintstudios" class="nav-button" target="_blank">
+        <PatreonFill size={iconSize} />
+        <span>Patreon</span>
+        <ExternalLinkLine class="text-zinc-400" />
+      </a>
+      <a href="https://ko-fi.com/offprintstudios" class="nav-button" target="_blank">
+        <CupFill size={iconSize} />
+        <span>Ko-Fi</span>
         <ExternalLinkLine class="text-zinc-400" />
       </a>
     </div>
-
-    <span>Offprint is built entirely with open source software. All licenses are available on our repository.</span>
-    <span class="my-2">Contributions and Stars are welcome!</span>
-    <div class="my-4"></div>
+    <div class="mb-6">
+      <a href="https://github.com/OffprintStudios/dragonfish" class="nav-button" target="_blank">
+        <GithubFill size={iconSize} />
+        <span>GitHub</span>
+        <ExternalLinkLine class="text-zinc-400" />
+      </a>
+      <a href="https://twitter.com/offprintstudios?s=21&t=IIRYw4Wr6tug7Cg1p-CSEQ" class="nav-button" target="_blank">
+        <TwitterFill size={iconSize} />
+        <span>Twitter</span>
+        <ExternalLinkLine class="text-zinc-400" />
+      </a>
+      <a href="https://discord.gg/9cnSwfn" class="nav-button" target="_blank">
+        <DiscordFill size={iconSize} />
+        <span>Discord</span>
+        <ExternalLinkLine class="text-zinc-400" />
+      </a>
+    </div>
     <span class="flex items-center justify-center">Made with <HeartLine class="mx-1.5" size="20px" /> by Offprint Studios</span>
     <span>&copy; 2022 Alyx Mote</span>
-    <span>v1.0.0-alpha.010</span>
   </div>
 </div>
 
 <style lang="scss">
   @use '../../Guide';
-
-  button.nav-button, a.nav-button {
-    @apply flex items-center block no-underline p-4 border-b border-zinc-300 dark:border-zinc-700 w-full last:border-0 first:rounded-t-lg last:rounded-b-lg bg-zinc-200 dark:bg-zinc-500;
-    color: var(--text-color);
-    &:hover {
-      @apply bg-zinc-300;
-    }
-    span {
-      @apply ml-2 flex-1 text-left;
-    }
-  }
 </style>
