@@ -1,3 +1,17 @@
+<script context="module" lang="ts">
+    import type { Load } from '@sveltejs/kit';
+
+    export const load: Load = async ({ params }) => {
+        const profileId: string = params.id;
+
+        return {
+            props: {
+                profileId,
+            },
+        };
+    };
+</script>
+
 <script lang="ts">
     import { useQuery } from '@sveltestack/svelte-query';
     import { localeDate, abbreviate, pluralize, ALPHA_MESSAGE } from '$lib/util';
@@ -7,33 +21,35 @@
     import { NotifyBanner } from '$lib/components/ui/misc';
     import { session } from '$lib/repo/session.repo';
 
-    const profileShelves = useQuery('profileShelves', () => fetchPublicShelves($profile._id), {
-        enabled: !!$profile,
-    });
+    export let profileId: string;
+
+    const profileShelves = useQuery('profileShelves', () => fetchPublicShelves(profileId));
 </script>
 
 <svelte:head>
-    <title>{$profile.screenName}'s Shelves &mdash; Offprint</title>
-    <!-- Primary Meta Tags -->
-    <meta name="title" content="{$profile.screenName}'s Shelves on Offprint" />
-    <meta name="description" content="Taking a look at {$profile.screenName}'s shelves" />
+    {#if $profile}
+        <title>{$profile.screenName}'s Shelves &mdash; Offprint</title>
+        <!-- Primary Meta Tags -->
+        <meta name="title" content="{$profile.screenName}'s Shelves on Offprint" />
+        <meta name="description" content="Taking a look at {$profile.screenName}'s shelves" />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://offprint.net/profile/{$profile._id}" />
-    <meta property="og:title" content="{$profile.screenName}'s Shelves on Offprint" />
-    <meta property="og:description" content="Taking a look at {$profile.screenName}'s shelves" />
-    <meta property="og:image" content={$profile.profile.avatar} />
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://offprint.net/profile/{$profile._id}" />
+        <meta property="og:title" content="{$profile.screenName}'s Shelves on Offprint" />
+        <meta property="og:description" content="Taking a look at {$profile.screenName}'s shelves" />
+        <meta property="og:image" content={$profile.profile.avatar} />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://offprint.net/profile/{$profile._id}" />
-    <meta property="twitter:title" content="{$profile.screenName}'s Shelves on Offprint" />
-    <meta
-        property="twitter:description"
-        content="Taking a look at {$profile.screenName}'s shelves"
-    />
-    <meta property="twitter:image" content={$profile.profile.avatar} />
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://offprint.net/profile/{$profile._id}" />
+        <meta property="twitter:title" content="{$profile.screenName}'s Shelves on Offprint" />
+        <meta
+            property="twitter:description"
+            content="Taking a look at {$profile.screenName}'s shelves"
+        />
+        <meta property="twitter:image" content={$profile.profile.avatar} />
+    {/if}
 </svelte:head>
 
 <div class="w-11/12 mx-auto">
@@ -42,7 +58,7 @@
             message={ALPHA_MESSAGE}
         />
     {/if}
-    {#if $session && $session.currProfile && $session.currProfile._id === $profile._id }
+    {#if $session && $session.currProfile && $session.currProfile._id === profileId }
         <NotifyBanner
             message="This page only shows <b>public</b> bookshelves. To see all your bookshelves and
                         make any changes, head over to the Explore page!"
@@ -71,7 +87,7 @@
             {#each $profileShelves.data as shelf}
                 <a
                     class="shelf-box border-gray-600 dark:border-white"
-                    href="/profile/{$profile._id}/shelf/{shelf._id}"
+                    href="/profile/{profileId}/shelf/{shelf._id}"
                 >
                     <div
                         class="h-24 w-24 flex flex-col items-center justify-center border-4 rounded-md mr-4"

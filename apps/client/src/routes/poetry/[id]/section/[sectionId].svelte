@@ -65,14 +65,11 @@
 
     let sectionsList = useQuery('contentSections', () =>
         fetchSections(
-            $content.content._id,
-            $session.currProfile && $content.content.author._id === $session.currProfile._id
+            ($content && $content.content) ? $content.content._id : poetryId,
+            $session && $session.currProfile && $content && $content.content && $content.content.author._id === $session.currProfile._id
                 ? $session.currProfile._id
                 : null,
         ),
-        {
-            enabled: !!$session && !!$content && !!$content.content,
-        },
     );
 
     const { form, data, errors, createSubmitHandler } = createForm({

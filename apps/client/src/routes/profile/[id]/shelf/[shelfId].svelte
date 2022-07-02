@@ -1,18 +1,16 @@
 <script lang="ts" context="module">
-    import { get } from 'svelte/store';
     import type { Load } from '@sveltejs/kit';
     import { fetchShelf } from '$lib/services/content-library.service';
-    import { profile } from '$lib/repo/profile.repo';
     import WorkCard from '$lib/components/ui/content/WorkCard.svelte';
 
     export const load: Load = async ({ params }) => {
+        const profileId: string = params.id;
         const shelfId: string = params.shelfId;
-
-        const bookshelf = await fetchShelf(get(profile)._id, shelfId);
 
         return {
             props: {
-                shelf: bookshelf,
+                profileId,
+                shelfId,
             },
         };
     };
@@ -20,20 +18,16 @@
 
 <script lang="ts">
     import { useQuery } from '@sveltestack/svelte-query';
-    import type { Bookshelf } from '$lib/models/content/library';
     import { CloseLine, InformationLine, Loader5Line } from 'svelte-remixicon';
     import BookshelfHeader from '$lib/components/ui/content/BookshelfHeader.svelte';
     import { fetchShelfItems } from '$lib/services/content-library.service';
 
-    export let shelf: Bookshelf;
+    export let profileId: string;
+    export let shelfId: string;
 
-    const thisShelf = useQuery('shelfPage', () => fetchShelf($profile?._id, shelf._id), {
-        initialData: shelf,
-        enabled: !!$profile,
-    });
+    const thisShelf = useQuery('shelfPage', () => fetchShelf(profileId, shelfId),);
 
-    const shelfItems = useQuery('shelfItems', () => fetchShelfItems($profile?._id, shelf._id), {
-        enabled: !!$profile,
+    const shelfItems = useQuery('shelfItems', () => fetchShelfItems(profileId, shelfId), {
         keepPreviousData: true,
     });
 </script>

@@ -1,18 +1,15 @@
 <script lang="ts" context="module">
     import { get } from 'svelte/store';
     import type { Load } from '@sveltejs/kit';
-    import { fetchShelf } from '$lib/services/content-library.service';
     import { session } from '$lib/repo/session.repo';
     import WorkCard from '$lib/components/ui/content/WorkCard.svelte';
 
     export const load: Load = async ({ params }) => {
         const shelfId: string = params.id;
 
-        const bookshelf = await fetchShelf(get(session).currProfile._id, shelfId);
-
         return {
             props: {
-                shelf: bookshelf,
+                shelfId,
             },
         };
     };
@@ -24,10 +21,17 @@
     import { CloseLine, InformationLine, Loader5Line } from 'svelte-remixicon';
     import BookshelfHeader from '$lib/components/ui/content/BookshelfHeader.svelte';
     import { fetchShelfItems } from '$lib/services/content-library.service';
+    import { onMount } from 'svelte';
+    import { fetchShelf } from '$lib/services/content-library.service';
 
-    export let shelf: Bookshelf;
+    export let shelfId: string;
+    let shelf: Bookshelf;
 
-    const thisShelf = useQuery('shelfPage', () => fetchShelf($session.currProfile._id, shelf._id), {
+    onMount(async () => {
+        shelf = await fetchShelf($session.currProfile._id, shelfId);
+    })
+
+    const thisShelf = useQuery('shelfPage', () => fetchShelf($session.currProfile._id, shelfId), {
         initialData: shelf,
         enabled: !!$session.currProfile,
     });
