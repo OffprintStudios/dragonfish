@@ -1,3 +1,17 @@
+<script context="module" lang="ts">
+    import type { Load } from '@sveltejs/kit';
+
+    export const load: Load = async ({ params }) => {
+        const profileId: string = params.id;
+
+        return {
+            props: {
+                profileId,
+            },
+        };
+    };
+</script>
+
 <script lang="ts">
     import { page } from '$app/stores';
     import { profile } from '$lib/repo/profile.repo';
@@ -17,6 +31,7 @@
         Scheduled,
     }
 
+    export let profileId: string;
     let currentTab = BlogTabs.Published;
     let currPage = $page.url.searchParams.has('page') ? +$page.url.searchParams.get('page') : 1;
 
@@ -156,7 +171,7 @@
                 message={ALPHA_MESSAGE}
             />
         {/if}
-        {#await fetchUserContent($profile._id, $app.filter, [ContentKind.BlogContent], currPage)}
+        {#await fetchUserContent(profileId, $app.filter, [ContentKind.BlogContent], currPage)}
             <div class="w-full h-96 flex flex-col items-center justify-center">
                 <div class="flex items-center">
                     <Loader5Line size="24px" class="animate-spin" />
