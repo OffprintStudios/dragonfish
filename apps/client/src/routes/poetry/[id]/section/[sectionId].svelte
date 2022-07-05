@@ -63,13 +63,21 @@
             fetchSectionsList(null, null, poetryId);
         }
     }
+    // Calls whenever section changes
+    $: {
+        if (section) {
+            selectedPos = section.authorsNotePos ? section.authorsNotePos : AuthorsNotePos.Bottom;
+            setInitialValues({
+                title: section.title,
+                body: section.body,
+                authorsNote: section.authorsNote,
+            });
+            reset();
+        }
+    }
 
     async function fetchSection(id: string) {
         section = await fetchOneSection(id);
-        selectedPos = section.authorsNotePos ? section.authorsNotePos : AuthorsNotePos.Bottom;
-        $data.title = section.title;
-        $data.body = section.body;
-        $data.authorsNote = section.authorsNote;
     }
 
     async function fetchSectionsList(parentContent: Content, currProfile: Profile, parentId: string) {
@@ -81,7 +89,7 @@
                 : null,);
     }
 
-    const { form, data, errors, createSubmitHandler } = createForm({
+    const { form, data, errors, createSubmitHandler, setInitialValues, reset } = createForm({
         onSubmit: (values) => {
             console.log(values);
         },
@@ -262,6 +270,11 @@
                                 <Editor label="Author's Note" bind:value={$data.authorsNote} />
                             </form>
                         {:else}
+                            <h1
+                                class="border-b border-zinc-700 dark:border-white w-full text-4xl font-medium mb-8"
+                            >
+                                {section.title}
+                            </h1>
                             {#if section.authorsNote && section.authorsNotePos && section.authorsNotePos === AuthorsNotePos.Top}
                                 <div
                                     class="rounded-lg bg-zinc-300 dark:bg-zinc-700 dark:highlight-shadowed p-4"
@@ -272,11 +285,6 @@
                                     {@html section.authorsNote}
                                 </div>
                             {/if}
-                            <h1
-                                class="border-b border-zinc-700 dark:border-white w-full text-4xl font-medium mb-8"
-                            >
-                                {section.title}
-                            </h1>
                             {@html section.body}
                             {#if section.authorsNote && section.authorsNotePos && section.authorsNotePos === AuthorsNotePos.Bottom}
                                 <div
