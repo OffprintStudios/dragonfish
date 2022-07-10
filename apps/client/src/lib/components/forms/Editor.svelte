@@ -27,7 +27,7 @@
         H2,
         H3,
     } from 'svelte-remixicon';
-    import { Editor } from '@tiptap/core';
+    import type { Editor } from '@tiptap/core';
     import Underline from '@tiptap/extension-underline';
     import Typography from '@tiptap/extension-typography';
     import Image from '@tiptap/extension-image';
@@ -58,7 +58,7 @@
     let linkMenuOpen = false;
     let linkText;
     export let label;
-    export let value;
+    export let value = null;
     export let errorMessage = null;
     export let hasHeader = false;
 

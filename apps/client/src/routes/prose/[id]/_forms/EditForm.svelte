@@ -254,7 +254,15 @@
                 label="Genre(s)"
                 isMulti={true}
                 bind:value={$data.genres}
-                on:select={(e) => {
+                on:change={(e) => {
+                    if (!e.detail) {
+                        console.log("Genres cleared");
+                    }
+                    else {
+                        console.log("Genres changed to " + e.detail.map((val) => {
+                            return val.value;
+                        }));
+                    }
                     $data.genres = e.detail;
                 }}
                 errorMessage={genresErrorMessage}
@@ -290,6 +298,7 @@
                 label="Rating"
                 bind:value={$data.rating}
                 on:select={(e) => {
+                    console.log("New rating is " + e.detail.value);
                     $data.rating = e.detail;
                 }}
                 errorMessage={ratingErrorMessage}

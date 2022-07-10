@@ -24,8 +24,9 @@
     {placeholder}
     {isClearable}
     {isMulti}
-    containerClasses="offprint-select"
+    class="offprint-select"
     on:select
+    on:change
 />
 
 {#if !!errorMessage}
@@ -42,7 +43,28 @@
 
 
 <style lang="scss">
+    :global(.list) {
+        // themes.scss variables not available
+        // background: var(--select-bg) !important;
+        border-radius: 0.6rem !important;
+        // border: 1px solid var(--borders) !important;
+        z-index: 100 !important;
+
+        :global(.item) {
+            cursor: pointer;
+        }
+
+        // :global(.item.active) {
+        //     background: var(--accent-light) !important;
+        // }
+
+        // :global(.item.hover) {
+        //     background: var(--accent) !important;
+        // }
+    }
+
     :global(.offprint-select) {
+        // theme.scss variables available, but can't set list attributes
         color: var(--text-color) !important;
         border-radius: 0.5rem !important;
         background: var(--select-bg) !important;
@@ -51,7 +73,7 @@
         border-right: 1px solid transparent !important;
         border-bottom: 4px solid transparent !important;
 
-        :global(.multiSelectItem) {
+        :global(.multi-item) {
             color: white !important;
             background: var(--accent) !important;
             font-size: 0.875rem !important;
@@ -63,25 +85,6 @@
 
         :global(input[type='text']:focus) {
             border-color: transparent !important;
-        }
-
-        :global(div.listContainer) {
-            background: var(--select-bg) !important;
-            border-radius: 0.6rem !important;
-            border: 1px solid var(--borders) !important;
-            z-index: 100 !important;
-
-            :global(.item) {
-                cursor: pointer;
-            }
-
-            :global(.item.active) {
-                background: var(--accent-light) !important;
-            }
-
-            :global(.item.hover) {
-                background: var(--accent) !important;
-            }
         }
     }
 </style>
