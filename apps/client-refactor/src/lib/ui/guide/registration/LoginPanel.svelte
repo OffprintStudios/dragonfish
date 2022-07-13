@@ -16,16 +16,36 @@
         rememberMe: values.rememberMe,
       };
 
-      await fetch('/api/auth/log-in', { method: 'POST', body: JSON.stringify(formInfo) })
-        .then(async (data) => {
-          const account = await data.json();
-          console.log(account);
-          toast.success('Welcome back!');
-        })
-        .catch(err => {
-          console.log(err);
-          toast.error('Something went wrong!');
+      await fetch('/api/auth/log-in', { method: 'POST', body: JSON.stringify(formInfo), credentials: 'include' })
+        .then(async (response) => {
+          const data = await response.json();
+
+          if (response.status === 422) {
+            toast.error(data.message);
+          } else if (response.status === 200) {
+            console.log(data);
+          } else {
+            toast.error('Something went wrong! Try again in a little bit.');
+          }
         });
+    },
+    validate: (values) => {
+      const errors = {
+        email: '',
+        password: '',
+      };
+      if (!values.email || !/^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/.test(values.email)) {
+        errors.email = 'Not a valid email address.';
+      }
+      if (!values.password) {
+        errors.password = `Aren't you forgetting something?`;
+      }
+      return errors;
+    },
+    initialValues: {
+      email: null,
+      password: null,
+      rememberMe: false,
     }
   });
 </script>

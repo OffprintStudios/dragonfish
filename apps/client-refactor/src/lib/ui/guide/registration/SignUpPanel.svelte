@@ -3,14 +3,34 @@
   import { UserAddLine } from "svelte-remixicon";
   import { Checkbox, TextField } from "../../forms";
   import { Button } from "../../util";
+  import type { RegisterForm } from "../../../models/accounts/forms";
+  import toast from "svelte-french-toast";
 
   const termsUrl = 'https://offprint.notion.site/Terms-of-Service-131ffadce0eb4e8a947144ddc70ef89b';
   const privacyUrl = 'https://offprint.notion.site/Privacy-Policy-f22e8ccb9e9043dca23a29a7089c72f4';
   const constitutionUrl = 'https://offprint.notion.site/The-Offprint-Constitution-ae58c23db7264280a319d1cdfa10bc41';
 
   const { form, data, errors, isSubmitting } = createForm({
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const formInfo: RegisterForm = {
+        email: values.email,
+        password: values.password,
+        inviteCode: values.inviteCode,
+        termsAgree: values.termsAgree,
+      };
+
+      await fetch('/api/auth/sign-up', { method: 'POST', body: JSON.stringify(formInfo), credentials: 'include' })
+        .then(async (response) => {
+          const data = await response.json();
+
+          if (response.status === 422) {
+            toast.error(data.message);
+          } else if (response.status === 200) {
+            console.log(data);
+          } else {
+            toast.error('Something went wrong! Try again in a little bit.');
+          }
+        });
     },
     validate: (values) => {
       const errors = {

@@ -11,26 +11,29 @@
     <h1 class="title">Settings</h1>
     <!--General Settings-->
     <div class="panel-section">
-      <button class="nav-button" on:click={() => nextPage(AboutPanel)}>
-        <InformationLine size={iconSize} />
-        <span>About</span>
-        <ArrowRightSLine class="text-zinc-400" />
-      </button>
-      <button class="nav-button" on:click={() => nextPage(LocalizationPanel)}>
-        <EarthLine size={iconSize} />
-        <span>Localization</span>
-        <ArrowRightSLine class="text-zinc-400" />
-      </button>
-      <button class="nav-button" on:click={() => nextPage(FiltersPanel)}>
-        <FilterLine size={iconSize} />
-        <span>Filters</span>
-        <ArrowRightSLine class="text-zinc-400" />
-      </button>
-      <button class="nav-button" on:click={() => nextPage(ThemesPanel)}>
-        <PaletteLine size={iconSize} />
-        <span>Themes</span>
-        <ArrowRightSLine class="text-zinc-400" />
-      </button>
+      <h3 class="title">General</h3>
+      <div>
+        <button class="nav-button" on:click={() => nextPage(AboutPanel)}>
+          <InformationLine size={iconSize} />
+          <span>About</span>
+          <ArrowRightSLine class="text-zinc-400" />
+        </button>
+        <button class="nav-button" on:click={() => nextPage(LocalizationPanel)}>
+          <EarthLine size={iconSize} />
+          <span>Localization</span>
+          <ArrowRightSLine class="text-zinc-400" />
+        </button>
+        <button class="nav-button" on:click={() => nextPage(FiltersPanel)}>
+          <FilterLine size={iconSize} />
+          <span>Filters</span>
+          <ArrowRightSLine class="text-zinc-400" />
+        </button>
+        <button class="nav-button" on:click={() => nextPage(ThemesPanel)}>
+          <PaletteLine size={iconSize} />
+          <span>Themes</span>
+          <ArrowRightSLine class="text-zinc-400" />
+        </button>
+      </div>
     </div>
     <!--Account Settings-->
     <!--<div class="panel-section">

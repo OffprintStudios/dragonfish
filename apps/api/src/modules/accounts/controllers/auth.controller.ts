@@ -10,10 +10,10 @@ import {
 } from '@nestjs/common';
 import { Cookies, SetCookies } from '@nestjsplus/cookies';
 import { RefreshGuard, RolesGuard } from '$shared/guards';
-import { User, LoginPackage, JwtPayload, Identity } from '$shared/auth';
+import { Identity, JwtPayload, LoginPackage, User } from '$shared/auth';
 import { Device, DeviceInfo } from '$shared/util';
 import { AuthService } from '../services';
-import { AccountForm, Login, PseudonymForm, Pseudonym, Roles } from '$shared/models/accounts';
+import { AccountForm, Login, Pseudonym, PseudonymForm, Roles } from '$shared/models/accounts';
 
 @Controller('auth')
 export class AuthController {

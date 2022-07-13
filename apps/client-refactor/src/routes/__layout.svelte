@@ -7,7 +7,7 @@
 </script>
 
 <main
-  class="flex flex-col md:overflow-y-hidden md:flex-row md:h-screen {$app.theme}"
+  class="flex flex-col h-full md:overflow-y-hidden md:flex-row md:h-screen {$app.theme}"
   class:dark={$app.darkMode === true}
   class:light={$app.darkMode === false}
   on:dragover|preventDefault

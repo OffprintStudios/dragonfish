@@ -5,6 +5,7 @@
     Compass3Line,
     Home5Line,
     LoginCircleLine,
+    Menu2Fill,
     SearchEyeLine,
     Settings5Line,
     TeamLine
@@ -12,6 +13,7 @@
   import { close, guide, open } from "../guide";
   import { LoginPanel } from "../guide/registration";
   import { SettingsHomePanel } from "../guide/settings";
+  import { MobilePanel } from "../guide/mobile";
 
   enum MenuOptions {
     NoMenu,
@@ -43,7 +45,7 @@
         //open(InboxMenu);
         break;
       case MenuOptions.MobileMenu:
-        //open(MobileMenu);
+        open(MobilePanel);
         break;
       case MenuOptions.RegistrationMenu:
         open(LoginPanel);
@@ -66,6 +68,7 @@
 </script>
 
 <div class="navbar">
+  <!--Desktop Navigation-->
   <div class="py-2 flex-col items-center h-full hidden md:flex">
     {#if currentMenu === MenuOptions.RegistrationMenu}
       <button
@@ -139,6 +142,36 @@
       </button>
     {/if}
   </div>
+
+  <!--Mobile Navigation-->
+  <div class="flex items-center p-1 md:hidden">
+    {#if currentMenu === MenuOptions.MobileMenu}
+      <button
+        class="link-mobile"
+        class:active={currentMenu === MenuOptions.MobileMenu}
+        on:click={() => toggleMenu(MenuOptions.NoMenu)}
+      >
+        <span class="link-icon"><CloseLine size="24px" /></span>
+      </button>
+    {:else}
+      <button
+        class="link-mobile"
+        on:click={() => toggleMenu(MenuOptions.MobileMenu)}
+      >
+        <span class="link-icon"><Menu2Fill size="24px" /></span>
+      </button>
+    {/if}
+    <a href="/" class="flex-1">
+      <img
+        src="/images/logo.png"
+        alt="logo"
+        class="relative z-30 max-w-[8rem] mx-auto"
+      />
+    </a>
+    <a href="/search" class="link-mobile select-none cursor-pointer group">
+      <span class="link-icon"><SearchEyeLine size="24px" /></span>
+    </a>
+  </div>
 </div>
 
 <style lang="scss">
@@ -185,7 +218,7 @@
   }
 
   a.link-mobile,
-  div.link-mobile {
+  button.link-mobile {
     @apply block p-2 rounded-lg text-white transition transform flex flex-col items-center justify-center w-[50px] h-[50px] relative;
   }
 </style>

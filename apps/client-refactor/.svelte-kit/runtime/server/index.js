@@ -21,6 +21,60 @@ function to_headers(object) {
 }
 
 /**
+ * Given an Accept header and a list of possible content types, pick
+ * the most suitable one to respond with
+ * @param {string} accept
+ * @param {string[]} types
+ */
+function negotiate(accept, types) {
+	const parts = accept
+		.split(',')
+		.map((str, i) => {
+			const match = /([^/]+)\/([^;]+)(?:;q=([0-9.]+))?/.exec(str);
+			if (match) {
+				const [, type, subtype, q = '1'] = match;
+				return { type, subtype, q: +q, i };
+			}
+
+			throw new Error(`Invalid Accept header: ${accept}`);
+		})
+		.sort((a, b) => {
+			if (a.q !== b.q) {
+				return b.q - a.q;
+			}
+
+			if ((a.subtype === '*') !== (b.subtype === '*')) {
+				return a.subtype === '*' ? 1 : -1;
+			}
+
+			if ((a.type === '*') !== (b.type === '*')) {
+				return a.type === '*' ? 1 : -1;
+			}
+
+			return a.i - b.i;
+		});
+
+	let accepted;
+	let min_priority = Infinity;
+
+	for (const mimetype of types) {
+		const [type, subtype] = mimetype.split('/');
+		const priority = parts.findIndex(
+			(part) =>
+				(part.type === type || part.type === '*') &&
+				(part.subtype === subtype || part.subtype === '*')
+		);
+
+		if (priority !== -1 && priority < min_priority) {
+			accepted = mimetype;
+			min_priority = priority;
+		}
+	}
+
+	return accepted;
+}
+
+/**
  * Hash using djb2
  * @param {import('types').StrictBody} value
  */
@@ -77,13 +131,13 @@ function is_pojo(body) {
 
 	if (body) {
 		if (body instanceof Uint8Array) return false;
+		if (body instanceof ReadableStream) return false;
 
-		// body could be a node Readable, but we don't want to import
-		// node built-ins, so we use duck typing
-		if (body._readableState && typeof body.pipe === 'function') return false;
-
-		// similarly, it could be a web ReadableStream
-		if (typeof ReadableStream !== 'undefined' && body instanceof ReadableStream) return false;
+		// if body is a node Readable, throw an error
+		// TODO remove this for 1.0
+		if (body._readableState && typeof body.pipe === 'function') {
+			throw new Error('Node streams are no longer supported — use a ReadableStream instead');
+		}
 	}
 
 	return true;
@@ -93,6 +147,47 @@ function is_pojo(body) {
 function normalize_request_method(event) {
 	const method = event.request.method.toLowerCase();
 	return method === 'delete' ? 'del' : method; // 'delete' is a reserved word
+}
+
+/**
+ * Serialize an error into a JSON string, by copying its `name`, `message`
+ * and (in dev) `stack`, plus any custom properties, plus recursively
+ * serialized `cause` properties. This is necessary because
+ * `JSON.stringify(error) === '{}'`
+ * @param {Error} error
+ * @param {(error: Error) => string | undefined} get_stack
+ */
+function serialize_error(error, get_stack) {
+	return JSON.stringify(clone_error(error, get_stack));
+}
+
+/**
+ * @param {Error} error
+ * @param {(error: Error) => string | undefined} get_stack
+ */
+function clone_error(error, get_stack) {
+	const {
+		name,
+		message,
+		// this should constitute 'using' a var, since it affects `custom`
+		// eslint-disable-next-line
+		stack,
+		// @ts-expect-error i guess typescript doesn't know about error.cause yet
+		cause,
+		...custom
+	} = error;
+
+	/** @type {Record<string, any>} */
+	const object = { name, message, stack: get_stack(error) };
+
+	if (cause) object.cause = clone_error(cause, get_stack);
+
+	for (const key in custom) {
+		// @ts-expect-error
+		object[key] = custom[key];
+	}
+
+	return object;
 }
 
 /** @param {string} body */
@@ -114,6 +209,8 @@ const text_types = new Set([
 	'multipart/form-data'
 ]);
 
+const bodyless_status_codes = new Set([101, 204, 205, 304]);
+
 /**
  * Decides how the body should be parsed based on its mime type
  *
@@ -130,9 +227,10 @@ function is_text(content_type) {
 /**
  * @param {import('types').RequestEvent} event
  * @param {{ [method: string]: import('types').RequestHandler }} mod
+ * @param {import('types').SSROptions} options
  * @returns {Promise<Response>}
  */
-async function render_endpoint(event, mod) {
+async function render_endpoint(event, mod, options) {
 	const method = normalize_request_method(event);
 
 	/** @type {import('types').RequestHandler} */
@@ -191,9 +289,12 @@ async function render_endpoint(event, mod) {
 
 	const type = headers.get('content-type');
 
-	if (!is_text(type) && !(body instanceof Uint8Array || is_string(body))) {
+	if (
+		!is_text(type) &&
+		!(body instanceof Uint8Array || body instanceof ReadableStream || is_string(body))
+	) {
 		return error(
-			`${preface}: body must be an instance of string or Uint8Array if content-type is not a supported textual content-type`
+			`${preface}: body must be an instance of string, Uint8Array or ReadableStream if content-type is not a supported textual content-type`
 		);
 	}
 
@@ -202,7 +303,8 @@ async function render_endpoint(event, mod) {
 
 	if (is_pojo(body) && (!type || type.startsWith('application/json'))) {
 		headers.set('content-type', 'application/json; charset=utf-8');
-		normalized_body = JSON.stringify(body);
+		normalized_body =
+			body instanceof Error ? serialize_error(body, options.get_stack) : JSON.stringify(body);
 	} else {
 		normalized_body = /** @type {import('types').StrictBody} */ (body);
 	}
@@ -217,10 +319,13 @@ async function render_endpoint(event, mod) {
 		}
 	}
 
-	return new Response(method !== 'head' ? normalized_body : undefined, {
-		status,
-		headers
-	});
+	return new Response(
+		method !== 'head' && !bodyless_status_codes.has(status) ? normalized_body : undefined,
+		{
+			status,
+			headers
+		}
+	);
 }
 
 var chars$1 = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$';
@@ -1177,10 +1282,14 @@ async function render_response({
 		}
 	}
 
-	const stylesheets = new Set(options.manifest._.entry.css);
-	const modulepreloads = new Set(options.manifest._.entry.js);
+	const { entry } = options.manifest._;
+
+	const stylesheets = new Set(entry.stylesheets);
+	const modulepreloads = new Set(entry.imports);
+
 	/** @type {Map<string, string>} */
-	const styles = new Map();
+	// TODO if we add a client entry point one day, we will need to include inline_styles with the entry, otherwise stylesheets will be linked even if they are below inlineStyleThreshold
+	const inline_styles = new Map();
 
 	/** @type {Array<import('./types').Fetched>} */
 	const serialized_data = [];
@@ -1198,10 +1307,18 @@ async function render_response({
 	}
 
 	if (resolve_opts.ssr) {
-		branch.forEach(({ node, props, loaded, fetched, uses_credentials }) => {
-			if (node.css) node.css.forEach((url) => stylesheets.add(url));
-			if (node.js) node.js.forEach((url) => modulepreloads.add(url));
-			if (node.styles) Object.entries(node.styles).forEach(([k, v]) => styles.set(k, v));
+		for (const { node, props, loaded, fetched, uses_credentials } of branch) {
+			if (node.imports) {
+				node.imports.forEach((url) => modulepreloads.add(url));
+			}
+
+			if (node.stylesheets) {
+				node.stylesheets.forEach((url) => stylesheets.add(url));
+			}
+
+			if (node.inline_styles) {
+				Object.entries(await node.inline_styles()).forEach(([k, v]) => inline_styles.set(k, v));
+			}
 
 			// TODO probably better if `fetched` wasn't populated unless `hydrate`
 			if (fetched && page_config.hydrate) serialized_data.push(...fetched);
@@ -1209,7 +1326,7 @@ async function render_response({
 
 			cache = loaded?.cache;
 			is_private = cache?.private ?? uses_credentials;
-		});
+		}
 
 		const session = writable($session);
 
@@ -1270,8 +1387,6 @@ async function render_response({
 
 	let { head, html: body } = rendered;
 
-	const inlined_style = Array.from(styles.values()).join('\n');
-
 	await csp_ready;
 	const csp = new Csp(options.csp, {
 		dev: options.dev,
@@ -1283,7 +1398,7 @@ async function render_response({
 
 	// prettier-ignore
 	const init_app = `
-		import { start } from ${s(options.prefix + options.manifest._.entry.file)};
+		import { start } from ${s(options.prefix + entry.file)};
 		start({
 			target: document.querySelector('[data-sveltekit-hydrate="${target}"]').parentNode,
 			paths: ${s(options.paths)},
@@ -1295,7 +1410,7 @@ async function render_response({
 			trailing_slash: ${s(options.trailing_slash)},
 			hydrate: ${resolve_opts.ssr && page_config.hydrate ? `{
 				status: ${status},
-				error: ${serialize_error(error)},
+				error: ${error && serialize_error(error, e => e.stack)},
 				nodes: [${branch.map(({ node }) => node.index).join(', ')}],
 				params: ${devalue(event.params)},
 				routeId: ${s(event.routeId)}
@@ -1303,22 +1418,26 @@ async function render_response({
 		});
 	`;
 
+	// we use an anonymous function instead of an arrow function to support
+	// older browsers (https://github.com/sveltejs/kit/pull/5417)
 	const init_service_worker = `
 		if ('serviceWorker' in navigator) {
-			addEventListener('load', () => {
+			addEventListener('load', function () {
 				navigator.serviceWorker.register('${options.service_worker}');
 			});
 		}
 	`;
 
-	if (inlined_style) {
+	if (inline_styles.size > 0) {
+		const content = Array.from(inline_styles.values()).join('\n');
+
 		const attributes = [];
 		if (options.dev) attributes.push(' data-sveltekit');
 		if (csp.style_needs_nonce) attributes.push(` nonce="${csp.nonce}"`);
 
-		csp.add_style(inlined_style);
+		csp.add_style(content);
 
-		head += `\n\t<style${attributes.join('')}>${inlined_style}</style>`;
+		head += `\n\t<style${attributes.join('')}>${content}</style>`;
 	}
 
 	// prettier-ignore
@@ -1333,7 +1452,7 @@ async function render_response({
 				attributes.push(`nonce="${csp.nonce}"`);
 			}
 
-			if (styles.has(dep)) {
+			if (inline_styles.has(dep)) {
 				// don't load stylesheets that are already inlined
 				// include them in disabled state so that Vite can detect them and doesn't try to add them
 				attributes.push('disabled', 'media="(max-width: 0)"');
@@ -1414,10 +1533,6 @@ async function render_response({
 		headers.set('cache-control', `${is_private ? 'private' : 'public'}, max-age=${cache.maxage}`);
 	}
 
-	if (!options.floc) {
-		headers.set('permissions-policy', 'interest-cohort=()');
-	}
-
 	if (!state.prerendering) {
 		const csp_header = csp.get_header();
 		if (csp_header) {
@@ -1442,22 +1557,6 @@ function try_serialize(data, fail) {
 		if (fail) fail(coalesce_to_error(err));
 		return null;
 	}
-}
-
-// Ensure we return something truthy so the client will not re-render the page over the error
-
-/** @param {(Error & {frame?: string} & {loc?: object}) | undefined | null} error */
-function serialize_error(error) {
-	if (!error) return null;
-	let serialized = try_serialize(error);
-	if (!serialized) {
-		const { name, message, stack } = error;
-		serialized = try_serialize({ ...error, name, message, stack });
-	}
-	if (!serialized) {
-		serialized = '{}';
-	}
-	return serialized;
 }
 
 /*!
@@ -2158,6 +2257,7 @@ async function load_node({
 				for (const [key, value] of event.request.headers) {
 					if (
 						key !== 'authorization' &&
+						key !== 'connection' &&
 						key !== 'cookie' &&
 						key !== 'host' &&
 						key !== 'if-none-match' &&
@@ -2279,6 +2379,11 @@ async function load_node({
 						if (cookie) opts.headers.set('cookie', cookie);
 					}
 
+					// we need to delete the connection header, as explained here:
+					// https://github.com/nodejs/undici/issues/1470#issuecomment-1140798467
+					// TODO this may be a case for being selective about which headers we let through
+					opts.headers.delete('connection');
+
 					const external_request = new Request(requested, /** @type {RequestInit} */ (opts));
 					response = await options.hooks.externalFetch.call(null, external_request);
 				}
@@ -2385,7 +2490,7 @@ async function load_node({
 
 		if (!loaded) {
 			// TODO do we still want to enforce this now that there's no fallthrough?
-			throw new Error(`load function must return a value${options.dev ? ` (${node.entry})` : ''}`);
+			throw new Error(`load function must return a value${options.dev ? ` (${node.file})` : ''}`);
 		}
 	} else if (shadow.body) {
 		loaded = {
@@ -2459,22 +2564,23 @@ async function load_shadow_data(route, event, options, prerender) {
 		};
 
 		if (!is_get) {
-			const result = await handler(event);
-
-			// TODO remove for 1.0
-			// @ts-expect-error
-			if (result.fallthrough) {
-				throw new Error(
-					'fallthrough is no longer supported. Use matchers instead: https://kit.svelte.dev/docs/routing#advanced-routing-matching'
-				);
-			}
-
-			const { status, headers, body } = validate_shadow_output(result);
+			const { status, headers, body } = validate_shadow_output(await handler(event));
+			add_cookies(/** @type {string[]} */ (data.cookies), headers);
 			data.status = status;
 
-			add_cookies(/** @type {string[]} */ (data.cookies), headers);
+			// explicit errors cause an error page...
+			if (body instanceof Error) {
+				if (status < 400) {
+					data.status = 500;
+					data.error = new Error('A non-error status code was returned with an error body');
+				} else {
+					data.error = body;
+				}
 
-			// Redirects are respected...
+				return data;
+			}
+
+			// ...redirects are respected...
 			if (status >= 300 && status < 400) {
 				data.redirect = /** @type {string} */ (
 					headers instanceof Headers ? headers.get('location') : headers.location
@@ -2490,19 +2596,20 @@ async function load_shadow_data(route, event, options, prerender) {
 
 		const get = (method === 'head' && mod.head) || mod.get;
 		if (get) {
-			const result = await get(event);
-
-			// TODO remove for 1.0
-			// @ts-expect-error
-			if (result.fallthrough) {
-				throw new Error(
-					'fallthrough is no longer supported. Use matchers instead: https://kit.svelte.dev/docs/routing#advanced-routing-matching'
-				);
-			}
-
-			const { status, headers, body } = validate_shadow_output(result);
+			const { status, headers, body } = validate_shadow_output(await get(event));
 			add_cookies(/** @type {string[]} */ (data.cookies), headers);
 			data.status = status;
+
+			if (body instanceof Error) {
+				if (status < 400) {
+					data.status = 500;
+					data.error = new Error('A non-error status code was returned with an error body');
+				} else {
+					data.error = body;
+				}
+
+				return data;
+			}
 
 			if (status >= 400) {
 				data.error = new Error('Failed to load data');
@@ -2550,6 +2657,14 @@ function add_cookies(target, headers) {
  * @param {import('types').ShadowEndpointOutput} result
  */
 function validate_shadow_output(result) {
+	// TODO remove for 1.0
+	// @ts-expect-error
+	if (result.fallthrough) {
+		throw new Error(
+			'fallthrough is no longer supported. Use matchers instead: https://kit.svelte.dev/docs/routing#advanced-routing-matching'
+		);
+	}
+
 	const { status = 200, body = {} } = result;
 	let headers = result.headers || {};
 
@@ -2564,7 +2679,9 @@ function validate_shadow_output(result) {
 	}
 
 	if (!is_pojo(body)) {
-		throw new Error('Body returned from endpoint request handler must be a plain object');
+		throw new Error(
+			'Body returned from endpoint request handler must be a plain object or an Error'
+		);
 	}
 
 	return { status, headers, body };
@@ -2957,7 +3074,7 @@ async function render_page(event, route, options, state, resolve_opts) {
 		]);
 
 		if (type === 'application/json') {
-			return render_endpoint(event, await route.shadow());
+			return render_endpoint(event, await route.shadow(), options);
 		}
 	}
 
@@ -2971,58 +3088,6 @@ async function render_page(event, route, options, state, resolve_opts) {
 		resolve_opts,
 		route
 	});
-}
-
-/**
- * @param {string} accept
- * @param {string[]} types
- */
-function negotiate(accept, types) {
-	const parts = accept
-		.split(',')
-		.map((str, i) => {
-			const match = /([^/]+)\/([^;]+)(?:;q=([0-9.]+))?/.exec(str);
-			if (match) {
-				const [, type, subtype, q = '1'] = match;
-				return { type, subtype, q: +q, i };
-			}
-
-			throw new Error(`Invalid Accept header: ${accept}`);
-		})
-		.sort((a, b) => {
-			if (a.q !== b.q) {
-				return b.q - a.q;
-			}
-
-			if ((a.subtype === '*') !== (b.subtype === '*')) {
-				return a.subtype === '*' ? 1 : -1;
-			}
-
-			if ((a.type === '*') !== (b.type === '*')) {
-				return a.type === '*' ? 1 : -1;
-			}
-
-			return a.i - b.i;
-		});
-
-	let accepted;
-	let min_priority = Infinity;
-
-	for (const mimetype of types) {
-		const [type, subtype] = mimetype.split('/');
-		const priority = parts.findIndex(
-			(part) =>
-				(part.type === type || part.type === '*') &&
-				(part.subtype === subtype || part.subtype === '*')
-		);
-
-		if (priority !== -1 && priority < min_priority) {
-			accepted = mimetype;
-			min_priority = priority;
-		}
-	}
-
-	return accepted;
 }
 
 /**
@@ -3087,7 +3152,12 @@ async function respond(request, options, state) {
 		}
 	}
 
-	let decoded = decodeURI(url.pathname);
+	let decoded;
+	try {
+		decoded = decodeURI(url.pathname);
+	} catch {
+		return new Response('Malformed URI', { status: 400 });
+	}
 
 	/** @type {import('types').SSRRoute | null} */
 	let route = null;
@@ -3097,7 +3167,7 @@ async function respond(request, options, state) {
 
 	if (options.paths.base && !state.prerendering?.fallback) {
 		if (!decoded.startsWith(options.paths.base)) {
-			return new Response(undefined, { status: 404 });
+			return new Response('Not found', { status: 404 });
 		}
 		decoded = decoded.slice(options.paths.base.length) || '/';
 	}
@@ -3250,7 +3320,7 @@ async function respond(request, options, state) {
 					let response;
 
 					if (is_data_request && route.type === 'page' && route.shadow) {
-						response = await render_endpoint(event, await route.shadow());
+						response = await render_endpoint(event, await route.shadow(), options);
 
 						// loading data for a client-side transition is a special case
 						if (request.headers.has('x-sveltekit-load')) {
@@ -3272,7 +3342,7 @@ async function respond(request, options, state) {
 					} else {
 						response =
 							route.type === 'endpoint'
-								? await render_endpoint(event, await route.load())
+								? await render_endpoint(event, await route.load(), options)
 								: await render_page(event, route, options, state, resolve_opts);
 					}
 
@@ -3355,6 +3425,18 @@ async function respond(request, options, state) {
 		const error = coalesce_to_error(e);
 
 		options.handle_error(error, event);
+
+		const type = negotiate(event.request.headers.get('accept') || 'text/html', [
+			'text/html',
+			'application/json'
+		]);
+
+		if (is_data_request || type === 'application/json') {
+			return new Response(serialize_error(error, options.get_stack), {
+				status: 500,
+				headers: { 'content-type': 'application/json; charset=utf-8' }
+			});
+		}
 
 		try {
 			const $session = await options.hooks.getSession(event);

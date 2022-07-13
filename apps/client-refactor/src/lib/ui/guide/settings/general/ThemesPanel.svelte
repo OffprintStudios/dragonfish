@@ -73,7 +73,7 @@
   @use '../../Guide';
 
   button.mode-toggle {
-    @apply flex flex-col items-center p-2 border-2 border-zinc-400 dark:border-white rounded-lg mx-2;
+    @apply flex flex-col items-center justify-center pt-0.5 border-2 border-zinc-400 dark:border-white rounded-lg mx-2 w-[80px] h-[68px];
     span {
       @apply all-small-caps font-bold;
     }

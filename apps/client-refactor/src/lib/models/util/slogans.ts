@@ -1,4 +1,4 @@
-export const SLOGANS: string[] = [
+export const DEFAULT_SLOGANS: string[] = [
   'For the stories waiting to be told',
   'Tastes Like Fine Wine',
   'aaaaaaaaaaaaaaaaa',
@@ -60,6 +60,12 @@ export const SLOGANS: string[] = [
   'I cast Magic Missile at the darkness',
   'We have scrollbars and scrollbar accessories',
   '[incoherent screaming]',
-  '[screams in french]',
-  '*confused australian noises*',
+  '[screams in French]',
+  '*confused Australian noises*',
 ];
+
+export const EASTER_SLOGANS: string[] = [];
+
+export const HALLOWEEN_SLOGANS: string[] = [];
+
+export const HOLIDAY_SLOGANS: string[] = [];

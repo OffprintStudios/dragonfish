@@ -347,9 +347,14 @@ function parse_route_id(id) {
 										.split(/\[(.+?)\]/)
 										.map((content, i) => {
 											if (i % 2) {
-												const [, rest, name, type] = /** @type {RegExpMatchArray} */ (
-													param_pattern.exec(content)
-												);
+												const match = param_pattern.exec(content);
+												if (!match) {
+													throw new Error(
+														`Invalid param: ${content}. Params and matcher names can only have underscores and alphanumeric characters.`
+													);
+												}
+
+												const [, rest, name, type] = match;
 												names.push(name);
 												types.push(type);
 												return rest ? '(.*?)' : '([^/]+?)';
@@ -725,9 +730,12 @@ function create_client({ target, session, base, trailing_slash }) {
 				const root = document.body;
 				const tabindex = root.getAttribute('tabindex');
 
-				getSelection()?.removeAllRanges();
 				root.tabIndex = -1;
 				root.focus({ preventScroll: true });
+
+				setTimeout(() => {
+					getSelection()?.removeAllRanges();
+				});
 
 				// restore `tabindex` as to prevent `root` from stealing input from elements
 				if (tabindex !== null) {
@@ -1140,7 +1148,11 @@ function create_client({ target, session, base, trailing_slash }) {
 							props = res.status === 204 ? {} : await res.json();
 						} else {
 							status = res.status;
-							error = new Error('Failed to load data');
+							try {
+								error = await res.json();
+							} catch (e) {
+								error = new Error('Failed to load data');
+							}
 						}
 					}
 
@@ -1312,14 +1324,9 @@ function create_client({ target, session, base, trailing_slash }) {
 			const params = route.exec(path);
 
 			if (params) {
+				const id = normalize_path(url.pathname, trailing_slash) + url.search;
 				/** @type {import('./types').NavigationIntent} */
-				const intent = {
-					id: url.pathname + url.search,
-					route,
-					params,
-					url
-				};
-
+				const intent = { id, route, params, url };
 				return intent;
 			}
 		}

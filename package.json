@@ -22,12 +22,13 @@
     "start:api": "yarn workspace @dragonfish/api run start",
     "start:api:prod": "yarn workspace @dragonfish/api run start:prod",
     "build:api": "CI=true turbo run build --scope=@dragonfish/api",
-    "watch:api": "yarn workspace @dragonfish/api run start:dev"
+    "watch:api": "yarn workspace @dragonfish/api run start:dev",
+    "watch:api-refactor": "yarn workspace api-refactor run start:dev"
   },
   "devDependencies": {
     "prettier": "^2.5.1",
     "prettier-plugin-svelte": "^2.4.0",
-    "turbo": "^1.0.24",
+    "turbo": "^1.3.1",
     "typescript": "^4.5.4"
   },
   "packageManager": "yarn@1.22.17",
