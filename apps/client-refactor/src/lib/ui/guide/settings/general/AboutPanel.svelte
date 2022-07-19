@@ -25,20 +25,14 @@
 <div class="panel-container">
   <div class="topbar">
     <div class="left-button">
-      <Button kind="primary" on:click={prevPage}>
-        <ArrowLeftSLine class="button-icon no-text" size="20px" />
+      <Button on:click={prevPage}>
+        <ArrowLeftSLine class="button-icon" />
+        <span class="button-text">Settings</span>
       </Button>
-    </div>
-    <div class="header">
-      About
-    </div>
-    <div class="right-button">
-      <!--spacer-->
     </div>
   </div>
   <div class="content-container py-6">
     <div class="panel-section">
-      <h3 class="title">Info</h3>
       <div>
         <button class="nav-button" on:click={() => copyToClipboard(VERSION)}>
           <CodeLine size={iconSize} />
@@ -48,7 +42,6 @@
       </div>
     </div>
     <div class="panel-section">
-      <h3 class="title">Documents</h3>
       <div>
         <a href="https://offprint.notion.site/Terms-of-Service-131ffadce0eb4e8a947144ddc70ef89b" class="nav-button" target="_blank">
           <NewspaperLine size={iconSize} />
@@ -78,7 +71,6 @@
       </div>
     </div>
     <div class="panel-section">
-      <h3 class="title">Support Us</h3>
       <div>
         <a href="https://www.patreon.com/offprintstudios" class="nav-button" target="_blank">
           <PatreonFill size={iconSize} />
@@ -93,7 +85,6 @@
       </div>
     </div>
     <div class="panel-section">
-      <h3 class="title">Connect With Us</h3>
       <div>
         <a href="https://github.com/OffprintStudios/dragonfish" class="nav-button" target="_blank">
           <GithubFill size={iconSize} />

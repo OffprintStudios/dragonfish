@@ -1,20 +1,22 @@
 div.panel-container {
-  @apply h-screen overflow-y-auto max-w-[24rem];
+  @apply max-w-[24rem];
+  div.title-block {
+    @apply flex flex-col items-center justify-center;
+    h1 {
+      @apply text-3xl px-4 py-2;
+    }
+  }
   h1.title {
     @apply text-4xl mt-12 mb-6;
   }
   div.topbar {
-    @apply min-h-[4rem] max-h-[4rem] px-2.5 flex items-center drop-shadow-xl top-0 z-40 text-white sticky;
-    background: var(--accent);
-    div.header {
-      @apply w-2/4 text-center all-small-caps font-bold tracking-widest relative -top-0.5;
-    }
-    div.left-button, div.right-button {
-      @apply w-1/4;
+    @apply px-2.5 pt-2 flex items-center drop-shadow-xl;
+    div.left-button {
+      @apply mr-4;
     }
   }
   div.content-container {
-    @apply px-3 py-6;
+    @apply px-3 pb-6;
   }
 }
 

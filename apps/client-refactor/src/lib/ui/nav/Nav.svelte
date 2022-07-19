@@ -1,67 +1,20 @@
 <script lang="ts">
   import { navigating, page } from "$app/stores";
   import {
+    Book2Line,
+    BookOpenFill,
     CloseLine,
     Compass3Line,
     Home5Line,
-    LoginCircleLine,
     Menu2Fill,
     SearchEyeLine,
-    Settings5Line,
     TeamLine
   } from "svelte-remixicon";
   import { close, guide, open } from "../guide";
-  import { LoginPanel } from "../guide/registration";
-  import { SettingsHomePanel } from "../guide/settings";
   import { MobilePanel } from "../guide/mobile";
-
-  enum MenuOptions {
-    NoMenu,
-    AccountMenu,
-    CreateMenu,
-    MobileMenu,
-    InboxMenu,
-    RegistrationMenu,
-    SettingsMenu,
-  }
-
-  let currentMenu = MenuOptions.NoMenu;
-  $: {
-    if (!$guide.open) {
-      currentMenu = MenuOptions.NoMenu;
-    }
-  }
-
-  function toggleMenu(menuOption: MenuOptions) {
-    currentMenu = menuOption;
-    switch (currentMenu) {
-      case MenuOptions.AccountMenu:
-        //open(UserMenu);
-        break;
-      case MenuOptions.CreateMenu:
-        //open(ContentMenu);
-        break;
-      case MenuOptions.InboxMenu:
-        //open(InboxMenu);
-        break;
-      case MenuOptions.MobileMenu:
-        open(MobilePanel);
-        break;
-      case MenuOptions.RegistrationMenu:
-        open(LoginPanel);
-        break;
-      case MenuOptions.SettingsMenu:
-        open(SettingsHomePanel);
-        break;
-      default:
-        close();
-        break;
-    }
-  }
 
   navigating.subscribe((val) => {
     if (val !== null) {
-      currentMenu = MenuOptions.NoMenu;
       close();
     }
   });
@@ -70,28 +23,28 @@
 <div class="navbar">
   <!--Desktop Navigation-->
   <div class="py-2 flex-col items-center h-full hidden md:flex">
-    {#if currentMenu === MenuOptions.RegistrationMenu}
+    {#if $guide.routing.length > 0}
       <button
         class="link"
-        class:active={currentMenu === MenuOptions.RegistrationMenu}
-        on:click={() => toggleMenu(MenuOptions.NoMenu)}
+        class:active={$guide.routing.length > 0}
+        on:click={close}
       >
-        <span class="link-icon"><CloseLine size="24px" /></span>
+        <span class="link-icon"><BookOpenFill size="24px" /></span>
         <span class="link-name">Close</span>
       </button>
     {:else}
       <button
         class="link"
-        on:click={() => toggleMenu(MenuOptions.RegistrationMenu)}
+        on:click={open}
       >
-        <span class="link-icon"><LoginCircleLine size="24px" /></span>
-        <span class="link-name">Log In</span>
+        <span class="link-icon"><Book2Line size="24px" /></span>
+        <span class="link-name">Guide</span>
       </button>
     {/if}
     <div class="w-10/12 mx-auto border-b border-white my-2"><!--separator--></div>
     <a
       class="link"
-      class:active={$page.url.pathname === '/'  && currentMenu === MenuOptions.NoMenu}
+      class:active={$page.url.pathname === '/'  && $guide.routing.length === 0}
       href="/"
     >
       <span class="link-icon"><Home5Line size="24px" /></span>
@@ -99,7 +52,7 @@
     </a>
     <a
       class="link"
-      class:active={$page.url.pathname.startsWith('/search') && currentMenu === MenuOptions.NoMenu}
+      class:active={$page.url.pathname.startsWith('/search') && $guide.routing.length === 0}
       href="/search"
     >
       <span class="link-icon"><SearchEyeLine size="24px" /></span>
@@ -107,7 +60,7 @@
     </a>
     <a
       class="link"
-      class:active={$page.url.pathname.startsWith('/explore') && currentMenu === MenuOptions.NoMenu}
+      class:active={$page.url.pathname.startsWith('/explore') && $guide.routing.length === 0}
       href="/explore"
     >
       <span class="link-icon"><Compass3Line size="24px" /></span>
@@ -115,48 +68,29 @@
     </a>
     <a
       class="link"
-      class:active={$page.url.pathname.startsWith('/social') && currentMenu === MenuOptions.NoMenu}
+      class:active={$page.url.pathname.startsWith('/social') && $guide.routing.length === 0}
       href="/social"
     >
       <span class="link-icon"><TeamLine size="24px" /></span>
       <span class="link-name">Social</span>
     </a>
     <div class="flex-1"><!--fill space--></div>
-    <div class="w-10/12 mx-auto border-b border-white my-2"><!--separator--></div>
-    {#if currentMenu === MenuOptions.SettingsMenu}
-      <button
-        class="link"
-        class:active={currentMenu === MenuOptions.SettingsMenu}
-        on:click={() => toggleMenu(MenuOptions.NoMenu)}
-      >
-        <span class="link-icon"><CloseLine size="24px" /></span>
-        <span class="link-name">Close</span>
-      </button>
-    {:else}
-      <button
-        class="link"
-        on:click={() => toggleMenu(MenuOptions.SettingsMenu)}
-      >
-        <span class="link-icon"><Settings5Line size="24px" /></span>
-        <span class="link-name">Settings</span>
-      </button>
-    {/if}
   </div>
 
   <!--Mobile Navigation-->
   <div class="flex items-center p-1 md:hidden">
-    {#if currentMenu === MenuOptions.MobileMenu}
+    {#if $guide.routing.length > 0}
       <button
         class="link-mobile"
-        class:active={currentMenu === MenuOptions.MobileMenu}
-        on:click={() => toggleMenu(MenuOptions.NoMenu)}
+        class:active={$guide.routing.length > 0}
+        on:click={close}
       >
         <span class="link-icon"><CloseLine size="24px" /></span>
       </button>
     {:else}
       <button
         class="link-mobile"
-        on:click={() => toggleMenu(MenuOptions.MobileMenu)}
+        on:click={() => open(MobilePanel)}
       >
         <span class="link-icon"><Menu2Fill size="24px" /></span>
       </button>
@@ -182,8 +116,7 @@
   }
 
   a.link,
-  button.link,
-  div.link {
+  button.link {
     @apply p-2 mx-2 mb-1 border-2 border-transparent rounded-lg transition transform text-white flex flex-col items-center justify-center w-[61px] h-[61px] relative;
     &:hover {
       @apply no-underline scale-105;

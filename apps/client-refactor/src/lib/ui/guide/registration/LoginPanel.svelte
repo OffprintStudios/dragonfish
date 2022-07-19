@@ -3,6 +3,7 @@
   import { Checkbox, TextField } from "../../forms";
   import { Button } from "../../util";
   import { AppleFill, GoogleFill, LoginCircleLine } from "svelte-remixicon";
+  import { account } from "../../../state/account.state";
   import { nextPage } from "../guide.state";
   import type { LoginForm } from "../../../models/accounts/forms";
   import SignUpPanel from "./SignUpPanel.svelte";
@@ -23,7 +24,9 @@
           if (response.status === 422) {
             toast.error(data.message);
           } else if (response.status === 200) {
-            console.log(data);
+            $account.account = data;
+            $account.profiles = data.pseudonyms;
+            
           } else {
             toast.error('Something went wrong! Try again in a little bit.');
           }
