@@ -4,14 +4,25 @@
     Book2Line,
     BookOpenFill,
     CloseLine,
+    Compass3Fill,
     Compass3Line,
+    Home5Fill,
     Home5Line,
+    LayoutMasonryFill,
+    LayoutMasonryLine,
     Menu2Fill,
+    SearchEyeFill,
     SearchEyeLine,
-    TeamLine
+    TeamFill,
+    TeamLine,
+    UserHeartFill,
+    UserHeartLine
   } from "svelte-remixicon";
   import { close, guide, open } from "../guide";
   import { MobilePanel } from "../guide/mobile";
+  import { account } from "../../state/account.state.js";
+
+  const iconSize = "24px";
 
   navigating.subscribe((val) => {
     if (val !== null) {
@@ -29,7 +40,7 @@
         class:active={$guide.routing.length > 0}
         on:click={close}
       >
-        <span class="link-icon"><BookOpenFill size="24px" /></span>
+        <span class="link-icon"><BookOpenFill size={iconSize} /></span>
         <span class="link-name">Close</span>
       </button>
     {:else}
@@ -37,17 +48,54 @@
         class="link"
         on:click={open}
       >
-        <span class="link-icon"><Book2Line size="24px" /></span>
+        <span class="link-icon"><Book2Line size={iconSize} /></span>
         <span class="link-name">Guide</span>
       </button>
     {/if}
     <div class="w-10/12 mx-auto border-b border-white my-2"><!--separator--></div>
+    {#if $account.currProfile}
+      <a
+        class="link"
+        class:active={$page.url.pathname === '/library'  && $guide.routing.length === 0}
+        href="/library"
+      >
+      <span class="link-icon">
+        {#if $page.url.pathname === '/library'}
+          <LayoutMasonryFill size={iconSize} />
+        {:else}
+          <LayoutMasonryLine size={iconSize} />
+        {/if}
+      </span>
+        <span class="link-name">Library</span>
+      </a>
+      <a
+        class="link"
+        class:active={$page.url.pathname === '/follows'  && $guide.routing.length === 0}
+        href="/follows"
+      >
+      <span class="link-icon">
+        {#if $page.url.pathname === '/follows'}
+          <UserHeartFill size={iconSize} />
+        {:else}
+          <UserHeartLine size={iconSize} />
+        {/if}
+      </span>
+        <span class="link-name">Follows</span>
+      </a>
+      <div class="w-10/12 mx-auto border-b border-white my-2"><!--separator--></div>
+    {/if}
     <a
       class="link"
       class:active={$page.url.pathname === '/'  && $guide.routing.length === 0}
       href="/"
     >
-      <span class="link-icon"><Home5Line size="24px" /></span>
+      <span class="link-icon">
+        {#if $page.url.pathname === '/'}
+          <Home5Fill size={iconSize} />
+        {:else}
+          <Home5Line size={iconSize} />
+        {/if}
+      </span>
       <span class="link-name">Home</span>
     </a>
     <a
@@ -55,7 +103,13 @@
       class:active={$page.url.pathname.startsWith('/search') && $guide.routing.length === 0}
       href="/search"
     >
-      <span class="link-icon"><SearchEyeLine size="24px" /></span>
+      <span class="link-icon">
+        {#if $page.url.pathname === '/search'}
+          <SearchEyeFill size={iconSize} />
+        {:else}
+          <SearchEyeLine size={iconSize} />
+        {/if}
+      </span>
       <span class="link-name">Search</span>
     </a>
     <a
@@ -63,7 +117,13 @@
       class:active={$page.url.pathname.startsWith('/explore') && $guide.routing.length === 0}
       href="/explore"
     >
-      <span class="link-icon"><Compass3Line size="24px" /></span>
+      <span class="link-icon">
+        {#if $page.url.pathname === '/explore'}
+          <Compass3Fill size={iconSize} />
+        {:else}
+          <Compass3Line size={iconSize} />
+        {/if}
+      </span>
       <span class="link-name">Explore</span>
     </a>
     <a
@@ -71,10 +131,15 @@
       class:active={$page.url.pathname.startsWith('/social') && $guide.routing.length === 0}
       href="/social"
     >
-      <span class="link-icon"><TeamLine size="24px" /></span>
+      <span class="link-icon">
+        {#if $page.url.pathname === '/social'}
+          <TeamFill size={iconSize} />
+        {:else}
+          <TeamLine size={iconSize} />
+        {/if}
+      </span>
       <span class="link-name">Social</span>
     </a>
-    <div class="flex-1"><!--fill space--></div>
   </div>
 
   <!--Mobile Navigation-->
@@ -85,14 +150,14 @@
         class:active={$guide.routing.length > 0}
         on:click={close}
       >
-        <span class="link-icon"><CloseLine size="24px" /></span>
+        <span class="link-icon"><CloseLine size={iconSize} /></span>
       </button>
     {:else}
       <button
         class="link-mobile"
         on:click={() => open(MobilePanel)}
       >
-        <span class="link-icon"><Menu2Fill size="24px" /></span>
+        <span class="link-icon"><Menu2Fill size={iconSize} /></span>
       </button>
     {/if}
     <a href="/" class="flex-1">
@@ -103,7 +168,7 @@
       />
     </a>
     <a href="/search" class="link-mobile select-none cursor-pointer group">
-      <span class="link-icon"><SearchEyeLine size="24px" /></span>
+      <span class="link-icon"><SearchEyeLine size={iconSize} /></span>
     </a>
   </div>
 </div>

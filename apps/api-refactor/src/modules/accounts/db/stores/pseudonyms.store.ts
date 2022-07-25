@@ -2,14 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
 import { PseudonymDocument } from '../schemas';
-import {
-  ChangeBio,
-  ChangePronouns,
-  ChangeScreenName,
-  ChangeTagline,
-  ChangeUserTag,
-  PseudonymForm,
-} from '$shared/models/accounts';
+import { Presence, PseudonymForm } from '$shared/models/accounts';
 import { chain } from 'voca';
 import { OnEvent } from '@nestjs/event-emitter';
 
@@ -28,6 +21,10 @@ export class PseudonymsStore {
    */
   public async fetchPseud(id: string): Promise<PseudonymDocument> {
     return this.retrievePseud(id);
+  }
+
+  public async fetchAllPseuds(accountId: string): Promise<PseudonymDocument[]> {
+    return this.pseudModel.find({ accountId });
   }
 
   /**
@@ -77,10 +74,7 @@ export class PseudonymsStore {
 
   //#region ---CRUD OPERATIONS---
 
-  public async createPseud(
-    accountId: string,
-    formInfo: PseudonymForm,
-  ): Promise<PseudonymDocument> {
+  public async createPseud(accountId: string, formInfo: PseudonymForm): Promise<PseudonymDocument> {
     const newPseud = new this.pseudModel({
       accountId: accountId,
       userTag: chain(formInfo.userTag).latinise().replace(' ', '').value(),
@@ -91,71 +85,24 @@ export class PseudonymsStore {
     return await newPseud.save();
   }
 
-  public async changeUserTag(
-    pseudId: string,
-    formInfo: ChangeUserTag,
-  ): Promise<PseudonymDocument> {
+  public async updatePseud(pseudId: string, formInfo: PseudonymForm): Promise<PseudonymDocument> {
     const pseud = await this.retrievePseud(pseudId);
-
-    pseud.userTag = chain(formInfo.newUserTag)
-      .latinise()
-      .replace(' ', '')
-      .value();
-    return await pseud.save();
-  }
-
-  public async changeScreenName(
-    pseudId: string,
-    formInfo: ChangeScreenName,
-  ): Promise<PseudonymDocument> {
-    const pseud = await this.retrievePseud(pseudId);
-
-    pseud.screenName = formInfo.newScreenName;
-    return await pseud.save();
-  }
-
-  public async changeBio(
-    pseudId: string,
-    formInfo: ChangeBio,
-  ): Promise<PseudonymDocument> {
-    const pseud = await this.retrievePseud(pseudId);
-
-    pseud.profile.bio = formInfo.bio;
-    return await pseud.save();
-  }
-
-  public async changeTagline(
-    pseudId: string,
-    formInfo: ChangeTagline,
-  ): Promise<PseudonymDocument> {
-    const pseud = await this.retrievePseud(pseudId);
-
-    pseud.profile.tagline = formInfo.tagline;
-    return await pseud.save();
-  }
-
-  public async changePronouns(
-    pseudId: string,
-    formInfo: ChangePronouns,
-  ): Promise<PseudonymDocument> {
-    const pseud = await this.retrievePseud(pseudId);
+    pseud.userTag = chain(formInfo.userTag).latinise().replace(' ', '').value();
+    pseud.screenName = formInfo.screenName;
+    pseud.profile.bio = formInfo.bio ?? null;
+    pseud.profile.tagline = formInfo.tagline ?? null;
     pseud.profile.pronouns = formInfo.pronouns;
+    pseud.presence = formInfo.presence ?? Presence.Offline;
     return await pseud.save();
   }
 
-  public async updateAvatar(
-    pseudId: string,
-    avatarUrl: string,
-  ): Promise<PseudonymDocument> {
+  public async updateAvatar(pseudId: string, avatarUrl: string): Promise<PseudonymDocument> {
     const pseud = await this.retrievePseud(pseudId);
     pseud.profile.avatar = avatarUrl;
     return await pseud.save();
   }
 
-  public async updateCover(
-    pseudId: string,
-    coverUrl: string,
-  ): Promise<PseudonymDocument> {
+  public async updateCover(pseudId: string, coverUrl: string): Promise<PseudonymDocument> {
     const pseud = await this.retrievePseud(pseudId);
     pseud.profile.coverPic = coverUrl;
     return await pseud.save();
@@ -178,27 +125,21 @@ export class PseudonymsStore {
   //#region ---PRIVATE---
 
   @OnEvent('pseudonyms.update-follower-count', { async: true })
-  private async updateFollowerCount(payload: {
-    pseudId: string;
-    numFollowers: number;
-  }) {
+  private async updateFollowerCount(payload: { pseudId: string; numFollowers: number }) {
     const pseud = await this.retrievePseud(payload.pseudId);
     pseud.stats.followers = payload.numFollowers;
     await pseud.save();
   }
 
   @OnEvent('pseudonyms.update-following-count', { async: true })
-  private async updateFollowingCount(payload: {
-    pseudId: string;
-    numFollowing: number;
-  }) {
+  private async updateFollowingCount(payload: { pseudId: string; numFollowing: number }) {
     const pseud = await this.retrievePseud(payload.pseudId);
     pseud.stats.following = payload.numFollowing;
     await pseud.save();
   }
 
   private async retrievePseud(id: string): Promise<PseudonymDocument> {
-    const pseud = await this.pseudModel.findById(id).select('-accountId');
+    const pseud = await this.pseudModel.findById(id);
 
     if (pseud === null || pseud === undefined) {
       throw new NotFoundException(`This user doesn't seem to exist.`);

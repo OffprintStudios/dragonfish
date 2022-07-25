@@ -12,8 +12,20 @@ const config = {
 		require('@tailwindcss/aspect-ratio'),
 		require('@tailwindcss/typography'),
 		require('@tailwindcss/line-clamp'),
-		require('tailwindcss-opentype')
-	]
+		require('tailwindcss-opentype'),
+		require('daisyui')
+	],
+
+	daisyui: {
+		styled: false,
+		themes: false,
+		base: true,
+		utils: true,
+		logs: true,
+		rtl: false,
+		prefix: "daisy",
+		darkTheme: "dark",
+	},
 };
 
 module.exports = config;

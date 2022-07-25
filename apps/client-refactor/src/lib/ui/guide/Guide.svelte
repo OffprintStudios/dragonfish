@@ -114,8 +114,7 @@
 <style lang="scss">
   div.guide {
     @apply h-screen z-40 min-w-full max-w-full md:min-w-[24rem] md:max-w-[24rem];
-    @apply overflow-hidden overflow-y-auto md:border-r-4 border-zinc-500;
-    border-color: var(--accent);
+    @apply overflow-hidden overflow-y-auto;
     box-shadow: var(--dropshadow);
     background: var(--background);
 

@@ -31,8 +31,9 @@
       </Button>
     </div>
   </div>
-  <div class="content-container py-6">
+  <div class="content-container">
     <div class="panel-section">
+      <h3>Info</h3>
       <div>
         <button class="nav-button" on:click={() => copyToClipboard(VERSION)}>
           <CodeLine size={iconSize} />
@@ -42,6 +43,7 @@
       </div>
     </div>
     <div class="panel-section">
+      <h3>Docs</h3>
       <div>
         <a href="https://offprint.notion.site/Terms-of-Service-131ffadce0eb4e8a947144ddc70ef89b" class="nav-button" target="_blank">
           <NewspaperLine size={iconSize} />
@@ -71,6 +73,7 @@
       </div>
     </div>
     <div class="panel-section">
+      <h3>Funding</h3>
       <div>
         <a href="https://www.patreon.com/offprintstudios" class="nav-button" target="_blank">
           <PatreonFill size={iconSize} />
@@ -85,6 +88,7 @@
       </div>
     </div>
     <div class="panel-section">
+      <h3>Connect</h3>
       <div>
         <a href="https://github.com/OffprintStudios/dragonfish" class="nav-button" target="_blank">
           <GithubFill size={iconSize} />

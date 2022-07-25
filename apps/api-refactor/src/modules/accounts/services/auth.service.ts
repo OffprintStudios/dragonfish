@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { AccountsStore, SessionsStore } from '../db/stores';
-import { Account, AccountForm, DeviceInfo, FrontendAccount, Login } from '$shared/models/accounts';
+import { Account, AccountForm, DeviceInfo, FrontendAccount, LoginForm } from '$shared/models/accounts';
 import { argon2id, verify } from 'argon2';
 import { Request, Response } from 'express';
 import * as UAParser from 'ua-parser-js';
@@ -59,7 +59,7 @@ export class AuthService {
    * @param request
    * @param formInfo
    */
-  public async login(request: Request, formInfo: Login): Promise<LoginPackage> {
+  public async login(request: Request, formInfo: LoginForm): Promise<LoginPackage> {
     const notFoundError = `The email and password provided do not match our records.`;
 
     const existingAccount = await this.accounts.fetchAccountByEmail(formInfo.email);

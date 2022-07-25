@@ -37,6 +37,7 @@ import * as Controllers from './controllers';
     Stores.PseudonymsStore,
     Stores.SessionsStore,
     Services.AuthService,
+    Controllers.AccountGateway,
   ],
   controllers: [Controllers.AuthController],
 })

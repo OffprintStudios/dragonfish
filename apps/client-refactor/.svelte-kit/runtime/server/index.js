@@ -27,32 +27,34 @@ function to_headers(object) {
  * @param {string[]} types
  */
 function negotiate(accept, types) {
-	const parts = accept
-		.split(',')
-		.map((str, i) => {
-			const match = /([^/]+)\/([^;]+)(?:;q=([0-9.]+))?/.exec(str);
-			if (match) {
-				const [, type, subtype, q = '1'] = match;
-				return { type, subtype, q: +q, i };
-			}
+	/** @type {Array<{ type: string, subtype: string, q: number, i: number }>} */
+	const parts = [];
 
-			throw new Error(`Invalid Accept header: ${accept}`);
-		})
-		.sort((a, b) => {
-			if (a.q !== b.q) {
-				return b.q - a.q;
-			}
+	accept.split(',').forEach((str, i) => {
+		const match = /([^/]+)\/([^;]+)(?:;q=([0-9.]+))?/.exec(str);
 
-			if ((a.subtype === '*') !== (b.subtype === '*')) {
-				return a.subtype === '*' ? 1 : -1;
-			}
+		// no match equals invalid header — ignore
+		if (match) {
+			const [, type, subtype, q = '1'] = match;
+			parts.push({ type, subtype, q: +q, i });
+		}
+	});
 
-			if ((a.type === '*') !== (b.type === '*')) {
-				return a.type === '*' ? 1 : -1;
-			}
+	parts.sort((a, b) => {
+		if (a.q !== b.q) {
+			return b.q - a.q;
+		}
 
-			return a.i - b.i;
-		});
+		if ((a.subtype === '*') !== (b.subtype === '*')) {
+			return a.subtype === '*' ? 1 : -1;
+		}
+
+		if ((a.type === '*') !== (b.type === '*')) {
+			return a.type === '*' ? 1 : -1;
+		}
+
+		return a.i - b.i;
+	});
 
 	let accepted;
 	let min_priority = Infinity;
@@ -103,28 +105,6 @@ function lowercase_keys(obj) {
 	return clone;
 }
 
-/** @param {Record<string, string>} params */
-function decode_params(params) {
-	for (const key in params) {
-		// input has already been decoded by decodeURI
-		// now handle the rest that decodeURIComponent would do
-		params[key] = params[key]
-			.replace(/%23/g, '#')
-			.replace(/%3[Bb]/g, ';')
-			.replace(/%2[Cc]/g, ',')
-			.replace(/%2[Ff]/g, '/')
-			.replace(/%3[Ff]/g, '?')
-			.replace(/%3[Aa]/g, ':')
-			.replace(/%40/g, '@')
-			.replace(/%26/g, '&')
-			.replace(/%3[Dd]/g, '=')
-			.replace(/%2[Bb]/g, '+')
-			.replace(/%24/g, '$');
-	}
-
-	return params;
-}
-
 /** @param {any} body */
 function is_pojo(body) {
 	if (typeof body !== 'object') return false;
@@ -141,12 +121,6 @@ function is_pojo(body) {
 	}
 
 	return true;
-}
-
-/** @param {import('types').RequestEvent} event */
-function normalize_request_method(event) {
-	const method = event.request.method.toLowerCase();
-	return method === 'delete' ? 'del' : method; // 'delete' is a reserved word
 }
 
 /**
@@ -169,8 +143,6 @@ function clone_error(error, get_stack) {
 	const {
 		name,
 		message,
-		// this should constitute 'using' a var, since it affects `custom`
-		// eslint-disable-next-line
 		stack,
 		// @ts-expect-error i guess typescript doesn't know about error.cause yet
 		cause,
@@ -189,6 +161,24 @@ function clone_error(error, get_stack) {
 
 	return object;
 }
+
+// TODO: Remove for 1.0
+/** @param {Record<string, any>} mod */
+function check_method_names(mod) {
+	['get', 'post', 'put', 'patch', 'del'].forEach((m) => {
+		if (m in mod) {
+			const replacement = m === 'del' ? 'DELETE' : m.toUpperCase();
+			throw Error(
+				`Endpoint method "${m}" has changed to "${replacement}". See https://github.com/sveltejs/kit/discussions/5359 for more information.`
+			);
+		}
+	});
+}
+
+/** @type {import('types').SSRErrorPage} */
+const GENERIC_ERROR = {
+	id: '__error'
+};
 
 /** @param {string} body */
 function error(body) {
@@ -231,24 +221,25 @@ function is_text(content_type) {
  * @returns {Promise<Response>}
  */
 async function render_endpoint(event, mod, options) {
-	const method = normalize_request_method(event);
+	const { method } = event.request;
+
+	check_method_names(mod);
 
 	/** @type {import('types').RequestHandler} */
 	let handler = mod[method];
 
-	if (!handler && method === 'head') {
-		handler = mod.get;
+	if (!handler && method === 'HEAD') {
+		handler = mod.GET;
 	}
 
 	if (!handler) {
 		const allowed = [];
 
-		for (const method in ['get', 'post', 'put', 'patch']) {
-			if (mod[method]) allowed.push(method.toUpperCase());
+		for (const method in ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']) {
+			if (mod[method]) allowed.push(method);
 		}
 
-		if (mod.del) allowed.push('DELETE');
-		if (mod.get || mod.head) allowed.push('HEAD');
+		if (mod.GET || mod.HEAD) allowed.push('HEAD');
 
 		return event.request.headers.get('x-sveltekit-load')
 			? // TODO would be nice to avoid these requests altogether,
@@ -256,7 +247,7 @@ async function render_endpoint(event, mod, options) {
 			  new Response(undefined, {
 					status: 204
 			  })
-			: new Response(`${event.request.method} method not allowed`, {
+			: new Response(`${method} method not allowed`, {
 					status: 405,
 					headers: {
 						// https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/405
@@ -320,7 +311,7 @@ async function render_endpoint(event, mod, options) {
 	}
 
 	return new Response(
-		method !== 'head' && !bodyless_status_codes.has(status) ? normalized_body : undefined,
+		method !== 'HEAD' && !bodyless_status_codes.has(status) ? normalized_body : undefined,
 		{
 			status,
 			headers
@@ -975,9 +966,6 @@ function base64(bytes) {
 	return result;
 }
 
-/** @type {Promise<void>} */
-let csp_ready;
-
 const array = new Uint8Array(16);
 
 function generate_nonce() {
@@ -997,12 +985,11 @@ const quoted = new Set([
 
 const crypto_pattern = /^(nonce|sha\d\d\d)-/;
 
-class Csp {
+// CSP and CSP Report Only are extremely similar with a few caveats
+// the easiest/DRYest way to express this is with some private encapsulation
+class BaseProvider {
 	/** @type {boolean} */
 	#use_hashes;
-
-	/** @type {boolean} */
-	#dev;
 
 	/** @type {boolean} */
 	#script_needs_csp;
@@ -1019,21 +1006,18 @@ class Csp {
 	/** @type {import('types').Csp.Source[]} */
 	#style_src;
 
+	/** @type {string} */
+	#nonce;
+
 	/**
-	 * @param {{
-	 *   mode: string,
-	 *   directives: import('types').CspDirectives
-	 * }} config
-	 * @param {{
-	 *   dev: boolean;
-	 *   prerender: boolean;
-	 *   needs_nonce: boolean;
-	 * }} opts
+	 * @param {boolean} use_hashes
+	 * @param {import('types').CspDirectives} directives
+	 * @param {string} nonce
+	 * @param {boolean} dev
 	 */
-	constructor({ mode, directives }, { dev, prerender, needs_nonce }) {
-		this.#use_hashes = mode === 'hash' || (mode === 'auto' && prerender);
+	constructor(use_hashes, directives, nonce, dev) {
+		this.#use_hashes = use_hashes;
 		this.#directives = dev ? { ...directives } : directives; // clone in dev so we can safely mutate
-		this.#dev = dev;
 
 		const d = this.#directives;
 
@@ -1075,10 +1059,7 @@ class Csp {
 
 		this.script_needs_nonce = this.#script_needs_csp && !this.#use_hashes;
 		this.style_needs_nonce = this.#style_needs_csp && !this.#use_hashes;
-
-		if (this.script_needs_nonce || this.style_needs_nonce || needs_nonce) {
-			this.nonce = generate_nonce();
-		}
+		this.#nonce = nonce;
 	}
 
 	/** @param {string} content */
@@ -1087,7 +1068,7 @@ class Csp {
 			if (this.#use_hashes) {
 				this.#script_src.push(`sha256-${sha256(content)}`);
 			} else if (this.#script_src.length === 0) {
-				this.#script_src.push(`nonce-${this.nonce}`);
+				this.#script_src.push(`nonce-${this.#nonce}`);
 			}
 		}
 	}
@@ -1098,12 +1079,14 @@ class Csp {
 			if (this.#use_hashes) {
 				this.#style_src.push(`sha256-${sha256(content)}`);
 			} else if (this.#style_src.length === 0) {
-				this.#style_src.push(`nonce-${this.nonce}`);
+				this.#style_src.push(`nonce-${this.#nonce}`);
 			}
 		}
 	}
 
-	/** @param {boolean} [is_meta] */
+	/**
+	 * @param {boolean} [is_meta]
+	 */
 	get_header(is_meta = false) {
 		const header = [];
 
@@ -1134,7 +1117,7 @@ class Csp {
 				continue;
 			}
 
-			// @ts-expect-error gimme a break typescript, `key` is obviously a member of directives
+			// @ts-expect-error gimme a break typescript, `key` is obviously a member of internal_directives
 			const value = /** @type {string[] | true} */ (directives[key]);
 
 			if (!value) continue;
@@ -1155,10 +1138,78 @@ class Csp {
 
 		return header.join('; ');
 	}
+}
 
+class CspProvider extends BaseProvider {
 	get_meta() {
 		const content = escape_html_attr(this.get_header(true));
 		return `<meta http-equiv="content-security-policy" content=${content}>`;
+	}
+}
+
+class CspReportOnlyProvider extends BaseProvider {
+	/**
+	 * @param {boolean} use_hashes
+	 * @param {import('types').CspDirectives} directives
+	 * @param {string} nonce
+	 * @param {boolean} dev
+	 */
+	constructor(use_hashes, directives, nonce, dev) {
+		super(use_hashes, directives, nonce, dev);
+
+		if (Object.values(directives).filter((v) => !!v).length > 0) {
+			// If we're generating content-security-policy-report-only,
+			// if there are any directives, we need a report-uri or report-to (or both)
+			// else it's just an expensive noop.
+			const has_report_to = directives['report-to']?.length ?? 0 > 0;
+			const has_report_uri = directives['report-uri']?.length ?? 0 > 0;
+			if (!has_report_to && !has_report_uri) {
+				throw Error(
+					'`content-security-policy-report-only` must be specified with either the `report-to` or `report-uri` directives, or both'
+				);
+			}
+		}
+	}
+}
+
+class Csp {
+	/** @readonly */
+	nonce = generate_nonce();
+
+	/** @type {CspProvider} */
+	csp_provider;
+
+	/** @type {CspReportOnlyProvider} */
+	report_only_provider;
+
+	/**
+	 * @param {import('./types').CspConfig} config
+	 * @param {import('./types').CspOpts} opts
+	 */
+	constructor({ mode, directives, reportOnly }, { prerender, dev }) {
+		const use_hashes = mode === 'hash' || (mode === 'auto' && prerender);
+		this.csp_provider = new CspProvider(use_hashes, directives, this.nonce, dev);
+		this.report_only_provider = new CspReportOnlyProvider(use_hashes, reportOnly, this.nonce, dev);
+	}
+
+	get script_needs_nonce() {
+		return this.csp_provider.script_needs_nonce || this.report_only_provider.script_needs_nonce;
+	}
+
+	get style_needs_nonce() {
+		return this.csp_provider.style_needs_nonce || this.report_only_provider.style_needs_nonce;
+	}
+
+	/** @param {string} content */
+	add_script(content) {
+		this.csp_provider.add_script(content);
+		this.report_only_provider.add_script(content);
+	}
+
+	/** @param {string} content */
+	add_style(content) {
+		this.csp_provider.add_style(content);
+		this.report_only_provider.add_style(content);
 	}
 }
 
@@ -1215,6 +1266,28 @@ function normalize_path(path, trailing_slash) {
 	}
 
 	return path;
+}
+
+/** @param {Record<string, string>} params */
+function decode_params(params) {
+	for (const key in params) {
+		// input has already been decoded by decodeURI
+		// now handle the rest that decodeURIComponent would do
+		params[key] = params[key]
+			.replace(/%23/g, '#')
+			.replace(/%3[Bb]/g, ';')
+			.replace(/%2[Cc]/g, ',')
+			.replace(/%2[Ff]/g, '/')
+			.replace(/%3[Ff]/g, '?')
+			.replace(/%3[Aa]/g, ':')
+			.replace(/%40/g, '@')
+			.replace(/%26/g, '&')
+			.replace(/%3[Dd]/g, '=')
+			.replace(/%2[Bb]/g, '+')
+			.replace(/%24/g, '$');
+	}
+
+	return params;
 }
 
 class LoadURL extends URL {
@@ -1302,11 +1375,21 @@ async function render_response({
 	/** @type {import('types').NormalizedLoadOutputCache | undefined} */
 	let cache;
 
-	if (error) {
+	const stack = error?.stack;
+
+	if (options.dev && error) {
 		error.stack = options.get_stack(error);
 	}
 
 	if (resolve_opts.ssr) {
+		const leaf = /** @type {import('./types.js').Loaded} */ (branch.at(-1));
+
+		if (leaf.loaded.status) {
+			// explicit status returned from `load` or a page endpoint trumps
+			// initial status
+			status = leaf.loaded.status;
+		}
+
 		for (const { node, props, loaded, fetched, uses_credentials } of branch) {
 			if (node.imports) {
 				node.imports.forEach((url) => modulepreloads.add(url));
@@ -1329,20 +1412,15 @@ async function render_response({
 		}
 
 		const session = writable($session);
+		// Even if $session isn't accessed, it still ends up serialized in the rendered HTML
+		is_private = is_private || (cache?.private ?? (!!$session && Object.keys($session).length > 0));
 
 		/** @type {Record<string, any>} */
 		const props = {
 			stores: {
 				page: writable(null),
 				navigating: writable(null),
-				/** @type {import('svelte/store').Writable<App.Session>} */
-				session: {
-					...session,
-					subscribe: (fn) => {
-						is_private = cache?.private ?? true;
-						return session.subscribe(fn);
-					}
-				},
+				session,
 				updated
 			},
 			/** @type {import('types').Page} */
@@ -1387,11 +1465,9 @@ async function render_response({
 
 	let { head, html: body } = rendered;
 
-	await csp_ready;
 	const csp = new Csp(options.csp, {
 		dev: options.dev,
-		prerender: !!state.prerendering,
-		needs_nonce: options.template_contains_nonce
+		prerender: !!state.prerendering
 	});
 
 	const target = hash(body);
@@ -1502,7 +1578,7 @@ async function render_response({
 	if (state.prerendering) {
 		const http_equiv = [];
 
-		const csp_headers = csp.get_meta();
+		const csp_headers = csp.csp_provider.get_meta();
 		if (csp_headers) {
 			http_equiv.push(csp_headers);
 		}
@@ -1520,9 +1596,12 @@ async function render_response({
 	const assets =
 		options.paths.assets || (segments.length > 0 ? segments.map(() => '..').join('/') : '.');
 
-	const html = await resolve_opts.transformPage({
-		html: options.template({ head, body, assets, nonce: /** @type {string} */ (csp.nonce) })
-	});
+	// TODO flush chunks as early as we can
+	const html =
+		(await resolve_opts.transformPageChunk({
+			html: options.template({ head, body, assets, nonce: /** @type {string} */ (csp.nonce) }),
+			done: true
+		})) || '';
 
 	const headers = new Headers({
 		'content-type': 'text/html',
@@ -1534,10 +1613,19 @@ async function render_response({
 	}
 
 	if (!state.prerendering) {
-		const csp_header = csp.get_header();
+		const csp_header = csp.csp_provider.get_header();
 		if (csp_header) {
 			headers.set('content-security-policy', csp_header);
 		}
+		const report_only_header = csp.report_only_provider.get_header();
+		if (report_only_header) {
+			headers.set('content-security-policy-report-only', report_only_header);
+		}
+	}
+
+	if (options.dev && error) {
+		// reset stack, otherwise it may be 'fixed' a second time
+		error.stack = stack;
 	}
 
 	return new Response(html, {
@@ -2032,10 +2120,14 @@ var parseString_1 = setCookie.exports.parseString = parseString;
 var splitCookiesString_1 = setCookie.exports.splitCookiesString = splitCookiesString;
 
 /**
- * @param {import('types').LoadOutput} loaded
+ * @param {import('types').LoadOutput | void} loaded
  * @returns {import('types').NormalizedLoadOutput}
  */
 function normalize(loaded) {
+	if (!loaded) {
+		return {};
+	}
+
 	// TODO remove for 1.0
 	// @ts-expect-error
 	if (loaded.fallthrough) {
@@ -2055,7 +2147,10 @@ function normalize(loaded) {
 		const status = loaded.status;
 
 		if (!loaded.error && has_error_status) {
-			return { status: status || 500, error: new Error() };
+			return {
+				status: status || 500,
+				error: new Error(`${status}`)
+			};
 		}
 
 		const error = typeof loaded.error === 'string' ? new Error(loaded.error) : loaded.error;
@@ -2141,7 +2236,7 @@ function path_matches(path, constraint) {
  *   event: import('types').RequestEvent;
  *   options: import('types').SSROptions;
  *   state: import('types').SSRState;
- *   route: import('types').SSRPage | null;
+ *   route: import('types').SSRPage | import('types').SSRErrorPage;
  *   node: import('types').SSRNode;
  *   $session: any;
  *   stuff: Record<string, any>;
@@ -2177,7 +2272,7 @@ async function load_node({
 	/** @type {import('set-cookie-parser').Cookie[]} */
 	const new_cookies = [];
 
-	/** @type {import('types').LoadOutput} */
+	/** @type {import('types').NormalizedLoadOutput} */
 	let loaded;
 
 	const should_prerender = node.module.prerender ?? options.prerender.default;
@@ -2200,12 +2295,10 @@ async function load_node({
 
 	if (shadow.error) {
 		loaded = {
-			status: shadow.status,
 			error: shadow.error
 		};
 	} else if (shadow.redirect) {
 		loaded = {
-			status: shadow.status,
 			redirect: shadow.redirect
 		};
 	} else if (module.load) {
@@ -2473,7 +2566,7 @@ async function load_node({
 				return proxy;
 			},
 			stuff: { ...stuff },
-			status: is_error ? status ?? null : null,
+			status: (is_error ? status : shadow.status) ?? null,
 			error: is_error ? error ?? null : null
 		};
 
@@ -2486,12 +2579,7 @@ async function load_node({
 			});
 		}
 
-		loaded = await module.load.call(null, load_input);
-
-		if (!loaded) {
-			// TODO do we still want to enforce this now that there's no fallthrough?
-			throw new Error(`load function must return a value${options.dev ? ` (${node.file})` : ''}`);
-		}
+		loaded = normalize(await module.load.call(null, load_input));
 	} else if (shadow.body) {
 		loaded = {
 			props: shadow.body
@@ -2499,6 +2587,8 @@ async function load_node({
 	} else {
 		loaded = {};
 	}
+
+	loaded.status = loaded.status ?? shadow.status;
 
 	// generate __data.json files when prerendering
 	if (shadow.body && state.prerendering) {
@@ -2515,7 +2605,7 @@ async function load_node({
 	return {
 		node,
 		props: shadow.body,
-		loaded: normalize(loaded),
+		loaded,
 		stuff: loaded.stuff || stuff,
 		fetched,
 		set_cookie_headers: new_cookies.map((new_cookie) => {
@@ -2541,13 +2631,15 @@ async function load_shadow_data(route, event, options, prerender) {
 	try {
 		const mod = await route.shadow();
 
-		if (prerender && (mod.post || mod.put || mod.del || mod.patch)) {
+		check_method_names(mod);
+
+		if (prerender && (mod.POST || mod.PUT || mod.DELETE || mod.PATCH)) {
 			throw new Error('Cannot prerender pages that have endpoints with mutative methods');
 		}
 
-		const method = normalize_request_method(event);
-		const is_get = method === 'head' || method === 'get';
-		const handler = method === 'head' ? mod.head || mod.get : mod[method];
+		const { method } = event.request;
+		const is_get = method === 'HEAD' || method === 'GET';
+		const handler = method === 'HEAD' ? mod.HEAD || mod.GET : mod[method];
 
 		if (!handler && !is_get) {
 			return {
@@ -2558,7 +2650,7 @@ async function load_shadow_data(route, event, options, prerender) {
 
 		/** @type {import('types').ShadowData} */
 		const data = {
-			status: 200,
+			status: undefined,
 			cookies: [],
 			body: {}
 		};
@@ -2594,17 +2686,17 @@ async function load_shadow_data(route, event, options, prerender) {
 			data.body = body;
 		}
 
-		const get = (method === 'head' && mod.head) || mod.get;
+		const get = (method === 'HEAD' && mod.HEAD) || mod.GET;
 		if (get) {
 			const { status, headers, body } = validate_shadow_output(await get(event));
 			add_cookies(/** @type {string[]} */ (data.cookies), headers);
-			data.status = status;
 
 			if (body instanceof Error) {
 				if (status < 400) {
 					data.status = 500;
 					data.error = new Error('A non-error status code was returned with an error body');
 				} else {
+					data.status = status;
 					data.error = body;
 				}
 
@@ -2612,11 +2704,13 @@ async function load_shadow_data(route, event, options, prerender) {
 			}
 
 			if (status >= 400) {
+				data.status = status;
 				data.error = new Error('Failed to load data');
 				return data;
 			}
 
 			if (status >= 300) {
+				data.status = status;
 				data.redirect = /** @type {string} */ (
 					headers instanceof Headers ? headers.get('location') : headers.location
 				);
@@ -2726,7 +2820,7 @@ async function respond_with_error({
 					event,
 					options,
 					state,
-					route: null,
+					route: GENERIC_ERROR,
 					node: default_layout,
 					$session,
 					stuff: {},
@@ -2735,12 +2829,16 @@ async function respond_with_error({
 				})
 			);
 
+			if (layout_loaded.loaded.error) {
+				throw layout_loaded.loaded.error;
+			}
+
 			const error_loaded = /** @type {Loaded} */ (
 				await load_node({
 					event,
 					options,
 					state,
-					route: null,
+					route: GENERIC_ERROR,
 					node: default_error,
 					$session,
 					stuff: layout_loaded ? layout_loaded.stuff : {},
@@ -2905,7 +3003,8 @@ async function respond$1(opts) {
 					}
 
 					if (loaded.loaded.error) {
-						({ status, error } = loaded.loaded);
+						error = loaded.loaded.error;
+						status = loaded.loaded.status ?? 500;
 					}
 				} catch (err) {
 					const e = coalesce_to_error(err);
@@ -3118,6 +3217,8 @@ function exec(match, names, types, matchers) {
 	return params;
 }
 
+/* global __SVELTEKIT_ADAPTER_NAME__ */
+
 const DATA_SUFFIX = '/__data.json';
 
 /** @param {{ html: string }} opts */
@@ -3225,9 +3326,7 @@ async function respond(request, options, state) {
 		get clientAddress() {
 			if (!state.getClientAddress) {
 				throw new Error(
-					`${
-						import.meta.env.VITE_SVELTEKIT_ADAPTER_NAME
-					} does not specify getClientAddress. Please raise an issue`
+					`${__SVELTEKIT_ADAPTER_NAME__} does not specify getClientAddress. Please raise an issue`
 				);
 			}
 
@@ -3281,7 +3380,7 @@ async function respond(request, options, state) {
 	/** @type {import('types').RequiredResolveOptions} */
 	let resolve_opts = {
 		ssr: true,
-		transformPage: default_transform
+		transformPageChunk: default_transform
 	};
 
 	// TODO match route before calling handle?
@@ -3291,9 +3390,17 @@ async function respond(request, options, state) {
 			event,
 			resolve: async (event, opts) => {
 				if (opts) {
+					// TODO remove for 1.0
+					// @ts-expect-error
+					if (opts.transformPage) {
+						throw new Error(
+							'transformPage has been replaced by transformPageChunk — see https://github.com/sveltejs/kit/pull/5657 for more information'
+						);
+					}
+
 					resolve_opts = {
 						ssr: opts.ssr !== false,
-						transformPage: opts.transformPage || default_transform
+						transformPageChunk: opts.transformPageChunk || default_transform
 					};
 				}
 
@@ -3384,6 +3491,12 @@ async function respond(request, options, state) {
 					}
 				}
 
+				if (state.initiator === GENERIC_ERROR) {
+					return new Response('Internal Server Error', {
+						status: 500
+					});
+				}
+
 				// if this request came direct from the user, rather than
 				// via a `fetch` in a `load`, render a 404 page
 				if (!state.initiator) {
@@ -3438,6 +3551,7 @@ async function respond(request, options, state) {
 			});
 		}
 
+		// TODO is this necessary? should we just return a plain 500 at this point?
 		try {
 			const $session = await options.hooks.getSession(event);
 			return await respond_with_error({

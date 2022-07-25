@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { AuthService } from '../services';
-import { AccountForm, Login } from '$shared/models/accounts';
+import { AccountForm, LoginForm } from '$shared/models/accounts';
 import { Request, Response } from 'express';
 import { LoginPackage } from '$shared/auth';
 
@@ -14,8 +14,8 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Req() req: Request, @Body() login: Login): Promise<LoginPackage> {
-    return await this.auth.login(req, login);
+  async login(@Req() req: Request, @Body() loginForm: LoginForm): Promise<LoginPackage> {
+    return await this.auth.login(req, loginForm);
   }
 
   @Get('logout')

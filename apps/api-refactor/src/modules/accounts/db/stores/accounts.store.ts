@@ -53,10 +53,7 @@ export class AccountsStore {
     return await newAccount.save();
   }
 
-  public async updateEmail(
-    accountId: string,
-    formInfo: ChangeEmail,
-  ): Promise<AccountDocument> {
+  public async updateEmail(accountId: string, formInfo: ChangeEmail): Promise<AccountDocument> {
     const account = await this.retrieveAccount(accountId);
     account.email = sanitizeHtml(formInfo.newEmail);
     return await account.save();
@@ -79,9 +76,7 @@ export class AccountsStore {
 
   //#region ---EXTRA---
 
-  public async createFrontendAccount(
-    account: Account,
-  ): Promise<FrontendAccount> {
+  public async createFrontendAccount(account: Account): Promise<FrontendAccount> {
     return {
       _id: account._id,
       pseudonyms: account.pseudonyms as Pseudonym[],
@@ -107,10 +102,7 @@ export class AccountsStore {
    * @param usedById Which user used this code
    */
   async useInviteCode(codeId: string, usedById: string): Promise<void> {
-    await this.inviteCodesModel.findOneAndUpdate(
-      { _id: codeId },
-      { byWho: usedById, used: true },
-    );
+    await this.inviteCodesModel.findOneAndUpdate({ _id: codeId }, { byWho: usedById, used: true });
   }
 
   async createInviteCode(): Promise<InviteCodes> {
@@ -127,14 +119,10 @@ export class AccountsStore {
   //#region ---PRIVATE---
 
   private async retrieveAccount(accountId: string): Promise<AccountDocument> {
-    const account = await this.accountModel
-      .findById(accountId)
-      .populate('pseudonyms');
+    const account = await this.accountModel.findById(accountId).populate('pseudonyms');
 
     if (account === null || account === undefined) {
-      throw new NotFoundException(
-        `The account you're looking for doesn't exist.`,
-      );
+      throw new NotFoundException(`The account you're looking for doesn't exist.`);
     }
 
     return account;
