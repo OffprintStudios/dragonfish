@@ -14,8 +14,9 @@
     import type { Profile } from '$lib/models/accounts';
     import {
         search,
+        searchOptions,
         searchSelect,
-        reset,
+        resetSearchOptions,
         setFilter,
         searchWorks,
         searchBlogs,
@@ -24,6 +25,7 @@
     import Paginator from '$lib/components/ui/misc/Paginator.svelte';
     import WorkCard from '$lib/components/ui/content/WorkCard.svelte';
     import BlogCard from '$lib/components/ui/content/BlogCard.svelte';
+    import UserCard from '$lib/components/ui/user/UserCard.svelte';
 
     let tagOptions: { value: string; label: string; isParent: boolean }[] = [];
     onMount(() => {
@@ -81,8 +83,8 @@
         contentResults = null;
         userResults = null;
 
-        if ($search.kind !== SearchKind.User) {
-            if ($search.kind === SearchKind.Blog) {
+        if ($searchOptions.kind !== SearchKind.User) {
+            if ($searchOptions.kind === SearchKind.Blog) {
                 // we're looking for blogs
                 searchBlogs(1);
                 contentResults = await findRelatedContent($search).then((res) => {
@@ -127,7 +129,7 @@
                         class="search-input"
                         placeholder="Search..."
                         type="text"
-                        bind:value={$search.query}
+                        bind:value={$searchOptions.query}
                     />
                     <span class="hidden md:block md:mx-2"><!--separator--></span>
                 </div>
@@ -135,29 +137,29 @@
             <div class="flex items-center justify-center md:justify-start flex-wrap p-2">
                 <RadioButton
                     id={SearchKind.ProseAndPoetry}
-                    bind:group={$search.kind}
+                    bind:group={$searchOptions.kind}
                     value={SearchKind.ProseAndPoetry}
                 >
                     All Works
                 </RadioButton>
                 <RadioButton
                     id={SearchKind.Prose}
-                    bind:group={$search.kind}
+                    bind:group={$searchOptions.kind}
                     value={SearchKind.Prose}
                 >
                     Prose
                 </RadioButton>
                 <RadioButton
                     id={SearchKind.Poetry}
-                    bind:group={$search.kind}
+                    bind:group={$searchOptions.kind}
                     value={SearchKind.Poetry}
                 >
                     Poetry
                 </RadioButton>
-                <RadioButton id={SearchKind.Blog} bind:group={$search.kind} value={SearchKind.Blog}>
+                <RadioButton id={SearchKind.Blog} bind:group={$searchOptions.kind} value={SearchKind.Blog}>
                     Blogs
                 </RadioButton>
-                <RadioButton id={SearchKind.User} bind:group={$search.kind} value={SearchKind.User}>
+                <RadioButton id={SearchKind.User} bind:group={$searchOptions.kind} value={SearchKind.User}>
                     Users
                 </RadioButton>
                 <div class="flex-1 basis-full md:basis-0"><!--spacer--></div>
@@ -169,12 +171,16 @@
                     <span class="button-text">Filters</span>
                 </Button>
                 <div class="mx-0.5"><!--spacer--></div>
-                <Button on:click={reset}>
+                <Button on:click={resetSearchOptions}>
                     <EraserLine class="button-icon" />
                     <span class="button-text">Clear</span>
                 </Button>
+                <button class="search-button" type="submit">
+                    <SearchEyeLine class="mr-2" />
+                    <span>Search</span>
+                </button>
             </div>
-            {#if filtersMenuOpen && $search.kind !== SearchKind.User && $search.kind !== SearchKind.Blog}
+            {#if filtersMenuOpen && $searchOptions.kind !== SearchKind.User && $search.kind !== SearchKind.Blog}
                 <div class="flex-1 pt-4" transition:slide|local>
                     <div class="flex flex-col w-full px-4 pb-4">
                         <label
@@ -186,7 +192,7 @@
                             type="text"
                             class="rounded-lg bg-zinc-400 dark:bg-zinc-500 ring-0 placeholder-zinc-300 dark:placeholder-zinc-400 border-0"
                             id="workAuthor"
-                            bind:value={$search.author}
+                            bind:value={$searchOptions.author}
                             placeholder="Beatriz Ex Machina"
                             data-felte-keep-on-remove
                         />
@@ -216,28 +222,28 @@
                         <div class="flex items-center flex-wrap pt-4">
                             <RadioButton
                                 id={`${SearchMatch.All}-1`}
-                                bind:group={$search.matchGenres}
+                                bind:group={$searchOptions.matchGenres}
                                 value={SearchMatch.All}
                             >
                                 All Genres
                             </RadioButton>
                             <RadioButton
                                 id={`${SearchMatch.Exactly}-1`}
-                                bind:group={$search.matchGenres}
+                                bind:group={$searchOptions.matchGenres}
                                 value={SearchMatch.Exactly}
                             >
                                 Exact Match
                             </RadioButton>
                             <RadioButton
                                 id={`${SearchMatch.NoOthers}-1`}
-                                bind:group={$search.matchGenres}
+                                bind:group={$searchOptions.matchGenres}
                                 value={SearchMatch.NoOthers}
                             >
                                 No Others
                             </RadioButton>
                             <RadioButton
                                 id={`${SearchMatch.OneOrMore}-1`}
-                                bind:group={$search.matchGenres}
+                                bind:group={$searchOptions.matchGenres}
                                 value={SearchMatch.OneOrMore}
                             >
                                 One Or More
@@ -258,28 +264,28 @@
                         <div class="flex items-center pt-4 flex-wrap">
                             <RadioButton
                                 id={`${SearchMatch.All}-2`}
-                                bind:group={$search.matchTags}
+                                bind:group={$searchOptions.matchTags}
                                 value={SearchMatch.All}
                             >
                                 All Fandoms
                             </RadioButton>
                             <RadioButton
                                 id={`${SearchMatch.Exactly}-2`}
-                                bind:group={$search.matchTags}
+                                bind:group={$searchOptions.matchTags}
                                 value={SearchMatch.Exactly}
                             >
                                 Exact Match
                             </RadioButton>
                             <RadioButton
                                 id={`${SearchMatch.NoOthers}-2`}
-                                bind:group={$search.matchTags}
+                                bind:group={$searchOptions.matchTags}
                                 value={SearchMatch.NoOthers}
                             >
                                 No Others
                             </RadioButton>
                             <RadioButton
                                 id={`${SearchMatch.OneOrMore}-2`}
-                                bind:group={$search.matchTags}
+                                bind:group={$searchOptions.matchTags}
                                 value={SearchMatch.OneOrMore}
                             >
                                 One Or More
@@ -292,7 +298,7 @@
                     </button>
                 </div>
             {/if}
-            {#if filtersMenuOpen && $search.kind === SearchKind.Blog}
+            {#if filtersMenuOpen && $searchOptions.kind === SearchKind.Blog}
                 <div class="flex-1 pt-4" transition:slide|local>
                     <div class="flex flex-col w-full px-4 pb-4">
                         <label
@@ -304,7 +310,7 @@
                             type="text"
                             class="rounded-lg bg-zinc-400 dark:bg-zinc-500 ring-0 placeholder-zinc-300 dark:placeholder-zinc-400 border-0"
                             id="blogAuthor"
-                            bind:value={$search.author}
+                            bind:value={$searchOptions.author}
                             placeholder="Beatriz Ex Machina"
                             data-felte-keep-on-remove
                         />
@@ -315,7 +321,7 @@
                     </button>
                 </div>
             {/if}
-            {#if filtersMenuOpen && $search.kind === SearchKind.User}
+            {#if filtersMenuOpen && $searchOptions.kind === SearchKind.User}
                 <div class="flex-1 pt-4" transition:slide|local>
                     <div class="flex flex-col w-full px-4 pb-4">
                         <span class="uppercase font-bold text-xs text-center tracking-wider"
@@ -343,35 +349,39 @@
         </div>
     {:else if $search.kind === SearchKind.User}
         {#if userResults && userResults.totalDocs > 0}
-            <div class="w-11/12 mx-auto max-w-7xl flex items-center flex-wrap">
-                there's user results here!
-                <Paginator
-                    currPage={$search.page}
-                    totalPages={userResults.totalPages}
-                    on:change={(e) => fetchPage(e.detail)}
-                />
+            <div class="w-11/12 mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 lg:gap-4">
+                {#each userResults.docs as user}
+                    <UserCard {user} />
+                {/each}
             </div>
+            <Paginator
+                currPage={$search.page}
+                totalPages={userResults.totalPages}
+                on:change={(e) => fetchPage(e.detail)}
+            />
         {:else}
             <div class="w-full flex flex-col items-center justify-center h-96">
                 <div class="flex items-center">
-                    <span class="uppercase tracking-widest font-bold">No results found</span>
+                    <span class="uppercase tracking-widest font-bold">No user results found</span>
                 </div>
             </div>
         {/if}
     {:else if $search.kind === SearchKind.Blog}
         {#if contentResults && contentResults.totalDocs > 0}
-            <div class="w-11/12 mx-auto max-w-7xl flex items-center flex-wrap">
-                there's blog results here!
-                <Paginator
-                    currPage={$search.page}
-                    totalPages={contentResults.totalPages}
-                    on:change={(e) => fetchPage(e.detail)}
-                />
+            <div class="w-11/12 mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-4">
+                {#each contentResults.docs.filter((blog) => blog.author !== null) as blog}
+                    <BlogCard {blog} />
+                {/each}
             </div>
+            <Paginator
+                currPage={$search.page}
+                totalPages={contentResults.totalPages}
+                on:change={(e) => fetchPage(e.detail)}
+            />
         {:else}
             <div class="w-full flex flex-col items-center justify-center h-96">
                 <div class="flex items-center">
-                    <span class="uppercase tracking-widest font-bold">No results found</span>
+                    <span class="uppercase tracking-widest font-bold">No blog results found</span>
                 </div>
             </div>
         {/if}
@@ -391,7 +401,7 @@
     {:else}
         <div class="w-full flex flex-col items-center justify-center h-96">
             <div class="flex items-center">
-                <span class="uppercase tracking-widest font-bold">No results found</span>
+                <span class="uppercase tracking-widest font-bold">I don't know, kind is {$search.kind}</span>
             </div>
         </div>
     {/if}
