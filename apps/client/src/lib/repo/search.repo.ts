@@ -1,7 +1,7 @@
 import { get, writable } from 'svelte/store';
 import type { SearchOptions } from '$lib/services/search.service';
 import { ContentFilter, SearchKind, SearchMatch } from '$lib/models/content';
-import { Genres, WorkKind } from '$lib/models/content/works';
+import { WorkKind } from '$lib/models/content/works';
 
 interface SearchFormSelections {
     category: { value: string; label: string };
@@ -9,6 +9,9 @@ interface SearchFormSelections {
     fandoms: { value: string; label: string; isParent: boolean }[];
 }
 
+/**
+ * What searching with
+ */
 export const search = writable<SearchOptions>({
     author: null,
     category: null,
@@ -23,6 +26,26 @@ export const search = writable<SearchOptions>({
     tagIds: null,
 });
 
+/**
+ * What user has selected; search set to this when submit
+ */
+export const searchOptions = writable<SearchOptions>({
+    author: null,
+    category: null,
+    filter: ContentFilter.Default,
+    genres: null,
+    includeChildTags: true,
+    kind: SearchKind.ProseAndPoetry,
+    matchGenres: SearchMatch.All,
+    matchTags: SearchMatch.All,
+    page: 1,
+    query: '',
+    tagIds: null,
+});
+
+/**
+ * What user has selected; search set to this when submit
+ */
 export const searchSelect = writable<SearchFormSelections>({
     category: null,
     genres: null,
@@ -38,11 +61,11 @@ export function setFilter(filter: ContentFilter): void {
 
 export function searchWorks(page: number): void {
     // save current query
-    const currentQuery = get(search);
+    const currentQuery = get(searchOptions);
     const currentSelections = get(searchSelect);
 
     // reset all previous state
-    reset();
+    resetSearch();
 
     // migrate selections to appropriate enums
     const genres = currentSelections.genres
@@ -78,12 +101,12 @@ export function searchWorks(page: number): void {
 
 export function searchBlogs(page: number): void {
     // save current query
-    const query = get(search).query;
-    const author = get(search).author;
-    const filter = get(search).filter;
+    const query = get(searchOptions).query;
+    const author = get(searchOptions).author;
+    const filter = get(searchOptions).filter;
 
     // reset from any previous state
-    reset();
+    resetSearch();
 
     // update with relevant parameters
     search.update((state) => ({
@@ -91,26 +114,28 @@ export function searchBlogs(page: number): void {
         query,
         author: author ?? null,
         filter,
+        kind: SearchKind.Blog,
         page,
     }));
 }
 
 export function searchUsers(page: number): void {
     // save current query
-    const query = get(search).query;
+    const query = get(searchOptions).query;
 
     // reset from any previous state
-    reset();
+    resetSearch();
 
     // update with relevant parameters
     search.update((state) => ({
         ...state,
         query,
+        kind: SearchKind.User,
         page,
     }));
 }
 
-export function reset(): void {
+export function resetSearch(): void {
     search.update((state) => ({
         ...state,
         author: null,
@@ -125,17 +150,32 @@ export function reset(): void {
         query: '',
         tagIds: null,
     }));
+}
 
-    searchSelect.update((state) => ({
+export function resetSearchOptions(): void {
+    searchOptions.update((state) => ({
         ...state,
+        author: null,
         category: null,
+        filter: ContentFilter.Default,
         genres: null,
-        fandoms: null,
+        includeChildTags: true,
+        kind: SearchKind.ProseAndPoetry,
+        matchGenres: SearchMatch.All,
+        matchTags: SearchMatch.All,
+        page: 1,
+        query: '',
+        tagIds: null,
     }));
 }
 
+/**
+ * Used in tag page
+ * @param tagId
+ * @param page
+ */
 export function setCurrentTag(tagId: string, page: number): void {
-    reset();
+    resetSearch();
     search.update((state) => ({
         ...state,
         tagIds: [tagId],
