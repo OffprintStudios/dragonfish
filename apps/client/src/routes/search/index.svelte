@@ -26,6 +26,7 @@
     import WorkCard from '$lib/components/ui/content/WorkCard.svelte';
     import BlogCard from '$lib/components/ui/content/BlogCard.svelte';
     import UserCard from '$lib/components/ui/user/UserCard.svelte';
+    import { pluralize } from '$lib/util';
 
     let tagOptions: { value: string; label: string; isParent: boolean }[] = [];
     onMount(() => {
@@ -349,6 +350,9 @@
         </div>
     {:else if $search.kind === SearchKind.User}
         {#if userResults && userResults.totalDocs > 0}
+            <div class="w-full flex flex-col items-center justify-center mb-10">
+                Found {userResults.totalDocs} user{pluralize(userResults.totalDocs)}
+            </div>
             <div class="w-11/12 mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 lg:gap-4">
                 {#each userResults.docs as user}
                     <UserCard {user} />
@@ -368,6 +372,9 @@
         {/if}
     {:else if $search.kind === SearchKind.Blog}
         {#if contentResults && contentResults.totalDocs > 0}
+            <div class="w-full flex flex-col items-center justify-center mb-10">
+                Found {contentResults.totalDocs} blog{pluralize(contentResults.totalDocs)}
+            </div>
             <div class="w-11/12 mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-4">
                 {#each contentResults.docs.filter((blog) => blog.author !== null) as blog}
                     <BlogCard {blog} />
@@ -386,6 +393,9 @@
             </div>
         {/if}
     {:else if contentResults && contentResults.totalDocs > 0}
+        <div class="w-full flex flex-col items-center justify-center mb-10">
+            Found {contentResults.totalDocs} work{pluralize(contentResults.totalDocs)}
+        </div>
         <div
             class="w-11/12 mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 lg:gap-4"
         >
@@ -401,7 +411,7 @@
     {:else}
         <div class="w-full flex flex-col items-center justify-center h-96">
             <div class="flex items-center">
-                <span class="uppercase tracking-widest font-bold">I don't know, kind is {$search.kind}</span>
+                <span class="uppercase tracking-widest font-bold">No works found</span>
             </div>
         </div>
     {/if}
@@ -411,7 +421,7 @@
     div.search-bar {
         @apply w-full flex items-center;
         input.search-input {
-            @apply flex-1 max-w-full bg-transparent text-2xl h-[62px] border-none ring-0 text-white;
+            @apply flex-1 max-w-full bg-transparent text-2xl h-[62px] border-none ring-0;
             &::placeholder {
                 font-family: var(--header-text);
                 @apply italic font-light relative top-0.5;
