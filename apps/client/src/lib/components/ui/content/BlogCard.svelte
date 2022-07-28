@@ -16,19 +16,24 @@
         <Avatar size="4rem" src={blog.author.profile.avatar} />
         <div class="ml-4 w-full">
             <h3 class="font-medium text-3xl">{blog.title}</h3>
-            <div class="flex items-center w-full text-sm">
-                <span class="flex-1 uppercase font-bold tracking-wider">
-                    {localeDate(blog.createdAt, 'fullDate')}
-                </span>
-                <span class="flex items-center"
-                    ><BarChartBoxLine class="mr-1" /> {abbreviate(blog.stats.views)}</span
-                >
-                <span class="mx-0.5">|</span>
-                <span class="flex items-center"
-                    ><DiscussLine class="mr-1" /> {abbreviate(blog.stats.comments)}</span
-                >
+            <div class="author flex-1" title="by {blog.author.screenName}">
+                <a href="/profile/{blog.author._id}">
+                    by {blog.author.screenName}
+                </a>
             </div>
         </div>
+    </div>
+    <div class="flex items-center w-full text-sm px-4">
+        <span class="flex-1 uppercase font-bold tracking-wider">
+            {localeDate(blog.createdAt, 'fullDate')}
+        </span>
+        <span class="flex items-center"
+            ><BarChartBoxLine class="mr-1" /> {abbreviate(blog.stats.views)}</span
+        >
+        <span class="mx-0.5">|</span>
+        <span class="flex items-center"
+            ><DiscussLine class="mr-1" /> {abbreviate(blog.stats.comments)}</span
+        >
     </div>
     <div class="blog-body px-4">
         {@html blog.body}
@@ -45,6 +50,11 @@
         }
         &:active {
             @apply scale-100;
+        }
+        div.author {
+            a {
+                color: var(--text-color);
+            }
         }
         div.continue-reading {
             @apply absolute z-10 bottom-0 w-full rounded-b-lg flex items-center justify-center h-12;

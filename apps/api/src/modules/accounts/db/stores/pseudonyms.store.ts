@@ -56,7 +56,7 @@ export class PseudonymsStore {
         }
         if (query.charAt(0) === '@') {
             return await this.pseudModel.paginate(
-                { userTag: query.substr(1) },
+                { userTag: query.substring(1) },
                 {
                     page: pageNum,
                     limit: maxPerPage,
