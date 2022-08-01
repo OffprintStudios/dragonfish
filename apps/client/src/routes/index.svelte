@@ -121,7 +121,7 @@
                         </div>
                     </div>
                 {:else}
-                    <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
+                    <div class="w-11/12 mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-2">
                         {#each $newWorks.data as work}
                             <WorkCard content={work} />
                         {/each}
@@ -141,39 +141,41 @@
         </div>-->
         </div>
         <div class="w-11/12 mx-auto md:w-72 ml-4">
-            <h3 class="text-2xl font-medium w-full border-b border-zinc-600 dark:border-white mb-4">
-                News & Updates
-            </h3>
-            {#if !$firstSixNews || $firstSixNews.isLoading}
-                <div class="w-full h-48 flex flex-col items-center justify-center">
-                    <div class="flex items-center">
-                        <Loader5Line class="animate-spin mr-2" />
-                        <span class="text-xs uppercase font-bold tracking-wider">Loading...</span>
-                    </div>
+            <div class="section">
+                <div class="section-header border-zinc-600 dark:border-white mb-4">
+                    <h3>News & Updates</h3>
                 </div>
-            {:else if $firstSixNews.isError}
-                <div class="w-full h-48 flex flex-col items-center justify-center">
-                    <div class="flex items-center">
-                        <CloseLine class="mr-2" />
-                        <span class="text-xs uppercase font-bold tracking-wider"
-                            >Error fetching news</span
-                        >
+                {#if !$firstSixNews || $firstSixNews.isLoading}
+                    <div class="w-full h-48 flex flex-col items-center justify-center">
+                        <div class="flex items-center">
+                            <Loader5Line class="animate-spin mr-2" />
+                            <span class="text-xs uppercase font-bold tracking-wider">Loading...</span>
+                        </div>
                     </div>
-                </div>
-            {:else if $firstSixNews.data.length === 0}
-                <div class="w-full h-48 flex flex-col items-center justify-center">
-                    <div class="flex items-center">
-                        <InformationLine class="mr-2" />
-                        <span class="text-xs uppercase font-bold tracking-wider"
-                            >No news posted</span
-                        >
+                {:else if $firstSixNews.isError}
+                    <div class="w-full h-48 flex flex-col items-center justify-center">
+                        <div class="flex items-center">
+                            <CloseLine class="mr-2" />
+                            <span class="text-xs uppercase font-bold tracking-wider"
+                                >Error fetching news</span
+                            >
+                        </div>
                     </div>
-                </div>
-            {:else}
-                {#each $firstSixNews.data as post}
-                    <NewsCard {post} />
-                {/each}
-            {/if}
+                {:else if $firstSixNews.data.length === 0}
+                    <div class="w-full h-48 flex flex-col items-center justify-center">
+                        <div class="flex items-center">
+                            <InformationLine class="mr-2" />
+                            <span class="text-xs uppercase font-bold tracking-wider"
+                                >No news posted</span
+                            >
+                        </div>
+                    </div>
+                {:else}
+                    {#each $firstSixNews.data as post}
+                        <NewsCard {post} />
+                    {/each}
+                {/if}
+            </div>
         </div>
     </div>
     <div class="flex items-center justify-center flex-col md:flex-row">
