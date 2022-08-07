@@ -63,7 +63,7 @@
                 <span><InboxLine size="24px" class="mr-1" /></span>
                 <span>Inbox</span>
             </div>
-            <div class="w-10/12 mx-auto border-b border-white my-4"><!--separator--></div>
+            <div class="w-10/12 mx-auto border-b border-zinc-600 dark:border-white my-4"><!--separator--></div>
         {/if}
         <a href="/" class="menu-link border-zinc-600 dark:border-white">
             <span><Home5Line size="24px" class="mr-1" /></span>
