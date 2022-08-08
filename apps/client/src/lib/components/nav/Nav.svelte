@@ -77,7 +77,7 @@
 </script>
 
 <div class="navbar">
-    <div class="py-2 flex-col items-center h-full hidden md:flex">
+    <div class="flex-col items-center h-full hidden overflow-x-hidden overflow-y-auto md:flex">
         {#if $session.currProfile}
             {#if currentMenu === MenuOptions.UserMenu}
                 <div
@@ -157,7 +157,7 @@
                 <span class="link-name">Log In</span>
             </a>
         {/if}
-        <div class="w-10/12 mx-auto border-b border-white my-2"><!--separator--></div>
+        <div class="w-10/12 mx-auto border-b border-white my-1"><!--separator--></div>
         <a
             class="link"
             href="/"
@@ -204,7 +204,7 @@
             </a>
         {/if}
         <div class="flex-1"><!--fill space--></div>
-        <div class="w-10/12 mx-auto border-b border-white my-2"><!--separator--></div>
+        <div class="w-10/12 mx-auto border-b border-white my-1"><!--separator--></div>
         <a
             class="link"
             href="/settings"
@@ -256,7 +256,7 @@
 
     a.link,
     div.link {
-        @apply p-2 mx-2 mb-1 border-2 border-transparent rounded-lg transition transform text-white flex flex-col items-center justify-center w-[61px] h-[61px] relative;
+        @apply p-2 mx-2 mb-1 border-2 border-transparent rounded-lg transition transform text-white flex flex-col items-center justify-center w-[61px] h-[55px] relative;
         &:hover {
             @apply no-underline scale-105;
             box-shadow: var(--dropshadow);
