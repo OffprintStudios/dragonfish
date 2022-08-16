@@ -31,7 +31,7 @@
     }
 </script>
 
-<div class="flex flex-col w-full h-screen overflow-y-auto">
+<div class="flex flex-col w-full h-[calc(100vh-51px)] md:h-screen overflow-y-auto">
     <div class="menu-header">
         {#if $session.currProfile}
             <a href={`/profile/${$session.currProfile._id}`} class="login-link">
