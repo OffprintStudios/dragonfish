@@ -89,7 +89,7 @@
     });
 </script>
 
-<div class="flex flex-col md:flex-row w-full h-screen">
+<div class="flex flex-col md:flex-row w-full h-[calc(100vh-51px)] md:h-screen overflow-y-auto md:overflow-y-visible">
     <PageNav>
         <svelte:fragment slot="header">
             <h3>Explore</h3>

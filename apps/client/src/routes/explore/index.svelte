@@ -43,7 +43,7 @@
     <title>New Works &mdash; Offprint</title>
 </svelte:head>
 
-<div class="w-full h-[calc(100vh-51px)] md:h-screen overflow-y-auto">
+<div class="w-full h-[calc(100vh-51px)] md:h-screen md:overflow-y-auto">
     {#if !$session || !$session.account }
         <NotifyBanner
             message={ALPHA_MESSAGE}
@@ -57,10 +57,10 @@
             </div>
         </div>
     {:else if contentResults && contentResults.totalDocs > 0}
-        <div class="w-full overflow-y-auto">
+        <div class="w-full">
             <div class="w-11/12 mx-auto my-6 max-w-7xl">
                 <div
-                    class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-3 mb-6"
+                    class="w-11/12 mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-2 lg:gap-4"
                 >
                     {#each contentResults.docs.filter((work) => work.author !== null) as work}
                         <WorkCard content={work} />
