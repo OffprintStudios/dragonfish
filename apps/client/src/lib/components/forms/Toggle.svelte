@@ -24,6 +24,7 @@
         background: transparent;
         padding: 0.2rem;
         cursor: pointer;
+        min-width: 3rem;
         div.switch {
             background: gray;
         }

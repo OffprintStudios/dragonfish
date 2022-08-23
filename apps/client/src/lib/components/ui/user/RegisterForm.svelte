@@ -96,7 +96,7 @@
         errorMessage={$errors.inviteCode}
     />
     <div class="my-0.5" />
-    <Toggle bind:value={$data.ageCheck}>I am at least 13 years of age or older.</Toggle>
+    <Toggle bind:value={$data.ageCheck}>I am 13 years of age or older.</Toggle>
     <Toggle bind:value={$data.termsAgree}>
         I agree to the Terms & Conditions, Privacy Policy, and Code of Conduct.
     </Toggle>

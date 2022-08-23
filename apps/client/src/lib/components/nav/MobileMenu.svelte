@@ -31,7 +31,7 @@
     }
 </script>
 
-<div class="flex flex-col w-full h-screen overflow-y-auto">
+<div class="flex flex-col w-full h-[calc(100vh-51px)] md:h-screen overflow-y-auto">
     <div class="menu-header">
         {#if $session.currProfile}
             <a href={`/profile/${$session.currProfile._id}`} class="login-link">
@@ -63,7 +63,7 @@
                 <span><InboxLine size="24px" class="mr-1" /></span>
                 <span>Inbox</span>
             </div>
-            <div class="w-10/12 mx-auto border-b border-white my-4"><!--separator--></div>
+            <div class="w-10/12 mx-auto border-b border-zinc-600 dark:border-white my-4"><!--separator--></div>
         {/if}
         <a href="/" class="menu-link border-zinc-600 dark:border-white">
             <span><Home5Line size="24px" class="mr-1" /></span>

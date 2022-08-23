@@ -30,7 +30,7 @@
         </li>
         {#if totalPages <= 10}
             {#each range(totalPages, 1) as page}
-                <li class:active={page === currPage} class="hidden md:block">
+                <li class:active={page === currPage} class="block">
                     <button on:click={() => changePage(page)}>
                         {page}
                     </button>
@@ -41,7 +41,7 @@
             <!--1234(5) with buffer of 2 displays 1, the selected 5, the two before it, and also 2 because "..." takes up the same space-->
             {#if currPage <= PAGE_BUFFER + 3}
                 {#each range(currPage, 1) as page}
-                    <li class:active={page === currPage} class="hidden md:block">
+                    <li class:active={page === currPage} class="block">
                         <button on:click={() => changePage(page)}>
                             {page}
                         </button>
@@ -49,24 +49,24 @@
                 {/each}
             <!--Otherwise, display 1 then "..." then the buffer before the current page, and current page-->
             {:else}
-                <li class:active={false} class="hidden md:block">
+                <li class:active={false} class="block">
                     <button on:click={() => changePage(1)}>
                         1
                     </button>
                 </li>
-                <li class:active={false} class="hidden md:block">
+                <li class:active={false} class="block">
                     <button>
                         <MoreLine/>
                     </button>
                 </li>
                 {#each range(PAGE_BUFFER, currPage - PAGE_BUFFER) as page}
-                    <li class:active={false} class="hidden md:block">
+                    <li class:active={false} class="block">
                         <button on:click={() => changePage(page)}>
                             {page}
                         </button>
                     </li>
                 {/each}
-                <li class:active={true} class="hidden md:block">
+                <li class:active={true} class="block">
                     <button on:click={() => changePage(currPage)}>
                         {currPage}
                     </button>
@@ -76,7 +76,7 @@
             <!--(5)6789 with buffer of 2 displays the two after the selected, the last, and also 8 because "..." takes up the same space-->
             {#if totalPages - currPage <= PAGE_BUFFER + 2}
                 {#each range(totalPages - currPage, currPage + 1) as page}
-                    <li class:active={false} class="hidden md:block">
+                    <li class:active={false} class="block">
                         <button on:click={() => changePage(page)}>
                             {page}
                         </button>
@@ -85,18 +85,18 @@
             <!--Otherwise displays buffer after current page, then "..." then last page-->
             {:else}
                 {#each range(PAGE_BUFFER, currPage + 1) as page}
-                    <li class:active={false} class="hidden md:block">
+                    <li class:active={false} class="block">
                         <button on:click={() => changePage(page)}>
                             {page}
                         </button>
                     </li>
                 {/each}
-                <li class:active={false} class="hidden md:block">
+                <li class:active={false} class="block">
                     <button>
                         <MoreLine/>
                     </button>
                 </li>
-                <li class:active={false} class="hidden md:block">
+                <li class:active={false} class="block">
                     <button on:click={() => changePage(totalPages)}>
                         {totalPages}
                     </button>
