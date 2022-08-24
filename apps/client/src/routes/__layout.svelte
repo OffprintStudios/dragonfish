@@ -41,6 +41,7 @@
     @function vh($quantity) {
         @return calc(var(--vh, 1vh) * #{$quantity});
     }
+
     :global(main) {
         color: var(--text-color);
         font-family: var(--body-text);
