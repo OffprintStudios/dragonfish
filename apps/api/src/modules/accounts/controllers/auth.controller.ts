@@ -26,6 +26,7 @@ export class AuthController {
         @Device() device: DeviceInfo,
         @Body() formInfo: AccountForm,
     ): Promise<LoginPackage> {
+        console.log('Server received registration info');
         return await this.auth.register(req, device, formInfo);
     }
 

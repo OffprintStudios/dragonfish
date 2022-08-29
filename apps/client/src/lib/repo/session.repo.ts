@@ -55,7 +55,9 @@ export async function login(payload: LoginForm): Promise<void> {
 }
 
 export async function register(payload: RegisterForm): Promise<void> {
+    console.log("Sending registration info to server");
     return auth.register(payload).then((loginPackage) => {
+        console.log("Updating session after finished registering");
         session.update((state) => ({
             ...state,
             account: loginPackage.account,

@@ -15,6 +15,7 @@
 
     const { form, data, errors } = createForm({
         onSubmit: async (values) => {
+            console.log("Submitting registration form");
             submitting = true;
             const formInfo: RegisterForm = {
                 email: values.email,
@@ -24,6 +25,7 @@
             };
 
             await register(formInfo).then(() => {
+                console.log("Finished registering, should redirect to profile screen");
                 submitting = false;
                 dispatch('register');
             });
@@ -60,7 +62,8 @@
             }
             return errors;
         },
-        onError: () => {
+        onError: (error) => {
+            console.log("Registration error: " + error);
             submitting = false;
         },
     });

@@ -83,14 +83,18 @@ export class AuthService {
     }
 
     public async register(req, device: DeviceInfo, formInfo: AccountForm): Promise<LoginPackage> {
+        console.log('Checking if invite code is valid: ' + formInfo.inviteCode);
         const validCode = await this.accountStore.findOneInviteCode(formInfo.inviteCode);
 
         if (validCode !== null) {
+            console.log('Invite code is valid: ' + formInfo.inviteCode);
             const addedUser = await this.accountStore.createAccount(formInfo);
             await this.accountStore.useInviteCode(formInfo.inviteCode, addedUser._id);
+            console.log(`New user created with ID: ${addedUser._id}`);
             this.logger.log(`New user created with ID: ${addedUser._id}`);
             return await this.login(addedUser, req, device, false);
         } else {
+            console.log('Invite code is invalid');
             throw new BadRequestException(`You need a valid invite code to register!`);
         }
     }
