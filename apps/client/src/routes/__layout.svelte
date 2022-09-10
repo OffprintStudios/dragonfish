@@ -8,6 +8,7 @@
     import { queryClient } from '$lib/util';
     import { Sidenav } from '$lib/components/nav/sidenav';
     import { Popup } from '$lib/components/nav/popup';
+    import MobileNav from '$lib/components/nav/MobileNav.svelte';
 
     onMount(async () => {
         await broadcastQueryClient({
@@ -38,7 +39,7 @@
         class:light={$app.darkMode === false}
         on:dragover|preventDefault
     >
-        <Nav />
+        <MobileNav />
         <Sidenav>
             <slot />
         </Sidenav>
