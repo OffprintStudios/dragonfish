@@ -19,8 +19,21 @@
 
 <QueryClientProvider client={queryClient}>
     <Popup />
+    <!-- Desktop -->
     <main
-        class="flex flex-col md:flex-row h-screen {$app.theme}"
+        class="flex-col hidden md:flex md:flex-row h-screen {$app.theme}"
+        class:dark={$app.darkMode === true}
+        class:light={$app.darkMode === false}
+        on:dragover|preventDefault
+    >
+        <Nav />
+        <Sidenav>
+            <slot />
+        </Sidenav>
+    </main>
+    <!-- Mobile -->
+    <main
+        class="flex flex-col md:hidden h-screen {$app.theme}"
         class:dark={$app.darkMode === true}
         class:light={$app.darkMode === false}
         on:dragover|preventDefault
