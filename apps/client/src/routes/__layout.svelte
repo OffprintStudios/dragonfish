@@ -34,7 +34,7 @@
     </main>
     <!-- Mobile -->
     <main
-        class="flex flex-col md:hidden h-screen {$app.theme}"
+        class="flex flex-col md:hidden min-h-screen {$app.theme}"
         class:dark={$app.darkMode === true}
         class:light={$app.darkMode === false}
         on:dragover|preventDefault
