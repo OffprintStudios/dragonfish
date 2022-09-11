@@ -82,14 +82,18 @@
                 <span class="link-icon"><MenuLine size="24px" /></span>
             </div>
         {/if}
-        <a href="/" class="flex-1">
+        <!-- <a href="/" class="flex-1">
             <img
                 src="/images/logo.png"
                 alt="logo"
                 style="max-width: 8rem; margin: 0 auto;"
                 class="relative z-30"
             />
-        </a>
+        </a> -->
+        <div
+            style="max-width: 8rem; margin: 0 auto;"
+            class="relative z-30"
+        />
         <a href="/search" class="link-mobile select-none cursor-pointer group">
             <span class="link-icon"><SearchEyeLine size="24px" /></span>
         </a>
@@ -98,13 +102,11 @@
 
 <style lang="scss">
     div.navbar {
-        @apply w-full md:h-screen md:w-[75px] z-50 relative;
-        background: var(--accent);
-        box-shadow: var(--dropshadow);
+        @apply w-full absolute;
     }
 
     a.link-mobile,
     div.link-mobile {
-        @apply block p-2 rounded-lg text-white transition transform flex flex-col items-center justify-center w-[50px] h-[50px] relative;
+        @apply block p-2 z-50 rounded-lg text-white transition transform flex flex-col items-center justify-center w-[50px] h-[50px];
     }
 </style>
