@@ -5,7 +5,7 @@
 </script>
 
 <div
-    class="flex flex-col md:flex-row w-full h-[calc(100vh-51px)] md:h-screen overflow-y-auto md:overflow-y-hidden"
+    class="flex flex-col md:flex-row w-full h-screen overflow-y-auto md:overflow-y-hidden"
 >
     <PageNav>
         <svelte:fragment slot="header">

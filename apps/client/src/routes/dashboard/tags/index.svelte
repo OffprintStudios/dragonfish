@@ -65,7 +65,7 @@
     <title>Tags Management &mdash; Offprint</title>
 </svelte:head>
 
-<div class="w-full h-[calc(100vh-51px)] md:h-screen overflow-y-auto flex flex-col mx-auto p-2">
+<div class="w-full h-screen overflow-y-auto flex flex-col mx-auto p-2">
     <div class="flex flex-wrap items-center justify-center text-2xl">
         {#each alphabeticalTags as section, index}
             {#if index !== 0}
