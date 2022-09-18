@@ -43,7 +43,7 @@
     <meta property="twitter:image" content="/images/offprint_icon.png" />
 </svelte:head>
 
-<div class="w-full md:h-screen overflow-y-auto">
+<div class="w-full h-screen overflow-y-auto">
     <div class="w-full mb-6">
         <div class="home-header hidden md:block">
             <img
