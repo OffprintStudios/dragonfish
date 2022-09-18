@@ -39,10 +39,9 @@
         class:light={$app.darkMode === false}
         on:dragover|preventDefault
     >
-        <MobileNav />
-        <Sidenav>
+        <MobileNav>
             <slot />
-        </Sidenav>
+        </MobileNav>
     </main>
     <SvelteToast />
 </QueryClientProvider>
