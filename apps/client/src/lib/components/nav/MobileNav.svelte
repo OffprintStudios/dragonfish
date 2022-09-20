@@ -100,11 +100,11 @@
         </a>
     </div>
 </div>
-<div class="flex-1 relative">
+<div class="relative">
     {#if $sidenav.isOpen}
-        <div class="absolute z-40 top-0 h-screen w-full flex">
+        <div class="fixed z-40 top-0 h-screen w-full flex">
             <div
-                class="absolute z-30 bg-neutral-900 w-full h-screen opacity-75 backdrop-blur-md"
+                class="fixed z-30 bg-neutral-900 w-full h-screen opacity-75 backdrop-blur-md"
                 transition:fade|local={{ delay: 0, duration: 100 }}
                 on:click={close}
             />
@@ -119,7 +119,7 @@
 
 <style lang="scss">
     div.navbar {
-        @apply w-full absolute;
+        @apply w-full z-50 fixed;
     }
 
     a.link-mobile,
