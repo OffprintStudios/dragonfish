@@ -44,7 +44,7 @@
     <meta property="twitter:image" content="/images/offprint_icon.png" />
 </svelte:head>
 
-<div class:h-screen={$sidenav.isOpen} class="w-full min-h-screen md:h-screen overflow-y-auto">
+<div class="w-full min-h-screen md:h-screen overflow-y-auto">
     <div class="w-full mb-6">
         <div class="home-header hidden md:block">
             <img
