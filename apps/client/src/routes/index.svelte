@@ -10,6 +10,7 @@
     import { ALPHA_MESSAGE } from '$lib/util';
     import { session } from '$lib/repo/session.repo';
     import { NotifyBanner } from '$lib/components/ui/misc';
+    import { sidenav } from '$lib/components/nav/sidenav/sidenav.state';
 
     const currSlogan = slogans[Math.floor(Math.random() * slogans.length)];
     const newWorks = useQuery('newWorks', () => fetchFirstNew($app.filter));
@@ -43,7 +44,7 @@
     <meta property="twitter:image" content="/images/offprint_icon.png" />
 </svelte:head>
 
-<div class="w-full min-h-screen md:h-screen overflow-y-auto">
+<div class:h-screen={$sidenav.isOpen} class="w-full min-h-screen md:h-screen overflow-y-auto">
     <div class="w-full mb-6">
         <div class="home-header hidden md:block">
             <img
