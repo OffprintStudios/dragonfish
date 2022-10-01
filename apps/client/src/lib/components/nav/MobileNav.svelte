@@ -127,7 +127,7 @@
         @apply block p-2 z-50 rounded-lg text-white transition transform flex flex-col items-center justify-center w-[50px] h-[50px];
     }
     div.menu {
-        @apply h-screen z-40 relative min-w-full max-w-full md:min-w-[24rem] md:max-w-[24rem];
+        @apply h-screen z-40 relative min-w-[24rem] max-w-[24rem];
         background: var(--background);
     }
 </style>
