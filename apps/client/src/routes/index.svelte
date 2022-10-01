@@ -11,6 +11,7 @@
     import { session } from '$lib/repo/session.repo';
     import { NotifyBanner } from '$lib/components/ui/misc';
     import { sidenav } from '$lib/components/nav/sidenav/sidenav.state';
+    import MobileBanner from '$lib/components/nav/MobileBanner.svelte';
 
     const currSlogan = slogans[Math.floor(Math.random() * slogans.length)];
     const newWorks = useQuery('newWorks', () => fetchFirstNew($app.filter));
@@ -55,6 +56,7 @@
             />
             <h2 class="text-white text-2xl relative z-30">{currSlogan}</h2>
         </div>
+        <MobileBanner />
         <div class="jumbo-carousel">
             <Jumbotron />
         </div>

@@ -119,12 +119,13 @@
 
 <style lang="scss">
     div.navbar {
-        @apply w-full z-50 fixed;
+        @apply w-full z-50 px-1 fixed;
     }
 
     a.link-mobile,
     div.link-mobile {
         @apply block p-2 z-50 rounded-lg text-white transition transform flex flex-col items-center justify-center w-[50px] h-[50px];
+        background: var(--accent-transparent);
     }
     div.menu {
         @apply h-screen z-40 relative min-w-[24rem] max-w-[24rem];
