@@ -184,7 +184,7 @@
     <div class="w-full min-h-screen md:h-screen overflow-y-auto">
         <div class="flex flex-col w-full">
             <div
-                class="top-0 flex items-center w-full p-2.5 shadow-2xl z-10 h-[56px]"
+                class="sticky top-0 flex items-center w-full p-2.5 shadow-2xl z-10 h-[56px]"
                 style="background: var(--accent)"
             >
                 <Button kind="primary" on:click={() => goto(baseUrl)}>
