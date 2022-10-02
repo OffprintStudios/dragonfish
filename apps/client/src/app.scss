@@ -41,7 +41,7 @@
 
 html,
 body {
-    @apply relative w-full h-full overflow-x-hidden overflow-y-hidden;
+    @apply relative min-w-full min-h-full overflow-x-hidden;
 }
 body {
     color: var(--text-color);

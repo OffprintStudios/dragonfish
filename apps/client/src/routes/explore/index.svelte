@@ -43,7 +43,7 @@
     <title>New Works &mdash; Offprint</title>
 </svelte:head>
 
-<div class="w-full h-[calc(100vh-51px)] md:h-screen md:overflow-y-auto">
+<div class="w-full min-h-screen md:h-screen md:overflow-y-auto">
     {#if !$session || !$session.account }
         <NotifyBanner
             message={ALPHA_MESSAGE}

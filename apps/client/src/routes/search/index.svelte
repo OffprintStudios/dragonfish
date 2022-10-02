@@ -115,7 +115,7 @@
     <title>Search &mdash; Offprint</title>
 </svelte:head>
 
-<div class="w-full h-[calc(100vh-51px)] md:h-screen overflow-y-auto">
+<div class="w-full min-h-screen md:h-screen overflow-y-auto">
     <div class="w-11/12 mx-auto max-w-4xl">
         <form
             class="my-10 w-full bg-zinc-300 dark:bg-zinc-700 dark:highlight-shadowed rounded-lg"

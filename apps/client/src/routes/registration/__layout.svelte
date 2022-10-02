@@ -9,7 +9,7 @@
 </svelte:head>
 
 <main
-    class="h-screen w-full flex flex-col items-center justify-center {$app.theme}"
+    class="min-h-screen md:h-screen w-full flex flex-col items-center justify-center {$app.theme}"
     class:dark={$app.darkMode === true}
     class:light={$app.darkMode === false}
 >

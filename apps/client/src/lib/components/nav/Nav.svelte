@@ -11,7 +11,6 @@
         AddBoxLine,
         Dashboard2Line,
         SearchEyeLine,
-        MenuLine,
         GroupLine,
     } from 'svelte-remixicon';
     import { open, close, sidenav } from '$lib/components/nav/sidenav/sidenav.state';
@@ -215,36 +214,6 @@
             <span class="link-name">Settings</span>
         </a>
     </div>
-    <div class="p-1 flex items-center block md:hidden">
-        {#if currentMenu === MenuOptions.MobileMenu}
-            <div
-                class="link-mobile select-none cursor-pointer group"
-                class:active={currentMenu === MenuOptions.MobileMenu}
-                on:click={() => toggleMenu(MenuOptions.NoMenu)}
-            >
-                <span class="link-icon"><CloseLine size="24px" /></span>
-            </div>
-        {:else}
-            <div
-                class="link-mobile select-none cursor-pointer group"
-                class:active={currentMenu === MenuOptions.MobileMenu}
-                on:click={() => toggleMenu(MenuOptions.MobileMenu)}
-            >
-                <span class="link-icon"><MenuLine size="24px" /></span>
-            </div>
-        {/if}
-        <a href="/" class="flex-1">
-            <img
-                src="/images/logo.png"
-                alt="logo"
-                style="max-width: 8rem; margin: 0 auto;"
-                class="relative z-30"
-            />
-        </a>
-        <a href="/search" class="link-mobile select-none cursor-pointer group">
-            <span class="link-icon"><SearchEyeLine size="24px" /></span>
-        </a>
-    </div>
 </div>
 
 <style lang="scss">
@@ -287,10 +256,5 @@
             width: 57px;
             height: 57px;
         }
-    }
-
-    a.link-mobile,
-    div.link-mobile {
-        @apply block p-2 rounded-lg text-white transition transform flex flex-col items-center justify-center w-[50px] h-[50px] relative;
     }
 </style>

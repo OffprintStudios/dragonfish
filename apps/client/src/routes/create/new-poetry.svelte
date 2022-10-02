@@ -170,7 +170,7 @@
     <title>Create Poetry &mdash; Offprint</title>
 </svelte:head>
 
-<div class="w-full h-screen overflow-y-auto">
+<div class="w-full min-h-screen md:h-screen overflow-y-auto">
     <div class="max-w-4xl w-11/12 md:w-7/12 mx-auto my-10 mb-6">
         <h1 class="text-center text-4xl font-medium">Create New Poetry</h1>
         <form use:form>

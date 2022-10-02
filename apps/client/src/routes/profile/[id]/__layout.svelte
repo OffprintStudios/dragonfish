@@ -79,7 +79,7 @@
     );
 </script>
 
-<div class="flex flex-col w-full h-screen overflow-y-auto">
+<div class="flex flex-col w-full min-h-screen md:h-screen overflow-y-auto">
     <div class="profile-header">
         {#if $profile && $profile.profile}
             {#if $profile.profile.coverPic}

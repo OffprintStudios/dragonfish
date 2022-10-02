@@ -12,7 +12,7 @@
 
 {#if $session.currProfile}
     {#if $library.isLoading}
-        <div class="h-screen flex-1 flex flex-col items-center justify-center">
+        <div class="min-h-screen md:h-screen flex-1 flex flex-col items-center justify-center">
             <div class="flex items-center">
                 <Loader5Line class="mr-2" size="24px" />
                 <span class="uppercase font-bold tracking-widest">Loading...</span>
@@ -27,7 +27,7 @@
             </p>
         </div>
     {:else if $library.data.length > 0}
-        <div class="w-full overflow-y-auto">
+        <div class="min-h-screen md:h-screen w-full overflow-y-auto">
             <div class="w-11/12 mx-auto my-6 max-w-7xl">
                 <div
                     class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-3 mb-6"

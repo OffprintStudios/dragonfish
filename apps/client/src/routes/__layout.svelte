@@ -8,6 +8,7 @@
     import { queryClient } from '$lib/util';
     import { Sidenav } from '$lib/components/nav/sidenav';
     import { Popup } from '$lib/components/nav/popup';
+    import MobileNav from '$lib/components/nav/MobileNav.svelte';
 
     onMount(async () => {
         await broadcastQueryClient({
@@ -19,8 +20,9 @@
 
 <QueryClientProvider client={queryClient}>
     <Popup />
+    <!-- Desktop -->
     <main
-        class="flex flex-col md:flex-row h-screen {$app.theme}"
+        class="flex-col hidden md:flex md:flex-row h-screen {$app.theme}"
         class:dark={$app.darkMode === true}
         class:light={$app.darkMode === false}
         on:dragover|preventDefault
@@ -29,6 +31,17 @@
         <Sidenav>
             <slot />
         </Sidenav>
+    </main>
+    <!-- Mobile -->
+    <main
+        class="flex flex-col md:hidden min-h-screen {$app.theme}"
+        class:dark={$app.darkMode === true}
+        class:light={$app.darkMode === false}
+        on:dragover|preventDefault
+    >
+        <MobileNav>
+            <slot />
+        </MobileNav>
     </main>
     <SvelteToast />
 </QueryClientProvider>

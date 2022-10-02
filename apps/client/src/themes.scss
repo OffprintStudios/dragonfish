@@ -4,6 +4,7 @@
   --accent: rgb(205, 86, 84);
   --accent-dark: rgb(133, 56, 54);
   --accent-light: rgb(221, 142, 142);
+  --accent-transparent: rgb(205, 86, 84, 0.2);
   @apply transition-all;
 }
 
@@ -11,6 +12,7 @@
   --accent: rgb(98, 150, 209);
   --accent-dark: rgb(64, 98, 136);
   --accent-light: rgb(152, 187, 224);
+  --accent-transparent: rgb(98, 150, 209, 0.2);
   @apply transition-all;
 }
 
@@ -18,6 +20,7 @@
   --accent: rgb(145, 82, 169);
   --accent-dark: rgb(95, 53, 110);
   --accent-light: rgb(183, 142, 198);
+  --accent-transparent: rgb(145, 82, 169, 0.2);
   @apply transition-all;
 }
 
@@ -25,6 +28,7 @@
   --accent: rgb(204, 118, 60);
   --accent-dark: rgb(133, 77, 38);
   --accent-light: rgb(222, 165, 123);
+  --accent-transparent: rgb(204, 118, 60, 0.2);
   @apply transition-all;
 }
 
@@ -32,6 +36,7 @@
   --accent: rgb(79, 126, 53);
   --accent-dark: rgb(50, 82, 34);
   --accent-light: rgb(137, 171, 121);
+  --accent-transparent: rgb(79, 126, 53, 0.2);
   @apply transition-all;
 }
 
