@@ -37,7 +37,7 @@
     });
 </script>
 
-<div class="w-full h-screen overflow-y-auto flex flex-col">
+<div class="w-full min-h-screen md:h-screen overflow-y-auto flex flex-col">
     <div class="w-full">
         {#if $followsList.isLoading}
             <div class="h-32 flex flex-col items-center justify-center">

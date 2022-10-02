@@ -245,7 +245,7 @@
 </svelte:head>
 
 {#if $session && $content && $content.content}
-    <div class="w-full h-screen overflow-y-auto">
+    <div class="w-full min-h-screen md:h-screen overflow-y-auto">
         <div class="mx-auto max-w-4xl my-6">
             {#if $content.content.meta.banner}
                 <div class="mx-auto w-11/12 md:w-full rounded-t-lg overflow-hidden">

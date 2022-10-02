@@ -33,14 +33,14 @@
 </script>
 
 {#if $thisShelf.isLoading}
-    <div class="h-screen flex flex-col items-center justify-center">
+    <div class="min-h-screen md:h-screen flex flex-col items-center justify-center">
         <div class="flex items-center">
             <Loader5Line class="mr-2 animate-spin" size="24px" />
             <span class="text-lg uppercase font-bold tracking-widest">Loading...</span>
         </div>
     </div>
 {:else if $thisShelf.isError}
-    <div class="h-screen flex flex-col items-center justify-center">
+    <div class="min-h-screen md:h-screen flex flex-col items-center justify-center">
         <div class="flex items-center">
             <CloseLine class="mr-2" size="24px" />
             <span class="text-lg uppercase font-bold tracking-widest">
@@ -49,7 +49,7 @@
         </div>
     </div>
 {:else}
-    <div class="w-11/12 mx-auto md:max-w-4xl mb-6">
+    <div class="min-h-screen md:h-screen w-11/12 mx-auto md:max-w-4xl mb-6">
         <BookshelfHeader shelf={$thisShelf.data} />
         {#if $shelfItems.isLoading}
             <div class="h-96 w-full flex flex-col items-center justify-center">

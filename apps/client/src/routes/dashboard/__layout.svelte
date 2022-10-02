@@ -42,7 +42,7 @@
     import PageNav from '$lib/components/nav/PageNav.svelte';
 </script>
 
-<div class="flex w-full h-screen">
+<div class="flex w-full min-h-screen md:h-screen">
     <PageNav>
         <svelte:fragment slot="header">
             <h3>Dashboard</h3>
@@ -102,7 +102,7 @@
             {/if}
         </svelte:fragment>
     </PageNav>
-    <div class="w-full h-screen overflow-y-auto">
+    <div class="w-full min-h-screen md:h-screen overflow-y-auto">
         <slot />
     </div>
 </div>

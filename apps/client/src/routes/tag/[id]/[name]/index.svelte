@@ -102,7 +102,7 @@
     {/if}
 </svelte:head>
 
-<div class="w-full h-screen overflow-y-auto">
+<div class="w-full min-h-screen md:h-screen overflow-y-auto">
     {#if tagsTree}
         <div class="tag-header py-6">
             <div class="w-11/12 mx-auto">

@@ -61,7 +61,7 @@
 </svelte:head>
 
 {#if $content && $content.content}
-    <div class="w-full h-screen overflow-y-auto">
+    <div class="w-full min-h-screen md:h-screen overflow-y-auto">
         <WorkBanner />
         {#if !$session || !$session.account }
             <NotifyBanner

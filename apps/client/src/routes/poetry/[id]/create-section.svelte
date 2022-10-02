@@ -117,7 +117,7 @@
     });
 </script>
 
-<div class="w-full h-screen overflow-y-auto">
+<div class="w-full min-h-screen md:h-screen overflow-y-auto">
     <div class="flex flex-col w-full">
         <div class="sticky flex items-center w-full p-2.5 mb-6" style="background: var(--accent)">
             <Button kind="primary" on:click={() => goto(baseUrl)}>

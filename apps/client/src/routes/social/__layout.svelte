@@ -5,7 +5,7 @@
 </script>
 
 <div
-    class="flex flex-col md:flex-row w-full h-screen overflow-y-auto md:overflow-y-hidden"
+    class="flex flex-col md:flex-row w-full min-h-screen md:h-screen overflow-y-auto md:overflow-y-hidden"
 >
     <PageNav>
         <svelte:fragment slot="header">
@@ -23,7 +23,7 @@
             </a>
         </svelte:fragment>
     </PageNav>
-    <div class="flex-1 h-screen overflow-y-auto">
+    <div class="flex-1 min-h-screen md:h-screen overflow-y-auto">
         <slot />
     </div>
 </div>
