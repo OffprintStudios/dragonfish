@@ -18,23 +18,19 @@
             let savedLetter: string;
             let currentAlphaTags: AlphabeticalTags;
             for (const tag of tagTrees) {
-                console.log("Checking " + tag.name);
                 // If tag doesn't have any works, then skip
                 if (!tag.taggedWorks) {
-                    console.log(tag.name + " has no tagged works");
                     continue;
                 }
                 // If first letter doesn't match saved letter, save letter and move to new section
                 // Then either way, add to that letter's array
                 if (savedLetter !== tag.name[0].toUpperCase()) {
-                    console.log("New letter, " + tag.name[0].toUpperCase());
                     if (currentAlphaTags) {
                         alphabeticalTags = [... alphabeticalTags, currentAlphaTags]
                     }
                     savedLetter = tag.name[0].toUpperCase();
                     currentAlphaTags = new AlphabeticalTags(tag.name[0].toUpperCase());
                 }
-                console.log("Adding tag " + tag.name);
                 currentAlphaTags.tags.push(tag);
             }
             // Add last set
@@ -59,7 +55,7 @@
     <title>Tags &mdash; Offprint</title>
 </svelte:head>
 
-<div class="w-full h-screen md:overflow-y-auto flex flex-col mx-auto p-2">
+<div class="w-full min-h-screen md:h-screen md:overflow-y-auto flex flex-col mx-auto p-2">
     <div class="flex flex-wrap items-center justify-center text-2xl">
         {#each alphabeticalTags as section, index}
             {#if index !== 0}
