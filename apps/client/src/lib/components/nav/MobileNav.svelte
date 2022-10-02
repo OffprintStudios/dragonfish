@@ -14,6 +14,7 @@
     import { fetchAllUnread } from '$lib/services/activity.service';
     import MobileMenu from '$lib/components/nav/MobileMenu.svelte';
     import { fly, fade } from 'svelte/transition';
+    import MobileBanner from './MobileBanner.svelte';
 
     enum MenuOptions {
         NoMenu,
@@ -99,6 +100,7 @@
         </div>
     {/if}
 
+    <MobileBanner />
     <slot />
 </div>
 
