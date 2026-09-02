@@ -16,3 +16,8 @@ Cargo.lock
 # System
 .DS_Store
 .env
+node_modules/
+.idea
+.vscode
+.zed
+.devcontainer
