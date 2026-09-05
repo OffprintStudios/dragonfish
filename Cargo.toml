@@ -11,6 +11,7 @@ leptos = { version = "0.8.20", features = ["nightly"] }
 leptos_router = { version = "0.8.15", features = ["nightly"] }
 axum = { version = "0.8.9", optional = true, features = ["macros", "tokio"] }
 axum-macros = { version = "0.5.1", optional = true }
+tower-cookies = { version = "0.11.0", features = ["private"], optional = true }
 console_error_panic_hook = { version = "0.1", optional = true }
 leptos_axum = { version = "0.8.10", optional = true }
 leptos_meta = { version = "0.8.6" }
@@ -18,11 +19,26 @@ tokio = { version = "1.53.1", features = ["rt-multi-thread", "macros"], optional
 wasm-bindgen = { version = "=0.2.127", optional = true }
 dotenvy = { version = "0.15.7", optional = true }
 cfg-if = { version = "1.0.4" }
+strum = { version = "0.28.0", features = ["derive"] }
+anyhow = { version = "1.0.104" }
+thiserror = { version = "2.0.20" }
+codee = { version = "0.3.5" }
+lazyrand = { version = "0.1.13" }
+slug = { version = "0.1.6" }
+uuid = { version = "1.25.0", features = ["v4", "serde", "js"] }
+email_address = { version = "0.2.9", optional = true }
 sqlx = { version = "0.9.0", optional = true, default-features = false, features = ["runtime-tokio", "tls-native-tls", "postgres", "macros", "uuid", "chrono", "json", "derive"] }
+apalis = { version = "1.0.0-rc.9", features = ["prometheus", "retry", "timeout", "limit", "filter", "catch-panic"], optional = true }
+apalis-redis = { version = "1.0.0-rc.8", optional = true }
+resend-rs = { version = "0.32.1", optional = true }
 serde = { version = "1.0.229", features = ["derive"] }
 chrono = { version = "0.4.45", features = ["serde", "wasmbind", "js-sys"] }
 argon2 = { version = "0.6.0", optional = true }
 ammonia = { version = "4.1.4", optional = true }
+leptos-use = { version = "0.19.2" }
+leptos_icons = { version = "0.7.1" }
+icondata = { version = "0.7.0", default-features = false, features = ["tabler-icons"] }
+comrak = { version = "0.54.0", default-features = false, features = ["cli", "syntect-fancy", "bon"] }
 
 [features]
 hydrate = [
@@ -33,15 +49,21 @@ hydrate = [
 ssr = [
     "dep:axum",
     "dep:axum-macros",
+    "dep:tower-cookies",
     "dep:tokio",
     "dep:leptos_axum",
     "dep:dotenvy",
     "dep:sqlx",
+    "dep:apalis",
+    "dep:apalis-redis",
+    "dep:resend-rs",
     "dep:argon2",
     "dep:ammonia",
     "leptos/ssr",
     "leptos_meta/ssr",
     "leptos_router/ssr",
+    "leptos-use/ssr",
+    "leptos-use/axum"
 ]
 
 # Defines a size-optimized profile for the WASM bundle in release mode
