@@ -1,3 +1,5 @@
+pub mod models;
+
 #[cfg(feature = "ssr")]
 pub async fn connect_to_db() -> sqlx::PgPool {
     let database_url = std::env::var("DATABASE_URL").expect(

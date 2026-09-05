@@ -1,9 +1,13 @@
+use crate::errors::AppError;
 use leptos::prelude::*;
 use leptos_meta::{provide_meta_context, MetaTags, Stylesheet, Title};
 use leptos_router::{
     components::{Route, Router, Routes},
     StaticSegment,
 };
+
+/// The result of any possible server function
+pub type AppResult<T> = Result<T, AppError>;
 
 pub fn shell(options: LeptosOptions) -> impl IntoView {
     view! {
