@@ -51,6 +51,7 @@ cfg_if::cfg_if! {
     if #[cfg(feature = "ssr")] {
         use sqlx::Error as SqlxError;
         use argon2::password_hash::Error as PasswordHashError;
+        use argon2::password_hash::phc::Error as PhcError;
         use tokio::task::JoinError;
 
         impl From<SqlxError> for AppError {
@@ -64,6 +65,12 @@ cfg_if::cfg_if! {
 
         impl From<PasswordHashError> for AppError {
             fn from(_: PasswordHashError) -> Self {
+                Self::ServerError
+            }
+        }
+
+        impl From<PhcError> for AppError {
+            fn from(_: PhcError) -> Self {
                 Self::ServerError
             }
         }
