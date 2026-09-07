@@ -1,7 +1,6 @@
 use super::role::Role;
 use crate::app::AppResult;
 use crate::errors::AppError;
-use argon2::password_hash::generate_salt;
 use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
