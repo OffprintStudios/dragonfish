@@ -137,15 +137,37 @@ impl Session {
         expiration: DateTime<Utc>,
         db: &PgPool,
     ) -> AppResult<String> {
-        let record = sqlx::query!(
-            r#"INSERT INTO sessions (account_id, expires_on) VALUES ($1, $2) RETURNING id;"#,
-            account_id,
-            expiration,
-        )
-        .fetch_one(db)
-        .await?;
+        let headers = extract::<axum::http::HeaderMap>()
+            .await
+            .map_err(|_| AppError::ServerError)?;
+        let ua_string = headers
+            .get(axum::http::header::USER_AGENT)
+            .and_then(|value| value.to_str().ok())
+            .unwrap_or("");
 
-        Ok(record.id.to_string())
+        let parser = woothee::parser::Parser::new();
+        if let Some(user_agent) = parser.parse(ua_string) {
+            let record = sqlx::query!(
+                r#"INSERT INTO sessions (account_id, browser, device, os, expires_on) VALUES ($1, $2, $3, $4, $5) RETURNING id;"#,
+                account_id,
+                user_agent.name,
+                user_agent.category,
+                user_agent.os,
+                expiration
+            ).fetch_one(db).await?;
+
+            Ok(record.id.to_string())
+        } else {
+            let record = sqlx::query!(
+                r#"INSERT INTO sessions (account_id, expires_on) VALUES ($1, $2) RETURNING id;"#,
+                account_id,
+                expiration,
+            )
+            .fetch_one(db)
+            .await?;
+
+            Ok(record.id.to_string())
+        }
     }
 
     /// Verifies an active session via database lookup and returns the corresponding account.
