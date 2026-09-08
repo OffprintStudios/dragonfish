@@ -1,0 +1,328 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Slab:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap");
+
+@import "tailwindcss";
+
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+@plugin "tailwindcss-motion";
+@plugin "tailwind-scrollbar";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+    --color-accent: rgb(var(--accent));
+    --color-accent-light: rgb(var(--accent-light));
+    --color-accent-dark: rgb(var(--accent-dark));
+
+    --font-body: "Inter", sans-serif;
+    --font-header: "Josefin Sans", sans-serif;
+    --font-serif: "Josefin Slab", serif;
+
+    --bg-pattern: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.2' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+@utility default-shadow {
+    box-shadow: var(--dropshadow);
+}
+
+@utility small-caps {
+    font-variant-caps: small-caps;
+}
+
+@utility all-small-caps {
+    font-variant-caps: all-small-caps;
+}
+
+@utility titling-caps {
+    font-variant-caps: titling-caps;
+}
+
+@utility historical-forms {
+    font-variant-alternates: historical-forms;
+}
+
+html {
+    @apply transition-all;
+}
+
+body {
+    @apply transition-all;
+    font-size: 16px;
+}
+
+main,
+main.light {
+    @apply 2xl:max-w-360 w-full mx-auto 2xl:border-x border-zinc-300 dark:border-zinc-600 shadow-2xl;
+    position: relative;
+    color: var(--text-color);
+    font-family: var(--body-text), sans-serif;
+    color: var(--text-color);
+    background: var(--background);
+    background-image: var(--bg-pattern);
+    --dropshadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+main.dark {
+    @apply transition-all;
+    /* Dark Mode settings */
+    --background: rgb(39, 39, 39);
+    --nav-background: rgb(47, 46, 46);
+    --dropshadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    --text-color: rgb(245, 245, 245);
+    --borders: rgb(255, 255, 255);
+    --code-background: rgb(58, 58, 58);
+    --placeholder: rgba(127, 127, 127, 0.6);
+    --select-bg: rgba(63, 63, 70, 1);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    @apply leading-normal relative font-medium text-accent font-header;
+}
+
+div.empty {
+    @apply flex flex-col items-center justify-center my-12 w-11/12 mx-auto max-w-lg;
+}
+
+div.empty > h3 {
+    @apply font-bold text-3xl text-center;
+}
+
+div.empty > p {
+    @apply mt-4 text-center;
+}
+
+.no-bottom-border {
+    border-bottom-right-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-width: 0 !important;
+}
+
+/* Themes */
+
+.crimson {
+    --accent: 205, 86, 84;
+    --accent-dark: 133, 56, 54;
+    --accent-light: 221, 142, 142;
+    @apply transition-all;
+}
+
+.aqua {
+    --accent: 98, 150, 209;
+    --accent-dark: 64, 98, 136;
+    --accent-light: 152, 187, 224;
+    @apply transition-all;
+}
+
+.royal {
+    --accent: 145, 82, 169;
+    --accent-dark: 95, 53, 110;
+    --accent-light: 183, 142, 198;
+    @apply transition-all;
+}
+
+.autumn {
+    --accent: 204, 118, 60;
+    --accent-dark: 133, 77, 38;
+    --accent-light: 222, 165, 123;
+    @apply transition-all;
+}
+
+.field {
+    --accent: 79, 126, 53;
+    --accent-dark: 50, 82, 34;
+    --accent-light: 137, 171, 121;
+    @apply transition-all;
+}
+
+/* Articles */
+article {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: rgb(var(--accent)) !important;
+    }
+}
+
+/* Button */
+.btn,
+.lnk {
+    @apply flex items-center justify-center px-2.5 py-2 transition transform focus:ring-0 m-0 text-base select-none rounded-lg relative all-small-caps font-semibold z-5 cursor-pointer;
+    letter-spacing: 1px;
+    color: var(--text-color);
+    font-family: var(--body-text), sans-serif;
+
+    &:hover {
+        @apply text-white no-underline bg-zinc-500/25;
+    }
+
+    &:active {
+        @apply text-white scale-95 cursor-pointer shadow-inner;
+        background: rgb(var(--accent-dark));
+    }
+
+    &.primary,
+    &.active {
+        @apply text-white;
+        background: rgb(var(--accent));
+    }
+
+    &.primary:hover,
+    &.active:hover {
+        background: rgb(var(--accent-light));
+    }
+
+    &.primary.active {
+        @apply text-white;
+        background: rgb(var(--accent-light));
+    }
+
+    & > span.button-icon {
+        @apply mr-1.5 relative;
+    }
+
+    & > span.button-icon.no-text {
+        @apply mr-0 py-1;
+    }
+
+    & > span.button-icon.variable-text {
+        @apply mr-0 lg:mr-1.5 relative;
+    }
+
+    & > span.button-text {
+        @apply relative text-sm -top-[0.05rem];
+    }
+
+    & > span.button-small-text {
+        @apply text-sm font-medium;
+    }
+}
+
+:-moz-any(.btn) {
+    @apply text-sm;
+}
+
+/* Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 22px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    @apply bg-zinc-400/50;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: rgb(var(--accent));
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px rgb(var(--accent));
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(28px);
+    -ms-transform: translateX(28px);
+    transform: translateX(28px);
+}
+
+/* Animations */
+@keyframes modal-show {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Articles */
+article {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: rgb(var(--accent)) !important;
+    }
+}
+
+/* Role Badge */
+div.role {
+    @apply text-white rounded-md p-1 m-0.5 flex items-center w-fit;
+    &.admin {
+        @apply bg-red-700;
+    }
+
+    &.moderator {
+        @apply bg-yellow-400;
+    }
+
+    &.chat-moderator {
+        @apply bg-yellow-700;
+    }
+
+    &.maintainer {
+        @apply bg-green-800;
+    }
+
+    &.contributor {
+        @apply bg-blue-500;
+    }
+
+    &.work-approver {
+        @apply bg-purple-600;
+    }
+
+    &.vip {
+        @apply bg-green-400;
+    }
+
+    &.supporter {
+        @apply bg-pink-600;
+    }
+
+    &.user {
+        @apply bg-slate-400/50 backdrop-blur;
+    }
+}
