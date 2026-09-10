@@ -12,3 +12,6 @@ pub const MAX_SESSION_DURATION: i64 = 60 * 60 * 24 * 30;
 
 /// The default name of the session cookie
 pub const SESSION_TOKEN_NAME: &str = "session-token";
+
+/// The default name of the active profile cookie
+pub const ACTIVE_PROFILE_TOKEN: &str = "active-profilew";

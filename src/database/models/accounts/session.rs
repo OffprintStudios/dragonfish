@@ -3,8 +3,11 @@ use super::otp::{Otp, OtpKind};
 use super::role::Role;
 use crate::app::AppResult;
 use crate::constants::{
-    MAX_SESSION_DURATION, MIN_SESSION_DURATION, SECRET_KEY, SESSION_TOKEN_NAME,
+    ACTIVE_PROFILE_TOKEN, MAX_SESSION_DURATION, MIN_SESSION_DURATION, SECRET_KEY,
+    SESSION_TOKEN_NAME,
 };
+use crate::context::AuthContext;
+use crate::database::models::profiles::{Profile, ProfileObject};
 use crate::errors::AppError;
 use crate::queues::email::{Email, EmailKind};
 use crate::state::AppState;
@@ -14,7 +17,7 @@ use apalis_redis::RedisStorage;
 use axum::Extension;
 use chrono::{DateTime, Duration, Utc};
 use leptos::prelude::*;
-use leptos_axum::extract;
+use leptos_axum::{extract, redirect};
 use serde::{Deserialize, Serialize};
 use sqlx::{FromRow, PgPool};
 use std::ops::Add;
@@ -129,6 +132,51 @@ impl Session {
         cookies.remove(session);
 
         Ok(())
+    }
+
+    /// Returns the authentication context for the current session.
+    pub async fn get_auth_context() -> AppResult<AuthContext> {
+        let key = SECRET_KEY.get().unwrap();
+        let state = expect_context::<AppState>();
+        let cookies = leptos_axum::extract::<Cookies>()
+            .await
+            .map_err(|_| AppError::ServerError)?
+            .private(key);
+
+        let Some(session_id) = cookies
+            .get(SESSION_TOKEN_NAME)
+            .map(|c| c.value().to_owned())
+        else {
+            return Ok(AuthContext::default());
+        };
+
+        let parsed_session = Uuid::parse_str(&session_id).map_err(|_| AppError::Unauthorized)?;
+        let account = Self::verify_session(parsed_session, &state.db).await?;
+        let all_profiles_fut = Profile::fetch_owned(account.id, &state.db).await?;
+        let mut all_profiles = Vec::<ProfileObject>::new();
+        for profile in all_profiles_fut {
+            let po = profile.to_object(&state.db).await;
+            all_profiles.push(po);
+        }
+
+        let Some(active_profile_id) = cookies
+            .get(ACTIVE_PROFILE_TOKEN)
+            .map(|c| c.value().to_owned())
+        else {
+            redirect("/switch-profile");
+            return Ok(AuthContext::default());
+        };
+
+        let active_profile = all_profiles
+            .iter()
+            .find(|p| p.id == active_profile_id)
+            .cloned();
+
+        Ok(AuthContext {
+            account_id: Some(account.id),
+            all_profiles,
+            active_profile,
+        })
     }
 
     /// Starts a new session, adding a `Session` to the database and returning its ID.
