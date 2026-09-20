@@ -3,8 +3,7 @@ use super::otp::{Otp, OtpKind};
 use super::role::Role;
 use crate::app::AppResult;
 use crate::constants::{
-    ACTIVE_PROFILE_TOKEN, MAX_SESSION_DURATION, MIN_SESSION_DURATION, SECRET_KEY,
-    SESSION_TOKEN_NAME,
+    MAX_SESSION_DURATION, MIN_SESSION_DURATION, SECRET_KEY, SESSION_TOKEN_NAME,
 };
 use crate::context::AuthContext;
 use crate::database::models::profiles::{Profile, ProfileObject};
@@ -17,7 +16,7 @@ use apalis_redis::RedisStorage;
 use axum::Extension;
 use chrono::{DateTime, Duration, Utc};
 use leptos::prelude::*;
-use leptos_axum::{extract, redirect};
+use leptos_axum::extract;
 use serde::{Deserialize, Serialize};
 use sqlx::{FromRow, PgPool};
 use std::ops::Add;
@@ -155,27 +154,14 @@ impl Session {
         let all_profiles_fut = Profile::fetch_owned(account.id, &state.db).await?;
         let mut all_profiles = Vec::<ProfileObject>::new();
         for profile in all_profiles_fut {
-            let po = profile.to_object(&state.db).await;
-            all_profiles.push(po);
+            let object = profile.to_object(&state.db).await;
+            all_profiles.push(object);
         }
-
-        let Some(active_profile_id) = cookies
-            .get(ACTIVE_PROFILE_TOKEN)
-            .map(|c| c.value().to_owned())
-        else {
-            redirect("/switch-profile");
-            return Ok(AuthContext::default());
-        };
-
-        let active_profile = all_profiles
-            .iter()
-            .find(|p| p.id == active_profile_id)
-            .cloned();
 
         Ok(AuthContext {
             account_id: Some(account.id),
             all_profiles,
-            active_profile,
+            active_profile: None,
         })
     }
 

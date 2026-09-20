@@ -46,6 +46,7 @@ pub async fn log_in(
 
     Session::log_in(email, password, remember_me.is_some_and(|v| v == "on"))
         .await
+        .map(|_| leptos_axum::redirect("/switch-profile"))
         .map_err(|e| match e {
             AppError::BadRequest => LogInError::CredentialsInvalid,
             AppError::Forbidden => LogInError::EmailNotConfirmed,

@@ -88,44 +88,59 @@ pub fn ForgotPasswordPage() -> impl IntoView {
         <div class="flex flex-col items-center justify-center bg-zinc-200/75 dark:bg-zinc-700/75 backdrop-blur-lg md:rounded-xl max-w-md p-6 md:p-12 w-full h-full md:h-fit overflow-y-scroll scrollbar-none" style="box-shadow: var(--dropshadow);">
             <Show
                 when=move || token().is_some()
-                fallback=move || view! {
-                    <ActionForm attr:class="flex flex-col w-full" action=send_code_submit>
-                        <h1 class="text-3xl text-center">"Forgot Your Password?"</h1>
-                        <Show when=has_code_success>
-                            <div class="text-sm flex flex-col bg-green-600/25 border border-green-600/75 rounded-xl p-4 mb-4">
-                                <div class="flex items-center mb-1">
-                                    <span class="mr-1"><Icon icon=TablerIcon::TbInfoCircleOutline width="20px" height="20px" /></span>
-                                    <span class="font-bold">"Head's Up!"</span>
+                fallback=move || {
+                    let navigate = leptos_router::hooks::use_navigate();
+                    let go_back = move |_| {
+                        navigate("/log-in", Default::default());
+                    };
+
+                    view! {
+                        <ActionForm attr:class="flex flex-col w-full" action=send_code_submit>
+                            <h1 class="text-3xl text-center">"Forgot Your Password?"</h1>
+                            <Show when=has_code_success>
+                                <div class="text-sm flex flex-col bg-green-600/25 border border-green-600/75 rounded-xl p-4 mb-4">
+                                    <div class="flex items-center mb-1">
+                                        <span class="mr-1"><Icon icon=TablerIcon::TbInfoCircleOutline width="20px" height="20px" /></span>
+                                        <span class="font-bold">"Head's Up!"</span>
+                                    </div>
+                                    <span>"If you've got an account with us, we've sent instructions on how to reset your password."</span>
                                 </div>
-                                <span>"If you've got an account with us, we've sent instructions on how to reset your password."</span>
-                            </div>
-                        </Show>
-                        <span class="text-zinc-500 dark:text-zinc-400 text-lg font-bold items-center text-center py-2 font-header">
-                            "Enter your email address"
-                        </span>
-                        <span class="text-zinc-500 dark:text-zinc-400 text-lg font-bold items-center text-center pb-8">
-                            "We'll send you instructions on how to reset your password"
-                        </span>
-                        <TextField
-                            name="email"
-                            label="Email Address"
-                            kind=TextFieldType::Email
-                            placeholder="somebody@example.net"
-                            autocomplete="email"
-                            required=true
-                        />
-                        <div class="my-3"></div>
-                        <Button
-                            id="send-email-button"
-                            title="Send Reset Email"
-                            type_of=ButtonType::Submit
-                            primary=true
-                            full_width=true
-                        >
-                            <span class="button-icon"><Icon icon=TablerIcon::TbMailFastOutline /></span>
-                            <span class="button-text">"Send Reset Email"</span>
-                        </Button>
-                    </ActionForm>
+                            </Show>
+                            <span class="text-zinc-500 dark:text-zinc-400 text-lg font-bold items-center text-center pt-2 pb-4 font-header">
+                                "Let's get you back in the game"
+                            </span>
+                            <TextField
+                                name="email"
+                                label="Email Address"
+                                kind=TextFieldType::Email
+                                placeholder="somebody@example.net"
+                                autocomplete="email"
+                                required=true
+                            />
+                            <div class="my-2"></div>
+                            <Button
+                                id="send-email-button"
+                                title="Send Reset Email"
+                                type_of=ButtonType::Submit
+                                primary=true
+                                full_width=true
+                            >
+                                <span class="button-icon"><Icon icon=TablerIcon::TbMailFastOutline /></span>
+                                <span class="button-text">"Send Reset Email"</span>
+                            </Button>
+                            <div class="my-1"></div>
+                            <Button
+                                id="cancel-button"
+                                title="Cancel"
+                                type_of=ButtonType::Default
+                                full_width=true
+                                on:click=go_back
+                            >
+                                <span class="button-icon"><Icon icon=TablerIcon::TbXOutline /></span>
+                                <span class="button-text">"Cancel"</span>
+                            </Button>
+                        </ActionForm>
+                    }
                 }
             >
                 <ActionForm attr:class="flex flex-col w-full" action=reset_password_submit>
