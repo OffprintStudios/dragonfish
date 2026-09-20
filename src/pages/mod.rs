@@ -1,3 +1,4 @@
+pub mod auth;
 mod home;
 pub mod search;
 

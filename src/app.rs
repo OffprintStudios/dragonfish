@@ -1,7 +1,6 @@
-use crate::context::AppContext;
+use crate::context::{AppContext, AuthContext};
 use crate::database::models::util::themes::Brightness;
 use crate::errors::{AppError, ErrorTemplate};
-use crate::pages::{search::SearchPage, BaseLayout, HomePage};
 use codee::string::JsonSerdeCodec;
 use leptos::prelude::*;
 use leptos_meta::{provide_meta_context, Body, Link, Meta, MetaTags, Stylesheet, Title};
@@ -9,7 +8,13 @@ use leptos_router::{
     components::{ParentRoute, Route, Router, Routes},
     path,
 };
-use leptos_use::{storage::use_local_storage, use_preferred_dark};
+use leptos_use::{
+    storage::use_local_storage_with_options, storage::UseStorageOptions, use_preferred_dark,
+};
+
+use crate::pages::auth::AuthRoutes;
+use crate::pages::search::SearchPage;
+use crate::pages::{BaseLayout, HomePage};
 
 /// The result of any possible server function
 pub type AppResult<T> = Result<T, AppError>;
@@ -34,7 +39,14 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
 
 #[component]
 pub fn App() -> impl IntoView {
-    let (app, _, _) = use_local_storage::<AppContext, JsonSerdeCodec>("app");
+    let (app, _, _) = use_local_storage_with_options::<AppContext, JsonSerdeCodec>(
+        "app",
+        UseStorageOptions::default().delay_during_hydration(true),
+    );
+    let (_, _, _) = use_local_storage_with_options::<AuthContext, JsonSerdeCodec>(
+        "auth",
+        UseStorageOptions::default().delay_during_hydration(true),
+    );
     let is_preferred_dark = use_preferred_dark();
 
     // Provides context that manages stylesheets, titles, meta tags, etc.
@@ -88,6 +100,7 @@ pub fn App() -> impl IntoView {
                         <Route path=path!("search") view=SearchPage />
                         <Route path=path!("") view=HomePage />
                     </ParentRoute>
+                    <AuthRoutes />
                 </Routes>
             </main>
         </Router>
