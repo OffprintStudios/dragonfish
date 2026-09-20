@@ -29,7 +29,7 @@ impl Default for AppContext {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default, Eq, PartialEq)]
 pub struct AuthContext {
     pub account_id: Option<Uuid>,
     pub all_profiles: Vec<ProfileObject>,

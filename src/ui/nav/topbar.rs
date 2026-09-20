@@ -1,29 +1,26 @@
 use super::guide::Guide;
 use super::search_bar::SearchBar;
+use crate::context::AuthContext;
 use crate::database::models::accounts::Role;
-use crate::database::models::profiles::ProfileObject;
-// use crate::store::auth_store::AuthStore;
 use crate::ui::misc::Popup;
 use crate::util::functions::intersection;
-// use codee::string::JsonSerdeCodec;
+use codee::string::JsonSerdeCodec;
 use icondata as TablerIcon;
 use leptos::prelude::*;
 use leptos_icons::*;
 use leptos_router::components::A;
-// use leptos_use::storage::use_local_storage;
+use leptos_use::storage::{use_local_storage_with_options, UseStorageOptions};
 use leptos_use::use_window_scroll;
 use std::ops::Not;
 
 #[component]
 pub fn Topbar() -> impl IntoView {
-    let (curr_profile, _set_curr_profile) = signal::<Option<ProfileObject>>(None);
     let create_menu = RwSignal::new(false);
     let (_, _scroll_y) = use_window_scroll();
-
-    // Effect::new(move |_| {
-    //     let (auth, _, _) = use_local_storage::<AuthStore, JsonSerdeCodec>("auth");
-    //     set_curr_profile(auth().current_profile);
-    // });
+    let (auth, _, _) = use_local_storage_with_options::<AuthContext, JsonSerdeCodec>(
+        "auth",
+        UseStorageOptions::default().delay_during_hydration(true),
+    );
 
     view! {
         <div class="sticky top-0 w-full z-50 border-b border-white/25 backdrop-blur-lg bg-accent">
@@ -38,7 +35,7 @@ pub fn Topbar() -> impl IntoView {
                 <div class="w-1/3 flex items-center relative font-header">
                     <div class="flex-1"></div>
                     <Show
-                        when=move || curr_profile().is_some()
+                        when=move || auth().active_profile.is_some()
                         fallback=|| view! {
                             <A
                                 attr:class="flex items-center text-white p-2 rounded-xl transition hover:bg-zinc-300/25 hover:backdrop-blur"
@@ -87,7 +84,7 @@ pub fn Topbar() -> impl IntoView {
                             </div>
                         </Popup>
                         <Show
-                            when=move || curr_profile().is_some_and(|p| intersection(&[Role::Admin, Role::Moderator], &p.roles).is_empty().not())
+                            when=move || auth().active_profile.is_some_and(|p| intersection(&[Role::Admin, Role::Moderator], &p.roles).is_empty().not())
                         >
                             <A
                                 attr:class="flex items-center justify-center text-white mx-1.5 w-[44px] h-[44px] firefox:text-sm rounded-full transition bg-zinc-300/25 hover:bg-zinc-300/50 hover:backdrop-blur cursor-pointer"
@@ -96,7 +93,7 @@ pub fn Topbar() -> impl IntoView {
                                 <span class="relative"><Icon icon=TablerIcon::TbDashboardOutline width="20px" height="20px" /></span>
                             </A>
                         </Show>
-                        <Guide profile=curr_profile().unwrap() />
+                        <Guide profile=auth().active_profile.unwrap() />
                     </Show>
                 </div>
             </div>

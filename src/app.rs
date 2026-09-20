@@ -1,4 +1,4 @@
-use crate::context::{AppContext, AuthContext};
+use crate::context::AppContext;
 use crate::database::models::util::themes::Brightness;
 use crate::errors::{AppError, ErrorTemplate};
 use crate::pages::{search::SearchPage, BaseLayout, HomePage};
@@ -32,21 +32,10 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
     }
 }
 
-#[server(GetAuthContext)]
-async fn get_auth_context() -> AppResult<AuthContext> {
-    use crate::database::models::accounts::Session;
-
-    Session::get_auth_context().await
-}
-
 #[component]
 pub fn App() -> impl IntoView {
     let (app, _, _) = use_local_storage::<AppContext, JsonSerdeCodec>("app");
     let is_preferred_dark = use_preferred_dark();
-
-    let (refetch, set_refetch) = signal(());
-    let auth_context = Resource::new_blocking(move || refetch.get(), |_| get_auth_context());
-    provide_context(set_refetch);
 
     // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
@@ -72,50 +61,35 @@ pub fn App() -> impl IntoView {
 
         // Dragonfish router tree
         <Router>
-            <Suspense fallback=move || view! { <p>"Loading..."</p> }>
-                {move || {
-                    auth_context.get().map(|result| {
-                        match result {
-                            Ok(context) => {
-                                provide_context(context);
-
-                                view! {
-                                    <main
-                                        class=move || {
-                                            let theme = app().theme;
-                                            if app().brightness == Brightness::System {
-                                                match is_preferred_dark() {
-                                                    true => format!("{} {}", Brightness::Dark, theme),
-                                                    false => format!("{} {}", Brightness::Light, theme),
-                                                }
-                                            } else {
-                                                format!("{} {}", app().brightness, theme)
-                                            }
-                                        }
-                                    >
-                                        <Routes
-                                            transition=true
-                                            fallback=|| {
-                                                let mut errors = Errors::default();
-                                                errors.insert_with_default_key(AppError::NotFound);
-                                                view! {
-                                                    <ErrorTemplate errors />
-                                                }.into_view()
-                                            }
-                                        >
-                                            <ParentRoute path=path!("/") view=BaseLayout>
-                                                <Route path=path!("search") view=SearchPage />
-                                                <Route path=path!("") view=HomePage />
-                                            </ParentRoute>
-                                        </Routes>
-                                    </main>
-                                }.into_any()
-                            },
-                            Err(_) => view! { <p>"Error loading authentication!"</p> }.into_any()
+            <main
+                class=move || {
+                    let theme = app().theme;
+                    if app().brightness == Brightness::System {
+                        match is_preferred_dark() {
+                            true => format!("{} {}", Brightness::Dark, theme),
+                            false => format!("{} {}", Brightness::Light, theme),
                         }
-                    })
-                }}
-            </Suspense>
+                    } else {
+                        format!("{} {}", app().brightness, theme)
+                    }
+                }
+            >
+                <Routes
+                    transition=true
+                    fallback=|| {
+                        let mut errors = Errors::default();
+                        errors.insert_with_default_key(AppError::NotFound);
+                        view! {
+                            <ErrorTemplate errors />
+                        }.into_view()
+                    }
+                >
+                    <ParentRoute path=path!("/") view=BaseLayout>
+                        <Route path=path!("search") view=SearchPage />
+                        <Route path=path!("") view=HomePage />
+                    </ParentRoute>
+                </Routes>
+            </main>
         </Router>
     }
 }
