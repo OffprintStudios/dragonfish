@@ -93,7 +93,13 @@ pub fn Topbar() -> impl IntoView {
                                 <span class="relative"><Icon icon=TablerIcon::TbDashboardOutline width="20px" height="20px" /></span>
                             </A>
                         </Show>
-                        <Guide profile=auth().active_profile.unwrap() />
+                        {if let Some(profile) = auth().active_profile {
+                            view! {
+                                <Guide avatar=profile.avatar />
+                            }.into_any()
+                        } else {
+                            view! { <span class="hidden">"no-user"</span> }.into_any()
+                        }}
                     </Show>
                 </div>
             </div>

@@ -1,5 +1,6 @@
-use crate::database::models::profiles::ProfileObject;
+use crate::context::AuthContext;
 use crate::ui::misc::{Button as AppButton, LinkBlock, RoleBadge};
+use codee::string::JsonSerdeCodec;
 use icondata as TablerIcon;
 use leptos::either::Either;
 use leptos::html::{Button, Div};
@@ -7,6 +8,8 @@ use leptos::prelude::*;
 use leptos_icons::*;
 use leptos_router::components::A;
 use leptos_router::hooks::use_location;
+use leptos_use::storage::use_local_storage_with_options;
+use leptos_use::storage::UseStorageOptions;
 
 #[derive(Debug, Clone)]
 pub enum Panel {
@@ -16,9 +19,8 @@ pub enum Panel {
 }
 
 #[component]
-pub fn Guide(profile: ProfileObject) -> impl IntoView {
+pub fn Guide(avatar: String) -> impl IntoView {
     let (curr_panel, set_curr_panel) = signal(Panel::Main);
-    let (profile, _) = signal(profile.clone());
     let button_ref = NodeRef::<Button>::new();
     let popup_ref = NodeRef::<Div>::new();
     let window = leptos_use::use_window();
@@ -57,7 +59,7 @@ pub fn Guide(profile: ProfileObject) -> impl IntoView {
                 </div>
             </div>
             <div class="w-10 h-10 z-1 relative rounded-full border-2 border-white overflow-hidden">
-                <img src=profile().avatar class="w-full h-full object-cover" />
+                <img src=avatar class="w-full h-full object-cover" />
             </div>
         </button>
         <div
@@ -69,7 +71,7 @@ pub fn Guide(profile: ProfileObject) -> impl IntoView {
             node_ref=popup_ref
         >
             {move || match curr_panel() {
-                Panel::Main => view! { <MainPanel profile=profile set_curr_panel /> }.into_any(),
+                Panel::Main => view! { <MainPanel set_curr_panel /> }.into_any(),
                 Panel::Settings => view! { <SettingsPanel set_curr_panel /> }.into_any(),
                 Panel::LogOut => view! { <LogOutPanel set_curr_panel /> }.into_any()
             }}
@@ -78,122 +80,132 @@ pub fn Guide(profile: ProfileObject) -> impl IntoView {
 }
 
 #[component]
-pub fn MainPanel(
-    #[prop(into)] profile: Signal<ProfileObject>,
-    set_curr_panel: WriteSignal<Panel>,
-) -> impl IntoView {
+pub fn MainPanel(set_curr_panel: WriteSignal<Panel>) -> impl IntoView {
+    let (auth, _, _) = use_local_storage_with_options::<AuthContext, JsonSerdeCodec>(
+        "auth",
+        UseStorageOptions::default().delay_during_hydration(true),
+    );
+
+    let profile = move || auth().active_profile;
+
     view! {
-        <div class="flex flex-col items-center justify-center w-full pb-4">
-            <div class="h-16 w-full">
-                {move || if let Some(banner_art) = profile().banner_art{
-                    Either::Left(view! {
-                        <img src=banner_art class="w-full h-16 object-cover" />
-                    })
-                } else {
-                    Either::Right(view! {
-                        <div class="w-full h-28 bg-linear-to-b from-accent to-transparent"></div>
-                    })
-                }}
-            </div>
-            <div class="flex items-center w-full px-4">
-                <img src=profile().avatar class="block w-20 h-20 object-cover rounded-full mr-2" />
-                <div>
-                    <A href=format!("/profile/{}/{}", profile().id, slug::slugify(profile().username))><h3 class="text-3xl relative top-1.5">{move || profile().username}</h3></A>
-                    <RoleBadge roles=profile().roles />
+        <Show
+            when=move || profile().is_some()
+            fallback=|| view! { <span>"No profile selected!"</span> }
+        >
+            <div class="flex flex-col items-center justify-center w-full pb-4">
+                <div class="h-16 w-full">
+                    {move || if let Some(banner_art) = profile().unwrap().banner_art{
+                        Either::Left(view! {
+                            <img src=banner_art class="w-full h-16 object-cover" />
+                        })
+                    } else {
+                        Either::Right(view! {
+                            <div class="w-full h-28 bg-linear-to-b from-accent to-transparent"></div>
+                        })
+                    }}
                 </div>
-            </div>
-            <div class="flex items-center w-full px-4 py-4 border-b border-zinc-300/75 dark:border-zinc-600/75">
-                <LinkBlock
-                    id="view-works"
-                    title="View Works"
-                    href=format!("/profile/{}/{}/works", profile().id, slug::slugify(profile().username))
-                    primary=true
-                    full_width=true
-                >
-                    <span class="button-icon"><Icon icon=TablerIcon::TbWritingOutline /></span>
-                    <span class="button-text">"View Works"</span>
-                </LinkBlock>
-                <div class="mx-1"></div>
-                <LinkBlock
-                    id="view-blogs"
-                    title="View Blogs"
-                    href=format!("/profile/{}/{}/blogs", profile().id, slug::slugify(profile().username))
-                    primary=true
-                    full_width=true
-                >
-                    <span class="button-icon"><Icon icon=TablerIcon::TbCoffeeOutline /></span>
-                    <span class="button-text">"View Blogs"</span>
-                </LinkBlock>
-            </div>
-            <div class="flex flex-col w-full px-4 pt-4">
-                <div class="flex flex-col w-full rounded-xl bg-zinc-300/75 dark:bg-zinc-600/75 overflow-hidden">
-                    <div class="flex items-center w-full px-2 pt-2 pb-3 border-b border-zinc-500/50 dark:border-zinc-400/50">
-                        <img src="/images/ashtree-lane.jpg" class="max-w-[50px] object-contain rounded-md mr-2" />
-                        <div class="flex flex-col w-full">
-                            <div class="flex items-center">
-                                <span class="all-small-caps font-semibold tracking-wide text-sm">"Continue Reading"</span>
-                                <span class="mx-1 relative">"•"</span>
-                                <span class="text-xs text-zinc-500 dark:text-zinc-400 font-default relative top-[0.075rem]">"3 chapters left"</span>
-                            </div>
-                            <h6 class="text-lg relative -top-0.5">"The Chronicles of Ashtree Lane"</h6>
-                            <span class="text-sm text-zinc-500 dark:text-zinc-400 relative -top-1.5">"by Figments"</span>
-                            <progress id="reading-progress" value="73" max="100" class="w-full h-2 [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-zinc-500 dark:[&::-webkit-progress-bar]:bg-zinc-400 [&::-webkit-progress-value]:bg-accent [&::-moz-progress-bar]:bg-accent">"73%"</progress>
-                        </div>
+                <div class="flex items-center w-full px-4">
+                    <img src=profile().unwrap().avatar class="block w-20 h-20 object-cover rounded-full mr-2" />
+                    <div>
+                        <A href=format!("/profile/{}/{}", profile().unwrap().id, slug::slugify(profile().unwrap().username))><h3 class="text-3xl relative top-1.5">{move || profile().unwrap().username}</h3></A>
+                        <RoleBadge roles=profile().unwrap().roles />
                     </div>
-                    <A href="/library" attr:class="flex items-center px-4 py-2.5 hover:bg-zinc-400/50 dark:hover:bg-zinc-500/50 transition">
-                        <span class="all-small-caps tracking-wide font-semibold text-sm">"View Library"</span>
-                        <span class="flex-1"></span>
-                        <span class="text-xs font-default text-zinc-500 dark:text-zinc-400">"27 updates"</span>
-                        <span class="ml-0.5 text-zinc-500 dark:text-zinc-400 "><Icon icon=TablerIcon::TbBooksOutline width="1.25rem" height="1.25rem" /></span>
-                    </A>
                 </div>
-                <div class="my-1"></div>
-                <div class="flex flex-col w-full rounded-xl bg-zinc-300/75 dark:bg-zinc-600/75 overflow-hidden">
-                    <A href="/messages" attr:class="flex items-center px-4 py-2.5 border-b border-zinc-500/50 dark:border-zinc-400/50 hover:bg-zinc-400/50 dark:hover:bg-zinc-500/50 transition">
-                        <span class="mr-1"><Icon icon=TablerIcon::TbMailboxOutline width="1.25rem" height="1.25rem" /></span>
-                        <span class="relative -0.5 text-sm">"1.2k messages"</span>
-                        <span class="flex-1"></span>
-                        <span class="text-xs font-default text-zinc-500 dark:text-zinc-400">"8 unread"</span>
-                    </A>
-                    <A href="/notifications" attr:class="flex items-center px-4 py-2.5 hover:bg-zinc-400/50 dark:hover:bg-zinc-500/50 transition">
-                        <span class="mr-1"><Icon icon=TablerIcon::TbBellExclamationOutline width="1.25rem" height="1.25rem" /></span>
-                        <span class="relative text-sm">"18 notes"</span>
-                        <span class="flex-1"></span>
-                        <span class="text-xs font-default text-zinc-500 dark:text-zinc-400">"3 unchecked"</span>
-                    </A>
-                </div>
-                <div class="my-1"></div>
-                <div class="flex flex-col w-full rounded-xl bg-zinc-300/75 dark:bg-zinc-600/75 overflow-hidden">
-                    <A href="/switch-profile" attr:class="flex items-center px-4 py-2.5 hover:bg-zinc-400/50 dark:hover:bg-zinc-500/50 transition">
-                        <span class="mr-1"><Icon icon=TablerIcon::TbSwitch3Outline width="1.25rem" height="1.25rem" /></span>
-                        <span class="relative text-sm">"Switch Profile"</span>
-                        <span class="flex-1"></span>
-                        <span class="text-zinc-500 dark:text-zinc-400"><Icon icon=TablerIcon::TbLinkOutline width="1.25rem" height="1.25rem" /></span>
-                    </A>
-                </div>
-                <div class="my-1"></div>
-                <div class="flex flex-col w-full rounded-xl bg-zinc-300/75 dark:bg-zinc-600/75 overflow-hidden">
-                    <button
-                        class="flex items-center px-4 py-2.5 border-b border-zinc-500/50 dark:border-zinc-400/50 hover:bg-zinc-400/50 dark:hover:bg-zinc-500/50 transition cursor-pointer"
-                        on:click=move |_| set_curr_panel(Panel::Settings)
+                <div class="flex items-center w-full px-4 py-4 border-b border-zinc-300/75 dark:border-zinc-600/75">
+                    <LinkBlock
+                        id="view-works"
+                        title="View Works"
+                        href=format!("/profile/{}/{}/works", profile().unwrap().id, slug::slugify(profile().unwrap().username))
+                        primary=true
+                        full_width=true
                     >
-                        <span class="mr-1"><Icon icon=TablerIcon::TbSettingsOutline width="1.25rem" height="1.25rem" /></span>
-                        <span class="relative text-sm">"Settings"</span>
-                        <span class="flex-1"></span>
-                        <span class="text-zinc-500 dark:text-zinc-400"><Icon icon=TablerIcon::TbChevronRightOutline width="1.25rem" height="1.25rem" /></span>
-                    </button>
-                    <button
-                        class="flex items-center px-4 py-2.5 hover:bg-zinc-400/50 dark:hover:bg-zinc-500/50 transition cursor-pointer"
-                        on:click=move |_| set_curr_panel(Panel::LogOut)
+                        <span class="button-icon"><Icon icon=TablerIcon::TbWritingOutline /></span>
+                        <span class="button-text">"View Works"</span>
+                    </LinkBlock>
+                    <div class="mx-1"></div>
+                    <LinkBlock
+                        id="view-blogs"
+                        title="View Blogs"
+                        href=format!("/profile/{}/{}/blogs", profile().unwrap().id, slug::slugify(profile().unwrap().username))
+                        primary=true
+                        full_width=true
                     >
-                        <span class="mr-1"><Icon icon=TablerIcon::TbLogout2Outline width="1.25rem" height="1.25rem" /></span>
-                        <span class="relative text-sm">"Log Out"</span>
-                        <span class="flex-1"></span>
-                        <span class="text-zinc-500 dark:text-zinc-400"><Icon icon=TablerIcon::TbChevronRightOutline width="1.25rem" height="1.25rem" /></span>
-                    </button>
+                        <span class="button-icon"><Icon icon=TablerIcon::TbCoffeeOutline /></span>
+                        <span class="button-text">"View Blogs"</span>
+                    </LinkBlock>
+                </div>
+                <div class="flex flex-col w-full px-4 pt-4">
+                    <div class="flex flex-col w-full rounded-xl bg-zinc-300/75 dark:bg-zinc-600/75 overflow-hidden">
+                        <div class="flex items-center w-full px-2 pt-2 pb-3 border-b border-zinc-500/50 dark:border-zinc-400/50">
+                            <img src="/images/ashtree-lane.jpg" class="max-w-[50px] object-contain rounded-md mr-2" />
+                            <div class="flex flex-col w-full">
+                                <div class="flex items-center">
+                                    <span class="all-small-caps font-semibold tracking-wide text-sm">"Continue Reading"</span>
+                                    <span class="mx-1 relative">"•"</span>
+                                    <span class="text-xs text-zinc-500 dark:text-zinc-400 font-default relative top-[0.075rem]">"3 chapters left"</span>
+                                </div>
+                                <h6 class="text-lg relative -top-0.5">"The Chronicles of Ashtree Lane"</h6>
+                                <span class="text-sm text-zinc-500 dark:text-zinc-400 relative -top-1.5">"by Figments"</span>
+                                <progress id="reading-progress" value="73" max="100" class="w-full h-2 [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-zinc-500 dark:[&::-webkit-progress-bar]:bg-zinc-400 [&::-webkit-progress-value]:bg-accent [&::-moz-progress-bar]:bg-accent">"73%"</progress>
+                            </div>
+                        </div>
+                        <A href="/library" attr:class="flex items-center px-4 py-2.5 hover:bg-zinc-400/50 dark:hover:bg-zinc-500/50 transition">
+                            <span class="all-small-caps tracking-wide font-semibold text-sm">"View Library"</span>
+                            <span class="flex-1"></span>
+                            <span class="text-xs font-default text-zinc-500 dark:text-zinc-400">"27 updates"</span>
+                            <span class="ml-0.5 text-zinc-500 dark:text-zinc-400 "><Icon icon=TablerIcon::TbBooksOutline width="1.25rem" height="1.25rem" /></span>
+                        </A>
+                    </div>
+                    <div class="my-1"></div>
+                    <div class="flex flex-col w-full rounded-xl bg-zinc-300/75 dark:bg-zinc-600/75 overflow-hidden">
+                        <A href="/messages" attr:class="flex items-center px-4 py-2.5 border-b border-zinc-500/50 dark:border-zinc-400/50 hover:bg-zinc-400/50 dark:hover:bg-zinc-500/50 transition">
+                            <span class="mr-1"><Icon icon=TablerIcon::TbMailboxOutline width="1.25rem" height="1.25rem" /></span>
+                            <span class="relative -0.5 text-sm">"1.2k messages"</span>
+                            <span class="flex-1"></span>
+                            <span class="text-xs font-default text-zinc-500 dark:text-zinc-400">"8 unread"</span>
+                        </A>
+                        <A href="/notifications" attr:class="flex items-center px-4 py-2.5 hover:bg-zinc-400/50 dark:hover:bg-zinc-500/50 transition">
+                            <span class="mr-1"><Icon icon=TablerIcon::TbBellExclamationOutline width="1.25rem" height="1.25rem" /></span>
+                            <span class="relative text-sm">"18 notes"</span>
+                            <span class="flex-1"></span>
+                            <span class="text-xs font-default text-zinc-500 dark:text-zinc-400">"3 unchecked"</span>
+                        </A>
+                    </div>
+                    <div class="my-1"></div>
+                    <div class="flex flex-col w-full rounded-xl bg-zinc-300/75 dark:bg-zinc-600/75 overflow-hidden">
+                        <A href="/switch-profile" attr:class="flex items-center px-4 py-2.5 hover:bg-zinc-400/50 dark:hover:bg-zinc-500/50 transition">
+                            <span class="mr-1"><Icon icon=TablerIcon::TbSwitch3Outline width="1.25rem" height="1.25rem" /></span>
+                            <span class="relative text-sm">"Switch Profile"</span>
+                            <span class="flex-1"></span>
+                            <span class="text-zinc-500 dark:text-zinc-400"><Icon icon=TablerIcon::TbLinkOutline width="1.25rem" height="1.25rem" /></span>
+                        </A>
+                    </div>
+                    <div class="my-1"></div>
+                    <div class="flex flex-col w-full rounded-xl bg-zinc-300/75 dark:bg-zinc-600/75 overflow-hidden">
+                        <button
+                            class="flex items-center px-4 py-2.5 border-b border-zinc-500/50 dark:border-zinc-400/50 hover:bg-zinc-400/50 dark:hover:bg-zinc-500/50 transition cursor-pointer"
+                            on:click=move |_| set_curr_panel(Panel::Settings)
+                        >
+                            <span class="mr-1"><Icon icon=TablerIcon::TbSettingsOutline width="1.25rem" height="1.25rem" /></span>
+                            <span class="relative text-sm">"Settings"</span>
+                            <span class="flex-1"></span>
+                            <span class="text-zinc-500 dark:text-zinc-400"><Icon icon=TablerIcon::TbChevronRightOutline width="1.25rem" height="1.25rem" /></span>
+                        </button>
+                        <button
+                            class="flex items-center px-4 py-2.5 hover:bg-zinc-400/50 dark:hover:bg-zinc-500/50 transition cursor-pointer"
+                            on:click=move |_| set_curr_panel(Panel::LogOut)
+                        >
+                            <span class="mr-1"><Icon icon=TablerIcon::TbLogout2Outline width="1.25rem" height="1.25rem" /></span>
+                            <span class="relative text-sm">"Log Out"</span>
+                            <span class="flex-1"></span>
+                            <span class="text-zinc-500 dark:text-zinc-400"><Icon icon=TablerIcon::TbChevronRightOutline width="1.25rem" height="1.25rem" /></span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Show>
+
     }
 }
 
