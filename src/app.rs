@@ -78,11 +78,11 @@ pub fn App() -> impl IntoView {
                     let theme = app().theme;
                     if app().brightness == Brightness::System {
                         match is_preferred_dark() {
-                            true => format!("{} {}", Brightness::Dark, theme),
-                            false => format!("{} {}", Brightness::Light, theme),
+                            true => format!("{} {} pb-4", Brightness::Dark, theme),
+                            false => format!("{} {} pb-4", Brightness::Light, theme),
                         }
                     } else {
-                        format!("{} {}", app().brightness, theme)
+                        format!("{} {} pb-4", app().brightness, theme)
                     }
                 }
             >

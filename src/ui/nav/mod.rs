@@ -1,9 +1,7 @@
 mod guide;
 mod mobile_nav;
+mod navigation_bar;
 mod search_bar;
-mod sidebar;
-mod topbar;
 
 pub use mobile_nav::MobileNav;
-pub use sidebar::Sidebar;
-pub use topbar::Topbar;
+pub use navigation_bar::NavigationBar;

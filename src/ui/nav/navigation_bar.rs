@@ -14,7 +14,7 @@ use leptos_use::use_window_scroll;
 use std::ops::Not;
 
 #[component]
-pub fn Topbar() -> impl IntoView {
+pub fn NavigationBar() -> impl IntoView {
     let create_menu = RwSignal::new(false);
     let (_, _scroll_y) = use_window_scroll();
     let (auth, _, _) = use_local_storage_with_options::<AuthContext, JsonSerdeCodec>(
@@ -27,7 +27,21 @@ pub fn Topbar() -> impl IntoView {
             <div class="flex items-center h-[55px] mx-4 relative">
                 <div class="flex items-center w-1/3">
                     <span class="mr-0.5 text-white!"><Icon icon=TablerIcon::TbLeaf2Outline width="2.25rem" height="2.25rem" style="stroke-width: 1.25;" /></span>
-                    <h3 class="text-2xl font-bold tracking-tighter text-white!">"Offprint"</h3>
+                    <h3 class="text-2xl font-bold tracking-tighter text-white! relative top-0.5">"Offprint"</h3>
+                    <div class="mx-2"></div>
+                    <A
+                        attr:class="hidden md:flex items-center text-white p-2 border-b-2 border-transparent transition hover:border-zinc-300/50 [&[aria-current=page]]:border-zinc-300/50"
+                        href="/explore"
+                    >
+                        <span class="relative font-header font-semibold text-sm top-0.5">"EXPLORE"</span>
+                    </A>
+                    <div class="mx-0.5"></div>
+                    <A
+                        attr:class="hidden md:flex items-center text-white p-2 border-b-2 border-transparent transition hover:border-zinc-300/50 [&[aria-current=page]]:border-zinc-300/50"
+                        href="/social"
+                    >
+                        <span class="relative font-header font-semibold text-sm top-0.5">"SOCIAL"</span>
+                    </A>
                 </div>
                 <div class="w-1/3">
                     <SearchBar />
