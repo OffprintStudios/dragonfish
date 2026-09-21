@@ -26,8 +26,13 @@ pub fn NavigationBar() -> impl IntoView {
         <div class="sticky top-0 w-full z-50 border-b border-white/25 backdrop-blur-lg bg-accent">
             <div class="flex items-center h-[55px] mx-4 relative">
                 <div class="flex items-center w-1/3">
-                    <span class="mr-0.5 text-white!"><Icon icon=TablerIcon::TbLeaf2Outline width="2.25rem" height="2.25rem" style="stroke-width: 1.25;" /></span>
-                    <h3 class="text-2xl font-bold tracking-tighter text-white! relative top-0.5">"Offprint"</h3>
+                    <A
+                        attr:class="flex items-center"
+                        href="/"
+                    >
+                        <span class="mr-0.5 text-white!"><Icon icon=TablerIcon::TbLeaf2Outline width="2.25rem" height="2.25rem" style="stroke-width: 1.25;" /></span>
+                        <h3 class="text-2xl font-bold tracking-tighter text-white! relative top-0.5">"Offprint"</h3>
+                    </A>
                     <div class="mx-2"></div>
                     <A
                         attr:class="hidden md:flex items-center text-white p-2 border-b-2 border-transparent transition hover:border-zinc-300/50 [&[aria-current=page]]:border-zinc-300/50"

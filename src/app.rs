@@ -13,7 +13,11 @@ use leptos_use::{
 };
 
 use crate::pages::auth::AuthRoutes;
+use crate::pages::docs::DocsRoutes;
+use crate::pages::explore::ExplorePage;
+use crate::pages::library::LibraryRoutes;
 use crate::pages::search::SearchPage;
+use crate::pages::social::SocialRoutes;
 use crate::pages::{BaseLayout, HomePage};
 
 /// The result of any possible server function
@@ -97,7 +101,12 @@ pub fn App() -> impl IntoView {
                     }
                 >
                     <ParentRoute path=path!("/") view=BaseLayout>
+                        <Route path=path!("explore") view=ExplorePage />
                         <Route path=path!("search") view=SearchPage />
+                        <SocialRoutes />
+                        // <ProfileRoutes />
+                        <LibraryRoutes />
+                        <DocsRoutes />
                         <Route path=path!("") view=HomePage />
                     </ParentRoute>
                     <AuthRoutes />
