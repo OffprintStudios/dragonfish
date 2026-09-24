@@ -3,10 +3,6 @@ FROM rustlang/rust:nightly-bookworm as builder
 
 SHELL ["/bin/bash", "-c"]
 
-# Get DATABASE_URL from args
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
-
 # Get BUN_VERSION from args
 ARG BUN_VERSION=1.3.10
 
@@ -49,7 +45,6 @@ COPY . .
 RUN bun install
 
 # Build the app
-RUN sqlx migrate run
 RUN cargo leptos build --release -vv
 
 FROM debian:bookworm-slim as runtime
