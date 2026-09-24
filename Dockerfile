@@ -1,5 +1,5 @@
 # Get started with a build env with Rust nightly
-FROM rustlang/rust:nightly-bookworm as builder
+FROM rustlang/rust:nightly-trixie as builder
 
 SHELL ["/bin/bash", "-c"]
 
