@@ -22,12 +22,24 @@ use crate::errors::ErrorTemplate;
 use crate::ui::misc::MetaTags;
 use crate::ui::nav::{MobileProfileNav, ProfileNav};
 
+use blogs::ProfileBlogsPage;
+use followers::ProfileFollowersPage;
+use following::ProfileFollowingPage;
 use home::ProfileHomePage;
+use settings::ProfileSettingsPage;
+use shelves::ProfileShelvesPage;
+use works::ProfileWorksPage;
 
 #[component(transparent)]
 pub fn ProfileRoutes() -> impl MatchNestedRoutes + Clone {
     view! {
         <ParentRoute path=path!("/profile/:id/:username") view=ProfileLayout ssr=SsrMode::Async>
+            <Route path=path!("works") view=ProfileWorksPage />
+            <Route path=path!("blogs") view=ProfileBlogsPage />
+            <Route path=path!("followers") view=ProfileFollowersPage />
+            <Route path=path!("following") view=ProfileFollowingPage />
+            <Route path=path!("shelves") view=ProfileShelvesPage />
+            <Route path=path!("settings") view=ProfileSettingsPage />
             <Route path=path!("") view=ProfileHomePage />
         </ParentRoute>
     }
