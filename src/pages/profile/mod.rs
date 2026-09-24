@@ -10,7 +10,7 @@ mod works;
 use codee::string::JsonSerdeCodec;
 use leptos::prelude::*;
 use leptos::server_fn::codec::GetUrl;
-use leptos_router::components::{ParentRoute, Route};
+use leptos_router::components::{Outlet, ParentRoute, Route};
 use leptos_router::hooks::{use_params_map, use_url};
 use leptos_router::{path, MatchNestedRoutes, SsrMode};
 use leptos_use::storage::{use_local_storage_with_options, UseStorageOptions};
@@ -20,14 +20,14 @@ use crate::context::AuthContext;
 use crate::database::models::profiles::ProfileObject;
 use crate::errors::ErrorTemplate;
 use crate::ui::misc::MetaTags;
-use crate::ui::nav::MobileProfileNav;
+use crate::ui::nav::{MobileProfileNav, ProfileNav};
 
 use home::ProfileHomePage;
 
 #[component(transparent)]
 pub fn ProfileRoutes() -> impl MatchNestedRoutes + Clone {
     view! {
-        <ParentRoute path=path!("/profile/:id/:username?") view=ProfileLayout ssr=SsrMode::Async>
+        <ParentRoute path=path!("/profile/:id/:username") view=ProfileLayout ssr=SsrMode::Async>
             <Route path=path!("") view=ProfileHomePage />
         </ParentRoute>
     }
@@ -65,16 +65,20 @@ fn ProfileLayout() -> impl IntoView {
                 UseStorageOptions::default().delay_during_hydration(true),
             );
 
+            provide_context(profile);
+
             Effect::new(move |_| {
                 set_is_author(auth().active_profile.is_some_and(|p| p.id == profile().id));
             });
 
+            let p = profile.get_untracked();
+
             view! {
                 <MetaTags
-                    url=format!("https://offprint.cafe/profile/{}/{}", profile().id, slug::slugify(profile().username))
-                    title=format!("{}'s Profile — Offprint", profile().username)
-                    description=profile().bio
-                    image_url=profile().avatar
+                    url=format!("https://offprint.cafe/profile/{}/{}", p.id, slug::slugify(&p.username))
+                    title=format!("{}'s Profile — Offprint", p.username)
+                    description=p.bio
+                    image_url=p.avatar
                 />
 
                 <div class="w-full">
@@ -82,7 +86,7 @@ fn ProfileLayout() -> impl IntoView {
                         <Show
                             when=move || profile().banner_art.is_some()
                         >
-                            <img src=profile().banner_art.unwrap() class="object-cover w-full h-full" alt=format!("{}'s banner", profile().username) />
+                            <img src=move || profile().banner_art.unwrap_or_default() class="object-cover w-full h-full" alt=format!("{}'s banner", profile().username) />
                         </Show>
                     </div>
 
@@ -91,6 +95,14 @@ fn ProfileLayout() -> impl IntoView {
                         profile
                         is_author
                     />
+
+                    // Desktop header
+                    <ProfileNav
+                        profile
+                        is_author
+                    >
+                        <Outlet />
+                    </ProfileNav>
                 </div>
             }
         })

@@ -4,7 +4,7 @@ use leptos::prelude::*;
 pub fn LinkBlock(
     #[prop(into)] id: String,
     #[prop(into)] title: String,
-    #[prop(into)] href: String,
+    #[prop(into)] href: TextProp,
     #[prop(default = false)] primary: bool,
     #[prop(default = false)] disabled: bool,
     #[prop(default = false)] full_width: bool,
