@@ -37,9 +37,6 @@ RUN apt update && apt install -y bash curl unzip && \
 
 ENV PATH="${PATH}:/root/.bun/bin"
 
-# Install sqlx-cli
-RUN cargo install sqlx-cli --no-default-features --features native-tls,postgres
-
 # Add the WASM target
 RUN rustup target add wasm32-unknown-unknown
 

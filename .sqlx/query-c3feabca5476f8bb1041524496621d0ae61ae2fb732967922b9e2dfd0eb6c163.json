@@ -1,0 +1,29 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                SELECT id FROM profiles WHERE id = $1 AND account_id = $2 AND deleted_at IS NULL LIMIT 1;\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Bpchar",
+        "origin": {
+          "Table": {
+            "table": "profiles",
+            "name": "id"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Bpchar",
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "c3feabca5476f8bb1041524496621d0ae61ae2fb732967922b9e2dfd0eb6c163"
+}

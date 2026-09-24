@@ -29,7 +29,7 @@ slug = { version = "0.1.6" }
 woothee = { version = "0.13.0", optional = true }
 uuid = { version = "1.25.0", features = ["v4", "serde", "js"] }
 email_address = { version = "0.2.9", optional = true }
-sqlx = { version = "0.9.0", optional = true, default-features = false, features = ["runtime-tokio", "tls-native-tls", "postgres", "macros", "uuid", "chrono", "json", "derive"] }
+sqlx = { version = "0.9.0", optional = true, default-features = false, features = ["runtime-tokio", "tls-native-tls", "postgres", "macros", "migrate", "uuid", "chrono", "json", "derive"] }
 apalis = { version = "1.0.0-rc.9", features = ["prometheus", "retry", "timeout", "limit", "filter", "catch-panic"], optional = true }
 apalis-redis = { version = "1.0.0-rc.8", optional = true }
 resend-rs = { version = "0.32.1", optional = true }

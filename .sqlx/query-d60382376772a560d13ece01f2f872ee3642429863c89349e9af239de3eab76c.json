@@ -1,0 +1,112 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                SELECT\n                    id,\n                    email,\n                    password,\n                    roles as \"roles: Vec<Role>\",\n                    terms_agree,\n                    email_confirmed,\n                    created_at,\n                    updated_at\n                FROM accounts WHERE email = $1;\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "accounts",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "email",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "accounts",
+            "name": "email"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "password",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "accounts",
+            "name": "password"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "roles: Vec<Role>",
+        "type_info": "TextArray",
+        "origin": {
+          "Table": {
+            "table": "accounts",
+            "name": "roles"
+          }
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "terms_agree",
+        "type_info": "Bool",
+        "origin": {
+          "Table": {
+            "table": "accounts",
+            "name": "terms_agree"
+          }
+        }
+      },
+      {
+        "ordinal": 5,
+        "name": "email_confirmed",
+        "type_info": "Bool",
+        "origin": {
+          "Table": {
+            "table": "accounts",
+            "name": "email_confirmed"
+          }
+        }
+      },
+      {
+        "ordinal": 6,
+        "name": "created_at",
+        "type_info": "Timestamptz",
+        "origin": {
+          "Table": {
+            "table": "accounts",
+            "name": "created_at"
+          }
+        }
+      },
+      {
+        "ordinal": 7,
+        "name": "updated_at",
+        "type_info": "Timestamptz",
+        "origin": {
+          "Table": {
+            "table": "accounts",
+            "name": "updated_at"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "d60382376772a560d13ece01f2f872ee3642429863c89349e9af239de3eab76c"
+}

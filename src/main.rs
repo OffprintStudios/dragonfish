@@ -17,6 +17,9 @@ async fn main() -> anyhow::Result<()> {
     let routes = generate_route_list(App);
 
     let db = database::connect_to_db().await;
+    sqlx::migrate!().run(&db).await.expect(
+        "Failed to run migrations! Check to see if your environment is configured correctly.",
+    );
 
     // Set secret key for private cookies
     let secret_key = std::env::var("SECRET_KEY").expect(

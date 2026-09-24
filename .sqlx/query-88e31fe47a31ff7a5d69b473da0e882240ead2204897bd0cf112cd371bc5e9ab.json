@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                UPDATE accounts SET email_confirmed = $1 WHERE id = $2;\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Bool",
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "88e31fe47a31ff7a5d69b473da0e882240ead2204897bd0cf112cd371bc5e9ab"
+}
