@@ -33,9 +33,6 @@ RUN apt update && apt install -y bash curl unzip && \
 
 ENV PATH="${PATH}:/root/.bun/bin"
 
-# Add the WASM target
-RUN rustup target add wasm32-unknown-unknown
-
 # Make an /app dir, which everything will eventually live in
 RUN mkdir -p /app
 WORKDIR /app
@@ -43,6 +40,9 @@ COPY . .
 
 # Installing JS dependencies
 RUN bun install
+
+# Add the WASM target
+RUN rustup target add wasm32-unknown-unknown
 
 # Build the app
 RUN cargo leptos build --release -vv
