@@ -19,11 +19,11 @@ pub fn ProfileNav(
 
     view! {
         <div class="grid grid-cols-1 md:grid-cols-4 md:gap-4 max-w-7xl md:w-11/12 mx-auto">
-            <div class="flex flex-col bg-zinc-200/50 dark:bg-zinc-700/50 md:h-fit md:rounded-xl px-4 pt-2 md:py-4 relative md:bottom-24 col-span-1 backdrop-blur-lg border-b md:border border-zinc-600/25 dark:border-zinc-300/25" style="box-shadow: var(--dropshadow);">
+            <div class="flex flex-col bg-zinc-200/50 dark:bg-zinc-700/50 md:h-fit md:rounded-xl px-4 pt-2 md:py-4 relative md:bottom-24 col-span-1 backdrop-blur-lg border-b md:border border-zinc-600/25 dark:border-zinc-300/25 @container" style="box-shadow: var(--dropshadow);">
                 <div class="self-center hidden md:block max-w-[260px] max-h-[260px] rounded-full overflow-hidden border-4 border-zinc-300 dark:border-zinc-600 mb-4">
                     <img src=move || profile().avatar class="w-full h-full object-cover" alt=move || format!("{}'s avatar", profile().username) />
                 </div>
-                <h1 class="text-4xl">{move || profile().username}</h1>
+                <h1 class="whitespace-nowrap text-[clamp(0.75rem,10cqi,2.25rem)]">{move || profile().username}</h1>
                 <div class="my-1"><RoleBadge roles=profile.get_untracked().roles /></div>
                 <div class="flex items-center text-zinc-500 dark:text-zinc-400 text-xs md:text-sm">
                     <A href=move || format!("/profile/{}/{}/followers", profile().id, slug::slugify(profile().username))>
@@ -78,7 +78,7 @@ pub fn ProfileNav(
                         <LinkBlock
                             id="profile-settings-link"
                             title="Profile Settings"
-                            href="/settings/profiles"
+                            href=move || format!("/profile/{}/{}/settings", profile().id, slug::slugify(profile().username))
                             full_width=true
                         >
                             <span class="button-icon"><Icon icon=TablerIcon::TbSettingsOutline /></span>

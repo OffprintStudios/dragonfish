@@ -43,19 +43,23 @@
     font-variant-alternates: historical-forms;
 }
 
-html {
+html, body {
     @apply transition-all;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    @apply transition-all;
     font-size: 16px;
 }
 
 main,
 main.light {
-    @apply 2xl:max-w-360 w-full mx-auto 2xl:border-x border-zinc-300 dark:border-zinc-600 shadow-2xl;
+    @apply w-full mx-auto;
     position: relative;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
     color: var(--text-color);
     font-family: var(--body-text), sans-serif;
     color: var(--text-color);
@@ -199,7 +203,7 @@ article {
     }
 
     & > span.button-text {
-        @apply relative text-sm -top-[0.05rem];
+        @apply relative text-sm top-[-0.05rem];
     }
 
     & > span.button-small-text {

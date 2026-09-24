@@ -16,7 +16,7 @@ pub fn ExplorePage() -> impl IntoView {
 
         <div>
             <div
-                class="sticky top-[55px] md:top-[65px] flex w-full mb-8 h-[50px] md:h-[55px] backdrop-blur-lg z-10 border-b border-opacity-25 bg-zinc-200/50 dark:bg-zinc-700/50 border-zinc-700/25 dark:border-zinc-200/25 scrollbar-none"
+                class="sticky top-[56px] flex w-full mb-8 h-[50px] md:h-[55px] backdrop-blur-lg z-10 border-b border-opacity-25 bg-zinc-200/50 dark:bg-zinc-700/50 border-zinc-700/25 dark:border-zinc-200/25 scrollbar-none"
                 style="box-shadow: var(--dropshadow);"
             >
                 <div
