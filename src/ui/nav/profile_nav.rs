@@ -106,6 +106,7 @@ pub fn ProfileNav(
                     <A
                         href=move || format!("/profile/{}/{}", profile().id, slug::slugify(profile().username))
                         attr:class="w-1/4 text-center py-2 mx-0.5 all-small-caps text-lg font-bold tracking-wide border-b-2 border-transparent transition [&[aria-current=page]]:border-zinc-700 dark:[&[aria-current=page]]:border-zinc-300"
+                        exact=true
                     >
                         <span>"Home"</span>
                     </A>
