@@ -1,6 +1,12 @@
 use leptos::prelude::*;
+use leptos::server_fn::codec::GetUrl;
 
-use crate::database::models::profiles::ProfileObject;
+use crate::{app::AppResult, database::models::profiles::ProfileObject};
+
+#[server(GetBlogs, prefix = "/api/profile", endpoint = "blogs", input = GetUrl)]
+pub async fn get_blogs() -> AppResult<()> {
+    todo!()
+}
 
 #[component]
 pub fn ProfileBlogsPage() -> impl IntoView {
