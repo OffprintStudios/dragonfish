@@ -74,27 +74,27 @@ async fn main() -> anyhow::Result<()> {
     // run our app with hyper
     // `axum::Server` is a re-export of `hyper::Server`
     log!("listening on http://{}", &addr);
-    let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
-    let http = async {
-        axum::serve(listener, app.into_make_service())
-            .await
-            .map_err(|e| std::io::Error::new(std::io::ErrorKind::Interrupted, e))
-    };
+    let listener = tokio::net::TcpListener::bind(&addr).await?;
 
-    let monitor = Monitor::new()
-        .register(move |_| {
-            use dragonfish::queues;
+    let monitor = Monitor::new().register(move |_| {
+        use dragonfish::queues;
 
-            WorkerBuilder::new("app-mailer")
-                .backend(storage.clone())
-                .concurrency(2)
-                .parallelize(tokio::spawn)
-                .enable_tracing()
-                .build(queues::email::send_email)
-        })
-        .run();
+        WorkerBuilder::new("app-mailer")
+            .backend(storage.clone())
+            .concurrency(2)
+            .parallelize(tokio::spawn)
+            .enable_tracing()
+            .build(queues::email::send_email)
+    });
 
-    _ = tokio::join!(http, monitor);
+    let (axum_result, apalis_result) = tokio::join!(
+        async { axum::serve(listener, app.into_make_service()).await },
+        async { monitor.run().await }
+    );
+
+    axum_result?;
+    apalis_result?;
+
     Ok(())
 }
 
