@@ -32,4 +32,13 @@ pub struct BlogObject {
     pub body: String,
     pub word_count: i64,
     pub view_count: i64,
+    pub cheer_count: i64,
+    pub jeer_count: i64,
+    pub rating: ContentRating,
+    pub license: ContentLicense,
+    pub visibility: ContentVisibility,
+    pub edited_on: Option<DateTime<Utc>>,
+    pub published_on: Option<DateTime<Utc>>,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
 }
