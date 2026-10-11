@@ -33,6 +33,7 @@ async fn main() -> anyhow::Result<()> {
     let redis_url = std::env::var("REDIS_URL").expect(
         "Could not find REDIS_URL! Check to see if your environment is configured correctly.",
     );
+    let redis_client = redis::Client::open(redis_url.clone())?;
     let queue_conn = apalis_redis::connect(redis_url).await.expect(
         "Could not connect to Redis! Check to see if your environment is configured correctly.",
     );
@@ -41,6 +42,7 @@ async fn main() -> anyhow::Result<()> {
     // Create state object
     let app_state = state::AppState {
         db: db.clone(),
+        redis: redis_client,
         leptos_options,
     };
 

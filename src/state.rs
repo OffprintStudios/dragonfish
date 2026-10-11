@@ -1,11 +1,13 @@
 use axum::extract::{FromRef, FromRequestParts};
 use http::request::Parts;
 use leptos::prelude::LeptosOptions;
+use redis::Client;
 use sqlx::PgPool;
 
 #[derive(Debug, Clone, FromRef)]
 pub struct AppState {
     pub db: PgPool,
+    pub redis: Client,
     pub leptos_options: LeptosOptions,
 }
 

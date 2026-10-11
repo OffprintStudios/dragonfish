@@ -18,6 +18,7 @@ leptos_axum = { version = "0.8.10", optional = true }
 leptos_meta = { version = "0.8.6" }
 tokio = { version = "1.53.1", features = ["rt-multi-thread", "macros"], optional = true }
 wasm-bindgen = { version = "=0.2.127", optional = true }
+redis = { version = "1.7.1", features = ["tokio-comp"], optional = true }
 dotenvy = { version = "0.15.7", optional = true }
 cfg-if = { version = "1.0.4" }
 strum = { version = "0.28.0", features = ["derive"] }
@@ -58,6 +59,7 @@ ssr = [
     "dep:woothee",
     "dep:email_address",
     "dep:sqlx",
+    "dep:redis",
     "dep:apalis",
     "dep:apalis-redis",
     "dep:resend-rs",
