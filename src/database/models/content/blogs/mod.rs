@@ -1,3 +1,9 @@
 mod blog;
 #[cfg(feature = "ssr")]
 mod blog_tag;
+
+#[cfg(feature = "ssr")]
+pub use blog::Blog;
+pub use blog::BlogObject;
+#[cfg(feature = "ssr")]
+pub use blog_tag::BlogTag;

@@ -8,7 +8,7 @@ use leptos::prelude::*;
 use leptos_icons::*;
 use leptos_router::components::A;
 use leptos_router::hooks::use_navigate;
-use leptos_use::storage::use_local_storage;
+use leptos_use_storage::use_local_storage;
 
 #[server(prefix = "/api", endpoint = "account")]
 pub async fn load_account() -> AppResult<AuthContext> {

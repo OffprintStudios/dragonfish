@@ -8,7 +8,7 @@ use crate::database::models::{
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, Eq, PartialEq)]
 pub struct AppContext {
     pub theme: Theme,
     pub brightness: Brightness,

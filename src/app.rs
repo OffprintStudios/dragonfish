@@ -8,9 +8,8 @@ use leptos_router::{
     components::{ParentRoute, Route, Router, Routes},
     path,
 };
-use leptos_use::{
-    storage::use_local_storage_with_options, storage::UseStorageOptions, use_preferred_dark,
-};
+use leptos_use_preferences::use_preferred_dark;
+use leptos_use_storage::{use_local_storage_with_options, UseStorageOptions};
 
 use crate::pages::auth::AuthRoutes;
 use crate::pages::docs::DocsRoutes;

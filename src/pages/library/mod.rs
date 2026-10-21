@@ -3,10 +3,10 @@ use crate::pages::auth::validate;
 use crate::ui::misc::MetaTags;
 use leptos::prelude::*;
 use leptos_router::SsrMode;
-use leptos_router::{components::Route, path, MatchNestedRoutes};
+use leptos_router::{components::Route, path};
 
 #[component(transparent)]
-pub fn LibraryRoutes() -> impl MatchNestedRoutes + Clone {
+pub fn LibraryRoutes() -> impl leptos_router::MatchNestedRoutes + Clone {
     view! {
         <Route path=path!("/library") view=LibraryLayout ssr=SsrMode::Async />
     }

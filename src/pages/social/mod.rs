@@ -1,8 +1,8 @@
 use leptos::prelude::*;
-use leptos_router::{components::Route, path, MatchNestedRoutes};
+use leptos_router::{components::Route, path};
 
 #[component(transparent)]
-pub fn SocialRoutes() -> impl MatchNestedRoutes + Clone {
+pub fn SocialRoutes() -> impl leptos_router::MatchNestedRoutes + Clone {
     view! {
         <Route path=path!("/social") view=SocialPage />
     }

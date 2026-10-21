@@ -8,8 +8,7 @@ use leptos::prelude::*;
 use leptos_icons::*;
 use leptos_router::components::A;
 use leptos_router::hooks::use_location;
-use leptos_use::storage::use_local_storage_with_options;
-use leptos_use::storage::UseStorageOptions;
+use leptos_use_storage::{use_local_storage_with_options, UseStorageOptions};
 
 #[derive(Debug, Clone)]
 pub enum Panel {
@@ -23,10 +22,10 @@ pub fn Guide(avatar: String) -> impl IntoView {
     let (curr_panel, set_curr_panel) = signal(Panel::Main);
     let button_ref = NodeRef::<Button>::new();
     let popup_ref = NodeRef::<Div>::new();
-    let window = leptos_use::use_window();
-    let leptos_use::UseElementBoundingReturn { left, .. } =
-        leptos_use::use_element_bounding(button_ref);
-    let is_min_width = leptos_use::use_media_query("(min-width: 768px)");
+    let window = leptos_use_window::use_window();
+    let leptos_use_element_bounding::UseElementBoundingReturn { left, .. } =
+        leptos_use_element_bounding::use_element_bounding(button_ref);
+    let is_min_width = leptos_use_media_query::use_media_query("(min-width: 768px)");
     let location = use_location();
 
     let (offset, set_offset) = signal::<String>("0px".into());

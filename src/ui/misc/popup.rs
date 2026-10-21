@@ -1,7 +1,7 @@
 use leptos::html::{Dialog, Div};
 use leptos::prelude::*;
 use leptos_router::hooks::use_location;
-use leptos_use::on_click_outside;
+use leptos_use_on_click_outside::on_click_outside;
 
 #[component]
 pub fn Popup(

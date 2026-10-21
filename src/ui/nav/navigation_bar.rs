@@ -9,8 +9,8 @@ use icondata as TablerIcon;
 use leptos::prelude::*;
 use leptos_icons::*;
 use leptos_router::components::A;
-use leptos_use::storage::{use_local_storage_with_options, UseStorageOptions};
-use leptos_use::use_window_scroll;
+use leptos_use_storage::{use_local_storage_with_options, UseStorageOptions};
+use leptos_use_window_scroll::use_window_scroll;
 use std::ops::Not;
 
 #[component]

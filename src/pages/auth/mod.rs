@@ -12,7 +12,7 @@ use icondata as TablerIcon;
 use leptos::prelude::*;
 use leptos_icons::*;
 use leptos_router::components::{Outlet, ParentRoute, Route, A};
-use leptos_router::{path, MatchNestedRoutes, SsrMode};
+use leptos_router::{path, SsrMode};
 
 use check_email::CheckEmailPage;
 use create_profile::CreateProfilePage;
@@ -22,7 +22,7 @@ use sign_up::SignUpPage;
 use switch_profile::SwitchProfilePage;
 
 #[component(transparent)]
-pub fn AuthRoutes() -> impl MatchNestedRoutes + Clone {
+pub fn AuthRoutes() -> impl leptos_router::MatchNestedRoutes + Clone {
     view! {
         <ParentRoute path=path!("/") view=AuthLayout>
             <Route path=path!("log-in") view=LogInPage />

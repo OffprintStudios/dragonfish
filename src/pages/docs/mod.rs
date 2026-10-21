@@ -5,7 +5,7 @@ mod tos;
 
 use leptos::prelude::*;
 use leptos_router::components::{Outlet, ParentRoute, Route};
-use leptos_router::{path, MatchNestedRoutes};
+use leptos_router::path;
 
 use constitution::ConstitutionPage;
 use omnibus::OmnibusPage;
@@ -13,7 +13,7 @@ use privacy_policy::PrivacyPolicyPage;
 use tos::TosPage;
 
 #[component(transparent)]
-pub fn DocsRoutes() -> impl MatchNestedRoutes + Clone {
+pub fn DocsRoutes() -> impl leptos_router::MatchNestedRoutes + Clone {
     view! {
         <ParentRoute path=path!("/docs") view=DocsLayout>
             <Route path=path!("constitution") view=ConstitutionPage />

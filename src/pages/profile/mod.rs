@@ -12,8 +12,8 @@ use leptos::prelude::*;
 use leptos::server_fn::codec::GetUrl;
 use leptos_router::components::{Outlet, ParentRoute, Route};
 use leptos_router::hooks::{use_params_map, use_url};
-use leptos_router::{path, MatchNestedRoutes, SsrMode};
-use leptos_use::storage::{use_local_storage_with_options, UseStorageOptions};
+use leptos_router::{path, SsrMode};
+use leptos_use_storage::{use_local_storage_with_options, UseStorageOptions};
 
 use crate::app::AppResult;
 use crate::context::AuthContext;
@@ -31,7 +31,7 @@ use shelves::ProfileShelvesPage;
 use works::ProfileWorksPage;
 
 #[component(transparent)]
-pub fn ProfileRoutes() -> impl MatchNestedRoutes + Clone {
+pub fn ProfileRoutes() -> impl leptos_router::MatchNestedRoutes + Clone {
     view! {
         <ParentRoute path=path!("/profile/:id/:username") view=ProfileLayout ssr=SsrMode::Async>
             <Route path=path!("works") view=ProfileWorksPage />
@@ -80,7 +80,7 @@ fn ProfileLayout() -> impl IntoView {
             provide_context(profile);
 
             Effect::new(move |_| {
-                set_is_author(auth().active_profile.is_some_and(|p| p.id == profile().id));
+                set_is_author(auth.get().active_profile.is_some_and(|p| p.id == profile().id));
             });
 
             let p = profile.get_untracked();
