@@ -12,6 +12,8 @@ pub struct Blog {
     pub body: String,
     pub word_count: i64,
     pub view_count: i64,
+    pub cheer_count: i64,
+    pub jeer_count: i64,
     pub rating: ContentRating,
     pub license: ContentLicense,
     pub visibility: ContentVisibility,

@@ -1,6 +1,8 @@
 mod blog;
 #[cfg(feature = "ssr")]
 mod blog_tag;
+#[cfg(feature = "ssr")]
+mod blog_vote;
 
 #[cfg(feature = "ssr")]
 pub use blog::Blog;
