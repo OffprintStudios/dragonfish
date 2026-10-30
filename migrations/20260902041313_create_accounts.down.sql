@@ -3,6 +3,8 @@ DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS conversation_participants;
 DROP TABLE IF EXISTS conversations;
 DROP TABLE IF EXISTS followers;
+DROP TABLE IF EXISTS profile_badges;
+DROP TABLE IF EXISTS badges;
 DROP TABLE IF EXISTS profiles;
 DROP TABLE IF EXISTS otp;
 DROP TABLE IF EXISTS sessions;

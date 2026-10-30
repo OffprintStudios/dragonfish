@@ -43,6 +43,22 @@ CREATE TABLE IF NOT EXISTS profiles (
     deleted_at TIMESTAMPTZ DEFAULT NULL
 );
 
+CREATE TABLE IF NOT EXISTS badges (
+    id CHAR(21) PRIMARY KEY DEFAULT nanoid(),
+    name TEXT NOT NULL,
+    description TEXT NOT NULL,
+    icon_url TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT current_timestamp,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT current_timestamp
+);
+
+CREATE TABLE IF NOT EXISTS profile_badges (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    badge_id CHAR(21) NOT NULL REFERENCES badges (id) ON DELETE CASCADE,
+    profile_id CHAR(21) NOT NULL REFERENCES profiles (id) ON DELETE CASCADE,
+    awarded_at TIMESTAMPTZ NOT NULL DEFAULT current_timestamp
+);
+
 CREATE TABLE IF NOT EXISTS followers (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     profile_id CHAR(21) NOT NULL REFERENCES profiles (id) ON DELETE CASCADE,
