@@ -100,6 +100,16 @@ SELECT
     b.cheer_count,
     b.jeer_count,
     b.rating,
+    COALESCE(
+        jsonb_agg(
+            jsonb_build_object(
+                'id', t.id,
+                'name', t."name",
+                'desc', t."desc"
+            )
+        ) FILTER (WHERE t.id IS NOT NULL AND t.kind = 'Blog'),
+        '[]'::jsonb
+    ) AS tags,
     b.license,
     b.visibility,
     b.edited_on,
@@ -108,7 +118,9 @@ SELECT
     b.updated_at
 FROM blogs b
 LEFT JOIN profiles p ON b.author_id = p.id
-GROUP BY b.id, p.id;
+LEFT JOIN blog_tags bt ON b.id = bt.blog_id
+LEFT JOIN tags t ON t.id = bt.tag_id
+GROUP BY b.id, b.title, p.id;
 
 CREATE OR REPLACE VIEW trending_blogs AS
 SELECT

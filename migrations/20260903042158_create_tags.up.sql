@@ -3,7 +3,7 @@ CREATE TYPE content_rating AS ENUM ('Everyone', 'Teen', 'Mature', 'Explicit');
 
 CREATE TYPE content_visibility AS ENUM ('Private', 'Profile', 'Public');
 
-CREATE TYPE tag_kind AS ENUM ('Fandom', 'Warning', 'User');
+CREATE TYPE tag_kind AS ENUM ('Fandom', 'Warning', 'User', 'Blog');
 
 CREATE TABLE IF NOT EXISTS tags (
     id CHAR(21) PRIMARY KEY DEFAULT nanoid(),
@@ -16,4 +16,5 @@ CREATE TABLE IF NOT EXISTS tags (
 );
 
 CREATE INDEX IF NOT EXISTS tags_fts ON tags USING GIN ((to_tsvector('english',"name")));
+CREATE INDEX IF NOT EXISTS tag_kind_idx ON tags (kind);
 SELECT manage_updated_at('tags');

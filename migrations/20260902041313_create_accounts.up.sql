@@ -95,5 +95,6 @@ CREATE TABLE IF NOT EXISTS messages (
 
 SELECT manage_updated_at('accounts');
 SELECT manage_updated_at('profiles');
+SELECT manage_updated_at('badges');
 SELECT manage_updated_at('conversations');
 SELECT manage_updated_at('messages');
