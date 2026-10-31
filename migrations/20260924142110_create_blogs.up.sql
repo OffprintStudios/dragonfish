@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS blogs (
     rating content_rating NOT NULL,
     license content_license NOT NULL DEFAULT 'CC0',
     visibility content_visibility NOT NULL DEFAULT 'Private',
+    allow_comments BOOLEAN NOT NULL DEFAULT TRUE,
     edited_on TIMESTAMPTZ DEFAULT NULL,
     published_on TIMESTAMPTZ DEFAULT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT current_timestamp,

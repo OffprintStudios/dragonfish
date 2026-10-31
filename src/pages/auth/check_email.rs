@@ -60,9 +60,9 @@ pub fn CheckEmailPage() -> impl IntoView {
                                         "You're all set to log on in."
                                     </span>
                                     <span><Icon icon=TablerIcon::TbCircleCheckOutline width="150px" height="150px" attr:class="text-green-500" /></span>
-                                    <A attr:class="text-center w-full pt-4 text-zinc-500 dark:text-zinc-400 text-sm hover:underline" href="/log-in">
-                                        "Ready to get started?"
-                                    </A>
+                                    <span class="text-center w-full pt-4 text-zinc-500 dark:text-zinc-400 text-sm hover:underline">
+                                        "Go ahead and close this page."
+                                    </span>
                                 }.into_any()
                             } else if result.clone().is_ok_and(|res| res.is_none()) {
                                 view! {
