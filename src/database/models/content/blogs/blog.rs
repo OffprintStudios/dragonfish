@@ -1,6 +1,8 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
+#[cfg(feature = "ssr")]
+use crate::app::AppResult;
 use crate::database::models::content::tags::{ContentLicense, ContentRating, ContentVisibility};
 
 #[cfg(feature = "ssr")]
@@ -17,6 +19,7 @@ pub struct Blog {
     pub rating: ContentRating,
     pub license: ContentLicense,
     pub visibility: ContentVisibility,
+    pub allow_comments: bool,
     pub edited_on: Option<DateTime<Utc>>,
     pub published_on: Option<DateTime<Utc>>,
     pub created_at: DateTime<Utc>,
@@ -43,4 +46,11 @@ pub struct BlogObject {
     pub published_on: Option<DateTime<Utc>>,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
+}
+
+#[cfg(feature = "ssr")]
+impl Blog {
+    pub async fn new() -> AppResult<Self> {
+        todo!()
+    }
 }
