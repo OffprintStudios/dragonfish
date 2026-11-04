@@ -30,7 +30,7 @@ pub fn ProfileBlogsPage() -> impl IntoView {
 
     let submit = ServerAction::<AddBlog>::new();
     let value = submit.value();
-    let has_error = move || value.with(|val| matches!(val, Some(Err(_))));
+    let _has_error = move || value.with(|val| matches!(val, Some(Err(_))));
     // let error = move || {
     //     value.with(|val| {
     //         let some = val.to_owned();

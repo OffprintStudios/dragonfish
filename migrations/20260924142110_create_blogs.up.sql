@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS blogs (
     view_count BIGINT NOT NULL DEFAULT 0,
     cheer_count BIGINT NOT NULL DEFAULT 0,
     jeer_count BIGINT NOT NULL DEFAULT 0,
-    rating content_rating NOT NULL,
+    nsfw BOOLEAN NOT NULL DEFAULT FALSE,
     license content_license NOT NULL DEFAULT 'CC0',
     visibility content_visibility NOT NULL DEFAULT 'Private',
     allow_comments BOOLEAN NOT NULL DEFAULT TRUE,
@@ -100,7 +100,7 @@ SELECT
     b.view_count,
     b.cheer_count,
     b.jeer_count,
-    b.rating,
+    b.nsfw,
     COALESCE(
         jsonb_agg(
             jsonb_build_object(
@@ -135,7 +135,7 @@ WHERE b.published_on >= NOW() - INTERVAL '10 days' AND b.published_on <= NOW()
 GROUP BY b.id;
 
 CREATE INDEX IF NOT EXISTS blog_title_fts ON blogs USING GIN ((to_tsvector('english',title)));
-CREATE INDEX IF NOT EXISTS blog_rating_idx ON blogs (rating);
+CREATE INDEX IF NOT EXISTS blog_nsfw_idx ON blogs (nsfw);
 CREATE INDEX IF NOT EXISTS blog_published_idx ON blogs (published_on);
 CREATE INDEX IF NOT EXISTS blog_visibility_idx ON blogs (visibility);
 CREATE INDEX IF NOT EXISTS blog_deleted_idx ON blogs (deleted_at);

@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "ssr")]
 use crate::app::AppResult;
-use crate::database::models::content::tags::{ContentLicense, ContentRating, ContentVisibility};
+use crate::database::models::content::tags::{ContentLicense, ContentVisibility};
 
 #[cfg(feature = "ssr")]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, sqlx::FromRow)]
@@ -16,7 +16,7 @@ pub struct Blog {
     pub view_count: i64,
     pub cheer_count: i64,
     pub jeer_count: i64,
-    pub rating: ContentRating,
+    pub nsfw: bool,
     pub license: ContentLicense,
     pub visibility: ContentVisibility,
     pub allow_comments: bool,
@@ -39,7 +39,7 @@ pub struct BlogObject {
     pub view_count: i64,
     pub cheer_count: i64,
     pub jeer_count: i64,
-    pub rating: ContentRating,
+    pub nsfw: bool,
     pub license: ContentLicense,
     pub visibility: ContentVisibility,
     pub edited_on: Option<DateTime<Utc>>,
