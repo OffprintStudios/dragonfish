@@ -105,16 +105,6 @@ impl Profile {
         Ok(result)
     }
 
-    pub async fn check_owned(id: String, account_id: uuid::Uuid, db: &sqlx::PgPool) -> bool {
-        sqlx::query!(
-            r#"
-                SELECT id FROM profiles WHERE id = $1 AND account_id = $2 AND deleted_at IS NULL LIMIT 1;
-            "#,
-            ammonia::clean(&id),
-            account_id,
-        ).fetch_one(db).await.ok().is_some()
-    }
-
     pub async fn to_object(&self, db: &sqlx::PgPool) -> ProfileObject {
         use crate::database::models::accounts::Account;
         use crate::database::models::profiles::Follower;

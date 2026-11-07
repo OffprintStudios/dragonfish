@@ -11,6 +11,7 @@ use crate::errors::AppError;
 use crate::queues::email::{Email, EmailKind};
 use crate::state::AppState;
 use crate::util::functions::intersection;
+
 use apalis::prelude::TaskSink;
 use apalis_redis::RedisStorage;
 use axum::Extension;
@@ -236,5 +237,23 @@ impl Session {
             true => None,
             false => Some(account),
         }
+    }
+
+    /// Checks to see if a profile ID is associated with the active account.
+    pub async fn check_profile(profile_id: String, db: &PgPool) -> Option<Profile> {
+        let key = SECRET_KEY.get()?;
+        let cookies = extract::<Cookies>().await.ok()?.private(key);
+
+        let token = Uuid::parse_str(cookies.get(SESSION_TOKEN_NAME)?.value()).ok()?;
+        let account = Self::verify_session(token, db).await.ok()?;
+
+        sqlx::query_as!(
+            Profile,
+            r#"
+                SELECT * FROM profiles WHERE id = $1 AND account_id = $2 AND deleted_at IS NULL LIMIT 1;
+            "#,
+            ammonia::clean(&profile_id),
+            account.id,
+        ).fetch_one(db).await.ok()
     }
 }
