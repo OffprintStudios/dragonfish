@@ -15,7 +15,7 @@ pub struct Blog {
     pub id: String,
     pub author_id: String,
     pub title: String,
-    pub body: Option<String>,
+    pub body: String,
     pub word_count: i64,
     pub view_count: i64,
     pub cheer_count: i64,
@@ -38,7 +38,7 @@ pub struct BlogObject {
     pub author_name: String,
     pub author_avatar: String,
     pub title: String,
-    pub body: Option<String>,
+    pub body: String,
     pub word_count: i64,
     pub view_count: i64,
     pub cheer_count: i64,
@@ -96,5 +96,36 @@ impl Blog {
         }
 
         todo!()
+    }
+
+    pub async fn to_object(&self, db: &PgPool) -> AppResult<BlogObject> {
+        sqlx::query_as!(
+            BlogObject,
+            r#"
+                SELECT
+                    id,
+                    author_id,
+                    author_name,
+                    author_avatar,
+                    title,
+                    body,
+                    word_count,
+                    view_count,
+                    cheer_count,
+                    jeer_count,
+                    nsfw,
+                    license as "license: ContentLicense",
+                    visibility as "visibility: ContentVisibility",
+                    edited_on,
+                    published_on,
+                    created_at,
+                    updated_at
+                FROM blog_objects WHERE id = $1;
+            "#,
+            self.id
+        )
+        .fetch_one(db)
+        .await
+        .map_err(|_| AppError::ServerError)
     }
 }

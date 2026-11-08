@@ -2,8 +2,8 @@
 CREATE TABLE IF NOT EXISTS blogs (
     id CHAR(21) PRIMARY KEY DEFAULT nanoid(),
     author_id CHAR(21) NOT NULL REFERENCES profiles (id) ON DELETE CASCADE,
-    title TEXT NOT NULL DEFAULT 'New Blog (' || to_char(current_timestamp, 'MM-DD-YYYY') || ')',
-    body TEXT DEFAULT NULL,
+    title TEXT NOT NULL,
+    body TEXT NOT NULL,
     word_count BIGINT NOT NULL GENERATED ALWAYS AS (
         CASE
             WHEN body IS NULL OR trim(body) = '' THEN 0

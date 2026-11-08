@@ -5,6 +5,7 @@ use strum::Display;
     Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Display, Serialize, Deserialize, Hash,
 )]
 #[cfg_attr(feature = "ssr", derive(sqlx::Type))]
+#[cfg_attr(feature = "ssr", sqlx(type_name = "content_license"))]
 pub enum ContentLicense {
     /// CC BY (Attribution): Only requires you to credit the creator. Allows commercial use, distribution, and remixing.
     CCBY,
