@@ -7,7 +7,12 @@ use sqlx::{FromRow, PgPool};
 use crate::app::AppResult;
 #[cfg(feature = "ssr")]
 use crate::database::models::accounts::Session;
-use crate::database::models::content::tags::{ContentLicense, ContentVisibility};
+use crate::database::models::content::{
+    blogs::blog_tag::BlogTagObject,
+    tags::{ContentLicense, ContentVisibility},
+};
+#[cfg(feature = "ssr")]
+use crate::errors::AppError;
 
 #[cfg(feature = "ssr")]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, FromRow)]
@@ -44,6 +49,7 @@ pub struct BlogObject {
     pub cheer_count: i64,
     pub jeer_count: i64,
     pub nsfw: bool,
+    pub tags: Vec<BlogTagObject>,
     pub license: ContentLicense,
     pub visibility: ContentVisibility,
     pub edited_on: Option<DateTime<Utc>>,
@@ -114,6 +120,7 @@ impl Blog {
                     cheer_count,
                     jeer_count,
                     nsfw,
+                    tags as "tags: Vec<BlogTagObject>",
                     license as "license: ContentLicense",
                     visibility as "visibility: ContentVisibility",
                     edited_on,
