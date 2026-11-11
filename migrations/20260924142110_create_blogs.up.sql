@@ -88,41 +88,6 @@ AFTER INSERT OR UPDATE OR DELETE ON blog_votes
 FOR EACH ROW
 EXECUTE FUNCTION update_blog_vote_counts();
 
-CREATE OR REPLACE VIEW blog_objects AS
-SELECT
-    b.id,
-    p.id AS author_id,
-    p.username AS author_name,
-    p.avatar AS author_avatar,
-    b.title,
-    b.body,
-    b.word_count,
-    b.view_count,
-    b.cheer_count,
-    b.jeer_count,
-    b.nsfw,
-    COALESCE(
-        jsonb_agg(
-            jsonb_build_object(
-                'id', t.id,
-                'name', t."name",
-                'desc', t."desc"
-            )
-        ) FILTER (WHERE t.id IS NOT NULL AND t.kind = 'Blog'),
-        '[]'::jsonb
-    ) AS tags,
-    b.license,
-    b.visibility,
-    b.edited_on,
-    b.published_on,
-    b.created_at,
-    b.updated_at
-FROM blogs b
-LEFT JOIN profiles p ON b.author_id = p.id
-LEFT JOIN blog_tags bt ON b.id = bt.blog_id
-LEFT JOIN tags t ON t.id = bt.tag_id
-GROUP BY b.id, b.title, p.id;
-
 CREATE OR REPLACE VIEW trending_blogs AS
 SELECT
     b.id AS blog_id,

@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::database::models::content::tags::tag_kind::TagKind;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Tag {
     pub id: String,

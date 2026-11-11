@@ -22,3 +22,18 @@ pub enum ContentLicense {
     /// CC0 (Public Domain): Waves all rights to commercialisation, modification, and attribution.
     CC0,
 }
+
+impl From<String> for ContentLicense {
+    fn from(value: String) -> Self {
+        match value.as_str() {
+            "CCBY" => ContentLicense::CCBY,
+            "CCBYSA" => ContentLicense::CCBYSA,
+            "CCBYNC" => ContentLicense::CCBYNC,
+            "CCBYNCSA" => ContentLicense::CCBYNCSA,
+            "CCBYND" => ContentLicense::CCBYND,
+            "CCBYNCND" => ContentLicense::CCBYNCND,
+            "CC0" => ContentLicense::CC0,
+            _ => ContentLicense::CC0,
+        }
+    }
+}

@@ -11,3 +11,14 @@ pub enum ContentVisibility {
     Profile,
     Public,
 }
+
+impl From<String> for ContentVisibility {
+    fn from(value: String) -> Self {
+        match value.as_str() {
+            "Private" => ContentVisibility::Private,
+            "Profile" => ContentVisibility::Profile,
+            "Public" => ContentVisibility::Public,
+            _ => ContentVisibility::Private,
+        }
+    }
+}

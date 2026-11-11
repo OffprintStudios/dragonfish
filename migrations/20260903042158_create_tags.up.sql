@@ -1,8 +1,4 @@
 -- Add up migration script here
-CREATE TYPE content_rating AS ENUM ('Everyone', 'Teen', 'Mature', 'Explicit');
-
-CREATE TYPE content_visibility AS ENUM ('Private', 'Profile', 'Public');
-
 CREATE TYPE tag_kind AS ENUM ('Fandom', 'Warning', 'User', 'Blog');
 
 CREATE TABLE IF NOT EXISTS tags (

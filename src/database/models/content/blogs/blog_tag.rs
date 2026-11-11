@@ -13,10 +13,3 @@ pub struct BlogTag {
     pub tag_id: String,
     pub created_at: DateTime<Utc>,
 }
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct BlogTagObject {
-    pub id: String,
-    pub name: String,
-    pub desc: String,
-}
