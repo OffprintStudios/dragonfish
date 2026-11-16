@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Dragonfish}",
+            "name": "Debug Dragonfish",
+            "target": "Dragonfish",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug Dragonfish"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Dragonfish}",
+            "name": "Release Dragonfish",
+            "target": "Dragonfish",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release Dragonfish"
+        }
+    ]
+}
