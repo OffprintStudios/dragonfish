@@ -20,4 +20,23 @@ struct ProfileController: RouteCollection {
 
         return profile.toObject()
     }
+
+    @Sendable
+    func getBlogs(request: Request) async throws -> HTTPResponseStatus {
+        let query = try request.query.decode(ContentQuery.self)
+        if let authorID = query.authorID {
+            
+        }
+
+        return .ok
+    }
+}
+
+extension ProfileController {
+    struct ContentQuery: Content {
+        var authorID: String?
+        var filter: ContentFilter?
+        var page: Int?
+        var per: Int?
+    }
 }
