@@ -26,3 +26,6 @@ let GENERIC_ERROR_MESSAGE: String = "Something went wrong! Try again in a little
 
 /// The minimum word count for works before publishing
 let MIN_WORD_COUNT: Int64 = 750
+
+/// The minimum number of items for paginated results
+let MIN_PER_PAGE: Int64 = 15

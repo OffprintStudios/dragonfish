@@ -66,27 +66,27 @@ extension BlogVote {
                     -- 1. Handle a brand new vote (INSERT)
                     IF TG_OP = 'INSERT' THEN
                         IF NEW.vote = 1 THEN
-                            UPDATE blogs SET cheers = cheers + 1 WHERE id = NEW.blog_id;
+                            UPDATE blogs SET likes = likes + 1 WHERE id = NEW.blog_id;
                         ELSIF NEW.vote = -1 THEN
-                            UPDATE blogs SET jeers = jeers + 1 WHERE id = NEW.blog_id;
+                            UPDATE blogs SET dislikes = dislikes + 1 WHERE id = NEW.blog_id;
                         END IF;
 
                     -- 2. Handle a user removing their vote (DELETE)
                     ELSIF TG_OP = 'DELETE' THEN
                         IF OLD.vote = 1 THEN
-                            UPDATE blogs SET cheers = cheers - 1 WHERE id = OLD.blog_id;
+                            UPDATE blogs SET likes = likes - 1 WHERE id = OLD.blog_id;
                         ELSIF OLD.vote = -1 THEN
-                            UPDATE blogs SET jeers = jeers - 1 WHERE id = OLD.blog_id;
+                            UPDATE blogs SET dislikes = dislikes - 1 WHERE id = OLD.blog_id;
                         END IF;
 
                     -- 3. Handle a user changing their vote (UPDATE: e.g., Like to Dislike)
                     ELSIF TG_OP = 'UPDATE' THEN
                         -- If they changed a Like (1) to a Dislike (-1)
                         IF OLD.vote = 1 AND NEW.vote = -1 THEN
-                            UPDATE blogs SET cheers = cheers - 1, jeers = jeers + 1 WHERE id = NEW.blog_id;
+                            UPDATE blogs SET likes = likes - 1, dislikes = dislikes + 1 WHERE id = NEW.blog_id;
                         -- If they changed a Dislike (-1) to a Like (1)
                         ELSIF OLD.vote = -1 AND NEW.vote = 1 THEN
-                            UPDATE blogs SET cheers = cheers + 1, jeers = jeers - 1 WHERE id = NEW.blog_id;
+                            UPDATE blogs SET likes = likes + 1, dislikes = dislikes - 1 WHERE id = NEW.blog_id;
                         END IF;
                     END IF;
 
@@ -112,9 +112,9 @@ extension BlogVote {
     }
 
     enum VoteValue: Int16, Codable {
-        case cheer = 1
+        case like = 1
         case none = 0
-        case jeer = -1
+        case dislike = -1
     }
 
     enum FieldKeys {

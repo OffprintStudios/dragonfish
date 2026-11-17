@@ -28,11 +28,11 @@ final class Blog: Model, @unchecked Sendable {
     @Field(key: FieldKeys.views)
     var views: Int64
 
-    @Field(key: FieldKeys.cheers)
-    var cheers: Int64
+    @Field(key: FieldKeys.likes)
+    var likes: Int64
 
-    @Field(key: FieldKeys.jeers)
-    var jeers: Int64
+    @Field(key: FieldKeys.dislikes)
+    var dislikes: Int64
 
     @Siblings(through: FavoriteBlog.self, from: \.$blog, to: \.$profile)
     var favoritedBy: [Profile]
@@ -71,6 +71,28 @@ final class Blog: Model, @unchecked Sendable {
         self.title = formData.title
         self.body = formData.body
     }
+
+    func toObject() -> BlogObject{
+        .init(
+            id: self.id,
+            authorID: self.$author.id,
+            authorName: self.author.username,
+            authorAvatar: self.author.avatar,
+            title: self.title,
+            body: self.body,
+            words: self.words,
+            views: self.views,
+            likes: self.likes,
+            dislikes: self.dislikes,
+            nsfw: self.nsfw,
+            license: self.license,
+            allowComments: self.allowComments,
+            editedOn: self.editedOn,
+            publishedOn: self.publishedOn,
+            createdAt: self.createdAt,
+            updatedAt: self.updatedAt
+        )
+    }
 }
 
 extension Blog {
@@ -89,8 +111,8 @@ extension Blog {
                 .field(BlogKeys.body, .string, .required)
                 .field(BlogKeys.words, .int64, .required, .sql(.default(0)))
                 .field(BlogKeys.views, .int64, .required, .sql(.default(0)))
-                .field(BlogKeys.cheers, .int64, .required, .sql(.default(0)))
-                .field(BlogKeys.jeers, .int64, .required, .sql(.default(0)))
+                .field(BlogKeys.likes, .int64, .required, .sql(.default(0)))
+                .field(BlogKeys.dislikes, .int64, .required, .sql(.default(0)))
                 .field(BlogKeys.nsfw, .bool, .required, .sql(.default(false)))
                 .field(BlogKeys.license, licenseType, .required)
                 .field(BlogKeys.visibility, visibilityType, .required)
@@ -113,8 +135,6 @@ extension Blog {
             guard let sql = database as? any SQLDatabase else { 
                 fatalError("Database does not support raw SQL execution.")
             }
-
-
 
             try await sql.raw("CREATE INDEX IF NOT EXISTS blog_title_fts ON blogs USING GIN ((to_tsvector('english',title)));").run()
             try await sql.raw("CREATE INDEX IF NOT EXISTS blog_nsfw_idx ON blogs (nsfw);").run()
@@ -181,8 +201,8 @@ extension Blog {
         static let body: FieldKey = "body"
         static let words: FieldKey = "words"
         static let views: FieldKey = "views"
-        static let cheers: FieldKey = "cheers"
-        static let jeers: FieldKey = "jeers"
+        static let likes: FieldKey = "likes"
+        static let dislikes: FieldKey = "dislikes"
         static let nsfw: FieldKey = "nsfw"
         static let license: FieldKey = "license"
         static let visibility: FieldKey = "visibility"

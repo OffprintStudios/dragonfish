@@ -7,6 +7,7 @@ struct ProfileController: RouteCollection {
 
         profiles.group(":id") { route in 
             route.get("", use: getProfile)
+            route.grouped(IdentityGuard(needs: [.user], optional: true)).get("blogs", use: getBlogs)
         }
     }
 
@@ -22,21 +23,26 @@ struct ProfileController: RouteCollection {
     }
 
     @Sendable
-    func getBlogs(request: Request) async throws -> HTTPResponseStatus {
-        let query = try request.query.decode(ContentQuery.self)
-        if let authorID = query.authorID {
-            
+    func getBlogs(request: Request) async throws -> Page<BlogObject> {
+        let id = request.parameters.get("id")!
+        let includesNSFW = request.query[Bool.self, at: "nsfw"] ?? false
+
+        if let account = request.user?.account {
+            if let profile = try await account.$profiles.query(on: request.db).filter(\.$id == id).first() {
+                return try await profile.$blogs.query(on: request.db).paginate(for: request).map { $0.toObject() }
+            }
         }
 
-        return .ok
-    }
-}
-
-extension ProfileController {
-    struct ContentQuery: Content {
-        var authorID: String?
-        var filter: ContentFilter?
-        var page: Int?
-        var per: Int?
+        let validStates: [ContentVisibility] = [.profile, .public]
+        var query = Blog.query(on: request.db)
+            .with(\.$author)
+            .filter(\.$author.$id == id)
+            .filter(\.$visibility ~~ validStates)
+            .filter(\.$publishedOn != nil)
+            .filter(\.$publishedOn <= Date())
+        if !includesNSFW {
+            query = query.filter(\.$nsfw == false)
+        }
+        return try await query.paginate(for: request).map { $0.toObject() }
     }
 }

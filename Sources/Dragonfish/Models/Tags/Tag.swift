@@ -20,6 +20,9 @@ final class Tag: Model, @unchecked Sendable {
     @OptionalParent(key: FieldKeys.parentID)
     var parent: Tag?
 
+    @Children(for: \.$parent)
+    var children: [Tag]
+
     @Field(key: FieldKeys.kind)
     var kind: TagKind
 
