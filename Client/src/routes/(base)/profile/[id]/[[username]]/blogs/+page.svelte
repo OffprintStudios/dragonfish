@@ -53,3 +53,7 @@
         <button title="Search" class="px-4 py-3 hover:bg-zinc-400 dark:hover:bg-zinc-500"><IconSearch size="1rem" /></button>
     </form>
 </div>
+
+<div>
+    Has Blogs: {data.blogs?.items.length ?? 0}
+</div>

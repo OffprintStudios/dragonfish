@@ -3,7 +3,7 @@
     import { page } from "$app/state";
 
     const ErrorMessages = {
-        NotFound: "The page you're looking for ain't 'round here, friend",
+        NotFound: "You are lost in a sea of faces, friend. Where will you go next?",
         Unauthorized: "You shouldn't toy with fate like that",
         Forbidden: "The ancient ways shall remain unknown to you, traveler",
         ServerError: "Look, this page isn't a bug—it's a feature",

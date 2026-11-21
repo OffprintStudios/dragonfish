@@ -17,8 +17,8 @@ struct IdentityGuard: AsyncMiddleware {
         guard try await Session.query(on: request.db)
             .filter(\.$id == sessionToken.sessionId)
             .filter(\.$account.$id == sessionToken.accountId)
-            .filter(\.$expiresOn > Date())
-            .first() == nil else {
+            .filter(\.$expiresOn > Date.now)
+            .first() != nil else {
             throw Abort(.unauthorized, reason: "You don't have permission to do that!")
         }
 
